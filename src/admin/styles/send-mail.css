@@ -1,0 +1,354 @@
+/* =========================
+   SEND MAIL
+========================= */
+
+.send-mail-card {
+    width: 100%;
+
+    background: var(--card);
+
+    border: 1px solid var(--border);
+    border-radius: 18px;
+
+    overflow: hidden;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.send-mail-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 22px 24px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.send-mail-title {
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+}
+
+.send-mail-icon {
+    width: 44px;
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 12px;
+
+    background: linear-gradient(
+        135deg,
+        #7c3aed,
+        #563bff
+    );
+
+    color: #fff;
+
+    font-size: 19px;
+
+    box-shadow:
+        0 8px 24px rgba(124, 58, 237, 0.22);
+}
+
+.send-mail-title h2 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.send-mail-title p {
+    margin: 4px 0 0;
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
+}
+
+/* =========================
+   USER COUNT
+========================= */
+
+.recipient-count {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 8px 12px;
+
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    background: var(--card-secondary);
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.recipient-count svg {
+    color: var(--primary-light);
+}
+
+/* =========================
+   FORM
+========================= */
+
+.mail-form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 0;
+
+    padding: 24px;
+}
+
+/* =========================
+   RECIPIENT BOX
+========================= */
+
+.mail-recipient-box {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px;
+
+    margin-bottom: 22px;
+
+    border: 1px solid rgba(124, 58, 237, 0.18);
+    border-radius: 12px;
+
+    background: rgba(124, 58, 237, 0.06);
+}
+
+.mail-recipient-icon {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+
+    background: rgba(124, 58, 237, 0.12);
+
+    color: var(--primary-light);
+
+    font-size: 16px;
+}
+
+.mail-recipient-box strong {
+    display: block;
+
+    margin-bottom: 3px;
+
+    color: var(--text);
+
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.mail-recipient-box span {
+    display: block;
+
+    color: var(--text-secondary);
+
+    font-size: 11px;
+}
+
+/* =========================
+   FORM GROUP
+========================= */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+
+    margin-bottom: 17px;
+}
+
+.form-group label {
+    color: var(--text);
+
+    font-size: 12px;
+    font-weight: 650;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+
+    box-sizing: border-box;
+
+    border: 1px solid var(--border);
+    border-radius: 10px;
+
+    outline: none;
+
+    background: var(--card-secondary);
+    color: var(--text);
+
+    font-family: inherit;
+    font-size: 12px;
+
+    transition: 0.2s ease;
+}
+
+.form-group input {
+    height: 44px;
+
+    padding: 0 13px;
+}
+
+.form-group textarea {
+    min-height: 190px;
+
+    padding: 13px;
+
+    resize: vertical;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(124, 58, 237, 0.08);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-secondary);
+}
+
+/* =========================
+   SEND BUTTON
+========================= */
+
+.send-mail-btn {
+    width: 100%;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    margin-top: 2px;
+
+    border: 0;
+    border-radius: 10px;
+
+    background: linear-gradient(
+        90deg,
+        #6f5eff,
+        #563bff
+    );
+
+    color: #fff;
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(124, 58, 237, 0.18);
+
+    transition: 0.2s ease;
+}
+
+.send-mail-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 25px rgba(124, 58, 237, 0.25);
+}
+
+.send-mail-btn:disabled {
+    opacity: 0.6;
+
+    cursor: not-allowed;
+}
+
+/* =========================
+   SPINNER
+========================= */
+
+.mail-spinner {
+    width: 13px;
+    height: 13px;
+
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-top-color: #fff;
+
+    border-radius: 50%;
+
+    animation: mailSpin 0.7s linear infinite;
+}
+
+@keyframes mailSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media (max-width: 600px) {
+
+    .send-mail-header {
+        align-items: flex-start;
+        flex-direction: column;
+
+        padding: 18px;
+    }
+
+    .recipient-count {
+        width: 100%;
+
+        justify-content: center;
+
+        box-sizing: border-box;
+    }
+
+    .mail-form {
+        padding: 18px;
+    }
+
+    .mail-recipient-box {
+        align-items: flex-start;
+    }
+
+    .form-group textarea {
+        min-height: 160px;
+    }
+}

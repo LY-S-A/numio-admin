@@ -1,0 +1,2149 @@
+/* ===========================
+   USERS PAGE
+=========================== */
+
+.users-page {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+}
+
+/* ===========================
+   USERS TOOLBAR
+=========================== */
+
+.users-toolbar {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.users-search {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    height: 46px;
+    padding: 0 20px;
+
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+}
+
+.users-search input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+
+    color: var(--text);
+    font-size: 15px;
+}
+
+.users-search svg {
+    color: var(--text-secondary);
+    font-size: 20px;
+}
+
+/* Filters */
+
+.users-filters {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.users-filters .select-wrapper {
+    position: relative;
+    width: 150px;
+}
+
+.users-filters .select-wrapper::after {
+    content: "▾";
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-secondary);
+    pointer-events: none;
+    font-size: 14px;
+}
+
+.users-filters select {
+    width: 100%;
+    height: 46px;
+
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    padding: 0 42px 0 16px;
+
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 500;
+
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+
+    outline: none;
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.users-filters select:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, .15);
+}
+
+/* ===========================
+   USERS TABLE
+=========================== */
+
+.tx-table {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+
+/* ===========================
+   DESKTOP GRID
+=========================== */
+
+.users-head,
+.users-row {
+    display: grid;
+
+    grid-template-columns:
+        1.5fr .9fr 1fr .85fr 1fr 2fr;
+
+    align-items: center;
+
+    column-gap: 20px;
+}
+
+
+/* ===========================
+   HEADER
+=========================== */
+
+.users-head {
+    padding: 16px 22px;
+
+    border-bottom: 1px solid var(--border);
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: .4px;
+}
+
+
+/* ===========================
+   ROW
+=========================== */
+
+.users-row {
+    padding: 22px;
+
+    border-bottom: 1px solid var(--border);
+
+    transition: background .2s ease;
+}
+
+.users-row:last-child {
+    border-bottom: none;
+}
+
+.users-row:hover {
+    background: var(--table-hover);
+}
+
+
+/* ===========================
+   USER
+=========================== */
+
+.tx-info {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+
+    min-width: 0;
+}
+
+.user-details {
+    min-width: 0;
+}
+
+.user-details h4,
+.user-details p,
+.user-details small {
+    margin: 0;
+    line-height: 1.35;
+}
+
+.user-details h4 {
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.user-details p {
+    margin-top: 2px;
+
+    color: var(--text-secondary);
+
+    font-size: 14px;
+}
+
+.user-email {
+    display: block;
+
+    margin-top: 3px;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* ===========================
+   BALANCE
+=========================== */
+
+.user-balance {
+    color: var(--text);
+
+    font-size: 14px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* ===========================
+   STATUS
+=========================== */
+
+.tx-status-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.tx-status {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: fit-content;
+
+    padding: 5px 12px;
+
+    border-radius: 999px;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+}
+
+.tx-status.active {
+    background: rgba(34, 197, 94, .12);
+    color: #22c55e;
+}
+
+.tx-status.inactive {
+    background: rgba(245, 158, 11, .12);
+    color: #f59e0b;
+}
+
+.tx-status.banned {
+    background: rgba(239, 68, 68, .12);
+    color: #ef4444;
+}
+
+
+/* ===========================
+   DATE
+=========================== */
+
+.tx-date {
+    color: var(--text);
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+
+/* ===========================
+   ACTIONS
+=========================== */
+
+.user-actions {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    flex-wrap: nowrap;
+}
+
+.user-actions button {
+    height: 34px;
+
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    gap: 6px;
+
+    padding: 0 10px;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    background: var(--card-secondary);
+
+    font-family: inherit;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    white-space: nowrap;
+
+    cursor: pointer;
+
+    transition:
+        background .2s ease,
+        color .2s ease,
+        border-color .2s ease,
+        transform .2s ease;
+}
+
+.user-actions button svg {
+    width: 14px;
+    height: 14px;
+
+    flex-shrink: 0;
+}
+
+.user-actions button:hover {
+    transform: translateY(-1px);
+}
+
+
+/* ===========================
+   EDIT
+=========================== */
+
+.user-edit-btn {
+    color: var(--primary-light);
+}
+
+.user-edit-btn:hover {
+    background: rgba(124, 58, 237, .1);
+    border-color: rgba(124, 58, 237, .3);
+}
+
+
+/* ===========================
+   BAN
+=========================== */
+
+.user-ban-btn {
+    color: #f59e0b;
+}
+
+.user-ban-btn:hover {
+    color: #fbbf24;
+
+    background: rgba(245, 158, 11, .1);
+
+    border-color: rgba(245, 158, 11, .3);
+}
+
+
+/* ===========================
+   UNBAN
+=========================== */
+
+.user-unban-btn {
+    color: #22c55e;
+}
+
+.user-unban-btn:hover {
+    color: #4ade80;
+
+    background: rgba(34, 197, 94, .1);
+
+    border-color: rgba(34, 197, 94, .3);
+}
+
+
+/* ===========================
+   DELETE
+=========================== */
+
+.user-delete-btn {
+    color: #ef4444;
+}
+
+.user-delete-btn:hover {
+    color: #f87171;
+
+    background: rgba(239, 68, 68, .1);
+
+    border-color: rgba(239, 68, 68, .35);
+}
+
+
+.tx-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 14px 18px;
+}
+
+.pagination-text {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 12px;
+
+    flex: 1;
+    text-align: left;
+}
+
+.tx-pages {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+}
+
+.users-pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 18px;
+    border-top: 1px solid var(--border);
+}
+
+.users-pagination .pagination-text {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+.users-pagination .tx-pages {
+    display: flex;
+    gap: 6px;
+}
+
+.users-pagination .tx-pages button {
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--card-secondary);
+    color: var(--text);
+    cursor: pointer;
+}
+
+.users-pagination .tx-pages button.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+/* ===========================
+   MOBILE CARDS
+=========================== */
+
+.mobile-users {
+    display: none;
+}
+
+.mobile-user-card {
+    background: var(--card-secondary);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+}
+
+.mobile-user-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.mobile-more {
+    border: none;
+    background: transparent;
+    color: var(--text-secondary);
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.mobile-email {
+    margin: 14px 0;
+
+    color: var(--text-secondary);
+    font-size: 13px;
+}
+
+.mobile-user-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    margin-bottom: 10px;
+}
+
+.mobile-joined {
+    color: var(--text-secondary);
+    font-size: 12px;
+}
+
+/* ===========================
+   PAGINATION
+=========================== */
+
+.users-pagination {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 8px;
+
+    padding: 20px 24px;
+
+    border-top: 1px solid var(--border);
+}
+
+.users-pagination button {
+    width: 38px;
+    height: 38px;
+
+    border: 1px solid var(--border);
+    background: transparent;
+
+    border-radius: 10px;
+
+    color: var(--text);
+
+    cursor: pointer;
+
+    transition: .25s;
+}
+
+.users-pagination button:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.users-pagination button.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #fff;
+}
+
+/* =========================
+   USER STAT TREND
+========================= */
+
+.user-stat-trend {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+
+    margin-top: 6px;
+
+    font-size: 12px;
+    font-weight: 600;
+
+    line-height: 1;
+}
+
+.user-stat-trend.up {
+    color: var(--success);
+}
+
+.user-stat-trend.down {
+    color: var(--danger);
+}
+
+.user-stat-trend svg,
+.user-stat-trend i {
+    font-size: 11px;
+}
+
+/* ===========================
+   ORDERS TABLE
+=========================== */
+
+/* Desktop order table */
+
+.orders-head,
+.orders-row {
+    display: grid;
+
+    grid-template-columns:
+        1.15fr 1.25fr 1.1fr .75fr .75fr .85fr .9fr;
+
+    align-items: center;
+
+    column-gap: 18px;
+}
+
+
+/* Header */
+
+.orders-head {
+    padding: 16px 22px;
+
+    border-bottom: 1px solid var(--border);
+
+    color: var(--text-secondary);
+    font-size: 12px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: .4px;
+}
+
+
+/* Rows */
+
+.orders-row {
+    padding: 20px 22px;
+
+    border-bottom: 1px solid var(--border);
+
+    transition: background .2s ease;
+}
+
+.orders-row:last-child {
+    border-bottom: none;
+}
+
+.orders-row:hover {
+    background: var(--table-hover);
+}
+
+
+/* ===========================
+   ORDER INFO
+=========================== */
+
+.order-info {
+    min-width: 0;
+}
+
+.order-info h4 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.order-info p {
+    margin: 4px 0 0;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* ===========================
+   ORDER SERVICE
+=========================== */
+
+.order-service {
+    min-width: 0;
+}
+
+.order-service h4 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.order-service p {
+    margin: 4px 0 0;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+}
+
+/* ===========================
+   ORDER OTP
+=========================== */
+
+.order-otp {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    width: fit-content;
+
+    min-width: 70px;
+
+    padding: 6px 10px;
+
+    border-radius: 8px;
+
+    background: rgba(124, 58, 237, 0.10);
+
+    border: 1px solid rgba(124, 58, 237, 0.18);
+
+    color: var(--primary-light);
+
+    font-family: monospace;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    white-space: nowrap;
+}
+
+/* ===========================
+   ORDER STATUS
+=========================== */
+
+.tx-status.finished {
+    background: rgba(59, 130, 246, 0.12);
+    color: #3b82f6;
+}
+
+
+.tx-status.expired {
+    background: rgba(245, 158, 11, 0.12);
+    color: #f59e0b;
+}
+
+.tx-status.cancelled {
+    background: rgba(239, 68, 68, .12);
+    color: #ef4444;
+}
+
+
+/* ===========================
+   ORDER ACTIONS
+=========================== */
+
+.orders-row .user-actions {
+    display: flex;
+    justify-content: flex-start;
+    gap: 8px;
+}
+
+.orders-row .user-actions button {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 10px;
+
+    background: var(--card-secondary);
+    color: var(--text-secondary);
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.orders-row .user-actions button:hover {
+    background: var(--primary);
+    color: #fff;
+}
+
+
+/* ===========================
+   ORDER RESPONSIVE
+=========================== */
+
+@media (max-width: 1200px) {
+
+    .orders-head,
+    .orders-row {
+        grid-template-columns:
+            1.1fr 1.2fr 1fr .75fr .8fr .8fr 100px;
+
+        column-gap: 12px;
+    }
+
+    .orders-head {
+        padding: 14px 18px;
+    }
+
+    .orders-row {
+        padding: 18px;
+    }
+
+}
+
+
+/* ===========================
+   MOBILE ORDERS
+=========================== */
+
+@media (max-width: 768px) {
+
+    .orders-head {
+        display: none;
+    }
+
+    .orders-row {
+        display: grid;
+
+        grid-template-columns: minmax(0, 1fr) auto;
+
+        grid-template-areas:
+            "order status"
+            "user user"
+            "service price"
+            "otp date";
+
+        gap: 14px 12px;
+
+        padding: 16px;
+
+        align-items: start;
+    }
+
+    .orders-row .order-info {
+        grid-area: order;
+    }
+
+    .orders-row .tx-info {
+        grid-area: user;
+
+        min-width: 0;
+    }
+
+    .orders-row .order-service {
+        grid-area: service;
+
+        min-width: 0;
+    }
+
+    .orders-row .user-balance {
+        grid-area: price;
+
+        justify-self: end;
+
+        align-self: center;
+
+        font-size: 14px;
+    }
+
+    .orders-row .order-otp {
+        grid-area: otp;
+
+        align-self: center;
+
+        min-width: 65px;
+
+        font-size: 12px;
+
+        padding: 5px 8px;
+    }
+
+    .orders-row .tx-status-wrapper {
+        grid-area: status;
+
+        justify-self: end;
+
+        align-self: start;
+    }
+
+    .orders-row .tx-date {
+        grid-area: date;
+
+        justify-self: end;
+
+        align-self: center;
+
+        color: var(--text-secondary);
+
+        font-size: 12px;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    
+    .orders-row .order-info h4 {
+        font-size: 14px;
+    }
+
+    .orders-row .order-info p {
+        font-size: 12px;
+    }
+
+
+    /* User */
+
+   
+
+    .orders-row .user-details h4 {
+        font-size: 14px;
+    }
+
+    .orders-row .user-email {
+        font-size: 12px;
+
+        word-break: break-word;
+    }
+
+  
+
+    .orders-row .order-service h4 {
+        font-size: 13px;
+    }
+
+    .orders-row .order-service p {
+        font-size: 12px;
+    }
+
+
+    .orders-row .tx-date span {
+        font-size: 12px;
+    }
+
+
+    /* Actions */
+
+    .orders-row .user-actions {
+        grid-area: actions;
+
+        display: flex;
+
+        justify-content: flex-end;
+
+        gap: 10px;
+
+        padding-top: 12px;
+
+        margin-top: 2px;
+
+        border-top: 1px solid var(--border);
+    }
+
+    .orders-row .user-actions button {
+        width: 36px;
+        height: 36px;
+
+        border-radius: 8px;
+    }
+
+
+    /* Status sizing */
+
+    .orders-row .tx-status {
+        font-size: 10px;
+
+        padding: 5px 10px;
+    }
+
+}
+
+/* =========================================================
+   ORDERS FILTERS - MOBILE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .users-filters {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+        width: 100%;
+    }
+
+    .users-filters .select-wrapper {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .users-filters .select-wrapper select {
+        width: 100%;
+        height: 48px;
+
+        box-sizing: border-box;
+    }
+
+    /* Sort By takes the entire row */
+
+    .users-filters .select-wrapper:nth-child(3) {
+        grid-column: 1 / -1;
+        width: 100%;
+    }
+
+    .users-filters .select-wrapper:nth-child(3) select {
+        width: 100%;
+    }
+}
+
+
+/* ===========================
+   SMALL MOBILE
+=========================== */
+
+@media (max-width: 480px) {
+
+    .orders-row {
+        padding: 15px;
+    }
+
+    .orders-row .order-info h4 {
+        font-size: 13px;
+    }
+
+    .orders-row .order-service h4 {
+        font-size: 13px;
+    }
+
+    .orders-row .user-balance {
+        font-size: 13px;
+    }
+
+}
+
+/* ===========================
+   TRANSACTIONS TABLE
+=========================== */
+
+.transactions-table {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+
+/* ===========================
+   DESKTOP GRID
+=========================== */
+
+.transactions-table-head,
+.transactions-row {
+    display: grid;
+
+    grid-template-columns:
+        1.15fr 1.35fr .95fr .9fr .85fr .9fr 100px;
+
+    align-items: center;
+
+    column-gap: 18px;
+}
+
+
+/* ===========================
+   HEADER
+=========================== */
+
+.transactions-table-head {
+    padding: 16px 22px;
+
+    border-bottom: 1px solid var(--border);
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: .4px;
+}
+
+
+/* ===========================
+   ROW
+=========================== */
+
+.transactions-row {
+    padding: 20px 22px;
+
+    border-bottom: 1px solid var(--border);
+
+    transition: background .2s ease;
+}
+
+.transactions-row:last-child {
+    border-bottom: none;
+}
+
+.transactions-row:hover {
+    background: var(--table-hover);
+}
+
+
+/* ===========================
+   REFERENCE
+=========================== */
+
+.transaction-reference {
+    min-width: 0;
+}
+
+.transaction-reference h4 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.transaction-reference p {
+    margin: 4px 0 0;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+}
+
+
+/* ===========================
+   USER
+=========================== */
+
+.transaction-user {
+    min-width: 0;
+}
+
+.transaction-user h4 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.transaction-user p {
+    margin: 4px 0 0;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+
+/* ===========================
+   TYPE
+=========================== */
+
+.transaction-type {
+    min-width: 0;
+}
+
+.transaction-type h4 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.transaction-type p {
+    margin: 4px 0 0;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+}
+
+
+/* ===========================
+   AMOUNT
+=========================== */
+
+.transaction-amount {
+    color: var(--text);
+
+    font-size: 14px;
+    font-weight: 700;
+
+    white-space: nowrap;
+}
+
+
+/* ===========================
+   STATUS
+=========================== */
+
+.transaction-status {
+    display: flex;
+    align-items: center;
+}
+
+.transaction-status .tx-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    width: fit-content;
+
+    padding: 5px 11px;
+
+    border-radius: 999px;
+
+    font-size: 10px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+}
+
+
+/* Success */
+
+.transaction-status .tx-status.success {
+    background: rgba(59, 130, 246, 0.12);
+    color: var(--info);
+}
+
+
+/* Pending */
+
+.transaction-status .tx-status.pending {
+    background: rgba(245, 158, 11, .12);
+    color: #f59e0b;
+}
+
+
+/* Failed */
+
+.transaction-status .tx-status.failed {
+    background: rgba(239, 68, 68, .12);
+    color: #ef4444;
+}
+
+
+/* ===========================
+   DATE
+=========================== */
+
+.transaction-date {
+    color: var(--text);
+
+    font-size: 13px;
+    font-weight: 500;
+}
+
+/* =========================
+   TRANSACTION ACTIONS
+========================= */
+
+.transaction-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.transaction-actions button {
+    height: 34px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+
+    padding: 0 12px;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    background: var(--card-secondary);
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.transaction-actions button svg {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+}
+
+.transaction-actions button:hover {
+    transform: translateY(-1px);
+}
+
+
+/* =========================
+   DELETE
+========================= */
+
+.transaction-delete-btn {
+    color: #ef4444;
+}
+
+.transaction-delete-btn:hover {
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.35);
+    background: rgba(239, 68, 68, 0.1);
+}
+
+
+/* =========================
+   CONFIRM
+========================= */
+
+.transaction-confirm-btn {
+    color: #22c55e;
+}
+
+.transaction-confirm-btn:hover {
+    color: #4ade80;
+    border-color: rgba(34, 197, 94, 0.35);
+    background: rgba(34, 197, 94, 0.1);
+}
+
+/* ===========================
+   PAGINATION
+=========================== */
+
+.transactions-pagination {
+    display: flex;
+
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 16px 22px;
+
+    border-top: 1px solid var(--border);
+}
+
+.transactions-pagination .pagination-text {
+    margin: 0;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+}
+
+.transactions-pagination .tx-pages {
+    display: flex;
+
+    align-items: center;
+
+    gap: 6px;
+}
+
+.transactions-pagination .tx-pages button {
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    background: transparent;
+    color: var(--text);
+
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.transactions-pagination .tx-pages button:hover:not(:disabled) {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.transactions-pagination .tx-pages button.active {
+    background: var(--primary);
+    border-color: var(--primary);
+
+    color: #fff;
+}
+
+.transactions-pagination .tx-pages button:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+
+/* ===========================
+   TABLET
+=========================== */
+
+@media (max-width: 1200px) {
+
+    .transactions-table-head,
+    .transactions-row {
+        grid-template-columns:
+            1.05fr 1.25fr .9fr .85fr .8fr .85fr 90px;
+
+        column-gap: 12px;
+    }
+
+    .transactions-table-head {
+        padding: 14px 18px;
+    }
+
+    .transactions-row {
+        padding: 18px;
+    }
+
+}
+
+
+/* ===========================
+   MOBILE
+=========================== */
+
+@media (max-width: 768px) {
+
+    /* Hide desktop header */
+
+    .transactions-table-head {
+        display: none;
+    }
+
+
+    /* Card layout */
+
+    .transactions-row {
+        display: grid;
+
+        grid-template-columns: 1fr auto;
+
+        grid-template-areas:
+            "reference status"
+            "user user"
+            "type amount"
+            "date date"
+            "actions actions";
+
+        gap: 14px 12px;
+
+        padding: 16px;
+
+        align-items: start;
+    }
+
+
+    /* Reference */
+
+    .transaction-reference {
+        grid-area: reference;
+
+        min-width: 0;
+    }
+
+    .transaction-reference h4 {
+        font-size: 14px;
+    }
+
+    .transaction-reference p {
+        font-size: 12px;
+    }
+
+
+    /* User */
+
+    .transaction-user {
+        grid-area: user;
+
+        min-width: 0;
+
+        padding-bottom: 4px;
+    }
+
+    .transaction-user h4 {
+        font-size: 14px;
+    }
+
+    .transaction-user p {
+        font-size: 12px;
+
+        word-break: break-word;
+        white-space: normal;
+    }
+
+
+    /* Type */
+
+    .transaction-type {
+        grid-area: type;
+
+        min-width: 0;
+    }
+
+    .transaction-type h4 {
+        font-size: 13px;
+    }
+
+    .transaction-type p {
+        font-size: 12px;
+    }
+
+
+    /* Amount */
+
+    .transaction-amount {
+        grid-area: amount;
+
+        justify-self: end;
+        align-self: center;
+
+        font-size: 14px;
+    }
+
+
+    /* Status */
+
+    .transaction-status {
+        grid-area: status;
+
+        justify-self: end;
+        align-self: start;
+    }
+
+    .transaction-status .tx-status {
+        padding: 5px 10px;
+
+        font-size: 10px;
+    }
+
+
+    /* Date */
+
+    .transaction-date {
+        grid-area: date;
+
+        display: flex;
+        align-items: center;
+
+        padding-top: 10px;
+
+        border-top: 1px solid var(--border);
+
+        color: var(--text-secondary);
+    }
+
+    .transaction-date span {
+        font-size: 12px;
+    }
+
+
+    /* Actions */
+
+    .transaction-actions {
+        grid-area: actions;
+
+        display: flex;
+
+        justify-content: flex-end;
+
+        gap: 10px;
+
+        padding-top: 12px;
+        margin-top: 2px;
+
+        border-top: 1px solid var(--border);
+    }
+
+    .transaction-actions button {
+        width: 36px;
+        height: 36px;
+
+        border-radius: 8px;
+    }
+
+
+    /* Pagination */
+
+    .transactions-pagination {
+        display: flex;
+
+        justify-content: space-between;
+        align-items: center;
+
+        padding: 16px;
+    }
+
+    .transactions-pagination .pagination-text {
+        font-size: 11px;
+    }
+
+    .transactions-pagination .tx-pages {
+        gap: 6px;
+    }
+
+    .transactions-pagination .tx-pages button {
+        width: 34px;
+        height: 34px;
+    }
+
+}
+
+
+/* ===========================
+   SMALL MOBILE
+=========================== */
+
+@media (max-width: 480px) {
+
+    .transactions-row {
+        padding: 15px;
+    }
+
+    .transaction-reference h4 {
+        font-size: 13px;
+    }
+
+    .transaction-user h4 {
+        font-size: 13px;
+    }
+
+    .transaction-type h4 {
+        font-size: 13px;
+    }
+
+    .transaction-amount {
+        font-size: 13px;
+    }
+
+    .transactions-pagination {
+        justify-content: center;
+    }
+
+    .transactions-pagination .pagination-text {
+        display: block;
+
+        flex: 1;
+        min-width: 0;
+
+        color: var(--text-secondary);
+        font-size: 11px;
+
+        white-space: nowrap;
+    }
+
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media (max-width: 1200px) {
+
+    .users-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .users-header {
+        flex-wrap: wrap;
+    }
+
+    .users-toolbar {
+        gap: 12px;
+    }
+
+    .users-search {
+        min-width: 100%;
+    }
+
+}
+
+@media (max-width: 768px) {
+
+    /* Page */
+    .users-stats-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    .users-page {
+        gap: 20px;
+    }
+
+    .users-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .users-header h1 {
+        font-size: 24px;
+    }
+
+    .users-header p {
+        font-size: 14px;
+    }
+
+    .users-header-actions {
+        width: 100%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .btn-outline,
+    .btn-primary {
+        width: 100%;
+        height: 46px;
+        font-size: 13px;
+    }
+
+
+    /* Toolbar */
+
+    .users-toolbar {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .users-search,
+    .users-select,
+    .btn-filter {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .users-search,
+    .users-select {
+        height: 46px;
+    }
+
+    .btn-filter {
+        height: 46px;
+    }
+
+    .users-filters {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+        width: 100%;
+    }
+
+    .users-filters .select-wrapper {
+        width: 100%;
+    }
+
+    .users-filters select {
+        width: 100%;
+        height: 48px;
+        font-size: 14px;
+        padding: 0 36px 0 14px;
+    }
+
+    .users-filters .select-wrapper::after {
+        right: 14px;
+        font-size: 13px;
+    }
+
+    /* Table */
+
+    .users-table-wrapper {
+        display: none;
+    }
+
+    .mobile-users {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding: 16px;
+    }
+
+    .mobile-user-card {
+        padding: 16px;
+    }
+
+    .user-avatar {
+        width: 42px;
+        height: 42px;
+        font-size: 13px;
+    }
+
+    .user-name {
+        font-size: 14px;
+    }
+
+    .user-username,
+    .mobile-email,
+    .mobile-joined {
+        font-size: 12px;
+    }
+
+    .mobile-user-bottom {
+        margin: 12px 0;
+    }
+
+    .role-badge,
+    .status-badge {
+        min-width: 74px;
+        padding: 5px 10px;
+        font-size: 10px;
+    }
+
+    .mobile-more {
+        width: 34px;
+        height: 34px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    /* Pagination */
+
+    .users-pagination {
+        justify-content: center;
+        padding: 18px 16px;
+    }
+
+    .users-pagination button {
+        width: 34px;
+        height: 34px;
+        font-size: 13px;
+    }
+
+}
+
+@media (max-width: 480px) {
+
+    .users-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .users-header-actions {
+        grid-template-columns: 1fr;
+    }
+
+    .user-stat-card {
+        padding: 16px;
+    }
+
+    .mobile-user-bottom {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .role-badge,
+    .status-badge {
+        min-width: 68px;
+    }
+
+}
+
+/* =========================================================
+   MOBILE USERS ROW
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .users-head {
+        display: none;
+    }
+
+    .users-row {
+        display: grid;
+
+        grid-template-columns: minmax(0, 1fr) minmax(90px, auto);
+
+        grid-template-areas:
+            "user status"
+            "balance deposit"
+            "joined joined"
+            "actions actions";
+
+        gap: 14px 16px;
+
+        padding: 18px 16px;
+
+        align-items: center;
+
+        border-bottom: 1px solid var(--border);
+    }
+
+    /* =========================
+       USER
+    ========================= */
+
+    .users-row .tx-info {
+        grid-area: user;
+
+        display: flex;
+        align-items: center;
+
+        gap: 12px;
+
+        min-width: 0;
+    }
+
+    .user-details {
+        min-width: 0;
+    }
+
+    .user-details h4 {
+        margin: 0 0 3px;
+
+        font-size: 14px;
+        font-weight: 700;
+
+        color: var(--text);
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .user-email {
+        display: block;
+
+        margin: 0;
+
+        font-size: 11px;
+
+        color: var(--text-secondary);
+
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    /* =========================
+       STATUS
+    ========================= */
+
+    .users-row .tx-status-wrapper {
+        grid-area: status;
+
+        justify-self: end;
+
+        min-width: max-content;
+    }
+
+    .users-row .tx-status {
+        padding: 5px 9px;
+
+        font-size: 9px;
+
+        white-space: nowrap;
+    }
+
+    /* =========================
+       BALANCE
+    ========================= */
+
+    .users-row .user-balance {
+        grid-area: balance;
+
+        min-width: 0;
+
+        font-size: 13px;
+        font-weight: 700;
+
+        color: var(--text);
+
+        white-space: nowrap;
+    }
+
+    /* =========================
+       TOTAL DEPOSIT
+    ========================= */
+
+    .users-row .user-deposit {
+        grid-area: deposit;
+
+        min-width: 0;
+
+        justify-self: end;
+
+        text-align: right;
+
+        font-size: 13px;
+        font-weight: 700;
+
+        color: var(--text);
+
+        white-space: nowrap;
+    }
+
+    /* =========================
+       JOINED DATE
+    ========================= */
+
+    .users-row .tx-date {
+        grid-area: joined;
+
+        width: 100%;
+
+        padding-top: 10px;
+
+        border-top: 1px solid var(--border);
+
+        color: var(--text-secondary);
+
+        font-size: 11px;
+    }
+
+    /* =========================
+       ACTIONS
+    ========================= */
+
+    .users-row .user-actions {
+        grid-area: actions;
+
+        width: 100%;
+
+        display: flex;
+
+        justify-content: flex-end;
+
+        align-items: center;
+
+        gap: 8px;
+
+        padding-top: 12px;
+
+        border-top: 1px solid var(--border);
+    }
+
+    .users-row .user-actions button {
+        width: auto;
+        min-width: 36px;
+        height: 34px;
+
+        flex: 0 0 auto;
+
+        display: inline-flex;
+
+        align-items: center;
+        justify-content: center;
+
+        gap: 5px;
+
+        padding: 0 9px;
+
+        border-radius: 8px;
+
+        font-size: 11px;
+    }
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .users-row {
+        grid-template-columns: minmax(0, 1fr) auto;
+
+        gap: 12px 12px;
+
+        padding: 16px 14px;
+    }
+
+    .users-row .tx-info {
+        gap: 10px;
+    }
+
+    .users-row .user-avatar {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+
+        border-radius: 9px;
+
+        font-size: 12px;
+    }
+
+    .user-details h4 {
+        font-size: 13px;
+    }
+
+    .user-email {
+        font-size: 10px;
+    }
+
+    .users-row .user-balance {
+        font-size: 12px;
+    }
+
+    .users-row .tx-date span {
+        font-size: 10px;
+    }
+
+    .users-row .tx-status {
+        padding: 5px 8px;
+
+        font-size: 8px;
+    }
+
+    .users-row .user-actions {
+        gap: 6px;
+    }
+
+    .users-row .user-actions button {
+        height: 33px;
+
+        min-width: 33px;
+
+        padding: 0 8px;
+
+        font-size: 10px;
+    }
+}

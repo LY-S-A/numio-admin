@@ -1,0 +1,1612 @@
+/* =========================================================
+   PRICING PAGE
+========================================================= */
+
+.pricing-page {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    color: var(--text);
+}
+
+
+/* =========================================================
+   PAGE HEADER
+========================================================= */
+
+.pricing-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.pricing-header h1 {
+    margin: 0;
+    color: var(--text);
+    font-size: 30px;
+    line-height: 1.2;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+}
+
+.pricing-header p {
+    margin: 7px 0 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   REFRESH BUTTON
+========================================================= */
+
+.pricing-refresh-btn {
+    height: 42px;
+    padding: 0 15px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    background: var(--card);
+    color: var(--text-secondary);
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.pricing-refresh-btn:hover {
+    color: var(--text);
+    border-color: var(--border-hover);
+    background: var(--card-secondary);
+}
+
+.pricing-refresh-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.pricing-spin {
+    animation: pricingSpin 0.9s linear infinite;
+}
+
+@keyframes pricingSpin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+
+/* =========================================================
+   EXCHANGE RATE CARD
+========================================================= */
+
+.exchange-rate-card {
+    position: relative;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 30px;
+
+    padding: 24px;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: 16px;
+
+    background:
+        radial-gradient(
+            circle at 0% 50%,
+            rgba(124, 58, 237, 0.13),
+            transparent 35%
+        ),
+        var(--card);
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.08);
+}
+
+.exchange-rate-card::after {
+    content: "";
+
+    position: absolute;
+
+    width: 180px;
+    height: 180px;
+
+    right: -80px;
+    top: -90px;
+
+    border-radius: 50%;
+
+    background: rgba(124, 58, 237, 0.08);
+
+    pointer-events: none;
+}
+
+
+/* =========================================================
+   EXCHANGE RATE INFO
+========================================================= */
+
+.exchange-rate-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    position: relative;
+    z-index: 2;
+}
+
+.exchange-rate-icon {
+    width: 50px;
+    height: 50px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 13px;
+
+    color: #ffffff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7c3aed,
+            #563bff
+        );
+
+    font-size: 19px;
+
+    box-shadow:
+        0 8px 20px rgba(124, 58, 237, 0.25);
+}
+
+.exchange-rate-info h2 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.exchange-rate-info p {
+    margin: 5px 0 0;
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   EXCHANGE RATE FORM
+========================================================= */
+
+.exchange-rate-form {
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+/* =========================================================
+   RATE INPUT
+========================================================= */
+
+.rate-input {
+    height: 44px;
+
+    display: flex;
+    align-items: center;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    background: var(--card-secondary);
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+.rate-input:focus-within {
+    border-color: var(--primary);
+
+    box-shadow:
+        0 0 0 3px rgba(124, 58, 237, 0.1);
+}
+
+.rate-input span {
+    flex-shrink: 0;
+    padding: 0 10px;
+}
+
+.rate-input .rate-dollar {
+    color: var(--text);
+}
+
+.rate-input .rate-equals {
+    padding: 0 3px;
+    color: var(--text-secondary);
+    opacity: 0.6;
+}
+
+.rate-input .rate-currency {
+    color: var(--text-secondary);
+}
+
+.rate-input input {
+    width: 100px;
+    height: 100%;
+
+    padding: 0 6px;
+
+    border: 0;
+    outline: 0;
+
+    background: transparent;
+
+    color: var(--text);
+
+    text-align: center;
+
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.rate-input input::placeholder {
+    color: var(--text-secondary);
+    opacity: 0.7;
+}
+
+.rate-input input::-webkit-inner-spin-button,
+.rate-input input::-webkit-outer-spin-button {
+    margin: 0;
+    appearance: none;
+}
+
+
+/* =========================================================
+   UPDATE RATE BUTTON
+========================================================= */
+
+.save-rate-btn {
+    height: 44px;
+
+    padding: 0 17px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    border: 0;
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #6f5eff,
+            #563bff
+        );
+
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(124, 58, 237, 0.2);
+
+    transition: all 0.2s ease;
+}
+
+.save-rate-btn:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 25px rgba(124, 58, 237, 0.28);
+}
+
+.save-rate-btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+
+/* =========================================================
+   PRICING RULES HEADER
+========================================================= */
+
+.rules-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    margin-top: 5px;
+}
+
+.rules-header h2 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.rules-header p {
+    margin: 5px 0 0;
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   ADD RULE BUTTON
+========================================================= */
+
+.add-rule-btn {
+    height: 42px;
+
+    padding: 0 16px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    border: 0;
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            90deg,
+            #6f5eff,
+            #563bff
+        );
+
+    color: #ffffff;
+
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 8px 20px rgba(124, 58, 237, 0.2);
+
+    transition: all 0.2s ease;
+}
+
+.add-rule-btn:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 10px 25px rgba(124, 58, 237, 0.28);
+}
+
+
+/* =========================================================
+   PRICING TABLE CARD
+========================================================= */
+
+.pricing-rules-card {
+    width: 100%;
+
+    overflow: hidden;
+
+    border: 1px solid var(--border);
+    border-radius: 15px;
+
+    background: var(--card);
+
+    box-shadow:
+        0 8px 30px rgba(0, 0, 0, 0.05);
+}
+
+.pricing-table-wrapper {
+    width: 100%;
+    overflow-x: auto;
+}
+
+.pricing-table {
+    width: 100%;
+    min-width: 750px;
+
+    border-collapse: collapse;
+}
+
+.pricing-table thead {
+    background: var(--card-secondary);
+}
+
+.pricing-table th {
+    padding: 14px 18px;
+
+    border-bottom: 1px solid var(--border);
+
+    color: var(--text-secondary);
+
+    text-align: left;
+
+    font-size: 10px;
+    font-weight: 700;
+
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.pricing-table td {
+    padding: 17px 18px;
+
+    border-bottom: 1px solid var(--border);
+
+    color: var(--text);
+
+    font-size: 13px;
+}
+
+.pricing-table tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.pricing-table tbody tr {
+    transition: background 0.18s ease;
+}
+
+.pricing-table tbody tr:hover {
+    background: rgba(124, 58, 237, 0.035);
+}
+
+
+/* =========================================================
+   STRATEGY BADGE
+========================================================= */
+
+.strategy-badge {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 5px 9px;
+
+    border-radius: 6px;
+
+    background: rgba(124, 58, 237, 0.1);
+
+    color: var(--primary-light);
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* =========================================================
+   PRIORITY BADGE
+========================================================= */
+
+.priority-badge {
+    min-width: 27px;
+    height: 27px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0 7px;
+
+    box-sizing: border-box;
+
+    border-radius: 7px;
+
+    background: var(--card-secondary);
+
+    color: var(--text);
+
+    font-size: 11px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   STATUS
+========================================================= */
+
+.rule-status {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.rule-status > span {
+    width: 6px;
+    height: 6px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+}
+
+.rule-status.active {
+    color: #22c55e;
+    background: rgba(34, 197, 94, 0.1);
+}
+
+.rule-status.active > span {
+    background: #22c55e;
+}
+
+.rule-status.disabled {
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.rule-status.disabled > span {
+    background: #ef4444;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.rule-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+}
+
+.edit-rule-btn,
+.delete-rule-btn {
+    width: 34px;
+    height: 34px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    background: var(--card-secondary);
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.edit-rule-btn {
+    color: var(--primary-light);
+}
+
+.edit-rule-btn:hover {
+    border-color: rgba(124, 58, 237, 0.35);
+
+    background: rgba(124, 58, 237, 0.1);
+}
+
+.delete-rule-btn {
+    color: #ef4444;
+}
+
+.delete-rule-btn:hover {
+    border-color: rgba(239, 68, 68, 0.3);
+
+    background: rgba(239, 68, 68, 0.08);
+}
+
+
+/* =========================================================
+   LOADING
+========================================================= */
+
+.pricing-loading {
+    min-height: 240px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 9px;
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   EMPTY STATE
+========================================================= */
+
+.pricing-empty {
+    min-height: 260px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 30px;
+
+    text-align: center;
+}
+
+.pricing-empty > svg {
+    width: 42px;
+    height: 42px;
+
+    margin-bottom: 14px;
+    padding: 11px;
+
+    box-sizing: border-box;
+
+    border-radius: 12px;
+
+    background: rgba(124, 58, 237, 0.1);
+
+    color: var(--primary-light);
+}
+
+.pricing-empty h3 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 17px;
+}
+
+.pricing-empty p {
+    margin: 6px 0 17px;
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   MOBILE LIST
+========================================================= */
+
+.pricing-mobile-list {
+    display: none;
+}
+
+
+/* =========================================================
+   MODAL OVERLAY
+========================================================= */
+
+.pricing-modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+
+    background: rgba(2, 6, 23, 0.72);
+
+    backdrop-filter: blur(6px);
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+.pricing-modal {
+    width: 100%;
+    max-width: 510px;
+
+    max-height: calc(100vh - 40px);
+
+    overflow-y: auto;
+
+    border: 1px solid var(--border);
+    border-radius: 16px;
+
+    background: var(--card);
+
+    box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.35);
+}
+
+
+/* =========================================================
+   MODAL HEADER
+========================================================= */
+
+.pricing-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding: 22px;
+
+    border-bottom: 1px solid var(--border);
+}
+
+.pricing-modal-header h2 {
+    margin: 0;
+
+    color: var(--text);
+
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.pricing-modal-header p {
+    margin: 5px 0 0;
+
+    color: var(--text-secondary);
+
+    font-size: 12px;
+}
+
+.pricing-modal-close {
+    width: 34px;
+    height: 34px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    background: var(--card-secondary);
+
+    color: var(--text-secondary);
+
+    cursor: pointer;
+
+    transition: 0.2s ease;
+}
+
+.pricing-modal-close:hover {
+    color: var(--text);
+
+    border-color: var(--border-hover);
+}
+
+
+/* =========================================================
+   FORM
+========================================================= */
+
+.pricing-form {
+    display: flex;
+    flex-direction: column;
+
+    gap: 17px;
+
+    padding: 22px;
+}
+
+.pricing-form-group {
+    display: flex;
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+.pricing-form-group label {
+    color: var(--text);
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.pricing-form-group input,
+.pricing-form-group select {
+    width: 100%;
+    height: 43px;
+
+    box-sizing: border-box;
+
+    padding: 0 12px;
+
+    outline: none;
+
+    border: 1px solid var(--border);
+    border-radius: 8px;
+
+    background: var(--card-secondary);
+
+    color: var(--text);
+
+    font-family: inherit;
+    font-size: 13px;
+
+    transition: border 0.2s ease;
+}
+
+.pricing-form-group input:focus,
+.pricing-form-group select:focus {
+    border-color: var(--primary);
+}
+
+.pricing-form-row {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 14px;
+}
+
+
+/* =========================================================
+   VALUE INPUT
+========================================================= */
+
+.pricing-value-input {
+    position: relative;
+}
+
+.pricing-value-input span {
+    position: absolute;
+
+    left: 12px;
+    top: 50%;
+
+    transform: translateY(-50%);
+
+    color: var(--text-secondary);
+
+    font-size: 13px;
+    font-weight: 600;
+
+    pointer-events: none;
+}
+
+.pricing-value-input input {
+    padding-left: 30px;
+}
+
+
+/* =========================================================
+   TOGGLE
+========================================================= */
+
+.pricing-toggle {
+    position: relative;
+
+    min-height: 58px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 15px;
+
+    padding: 12px 14px;
+
+    box-sizing: border-box;
+
+    border: 1px solid var(--border);
+    border-radius: 9px;
+
+    background: var(--card-secondary);
+
+    cursor: pointer;
+}
+
+.pricing-toggle > div {
+    display: flex;
+    flex-direction: column;
+
+    gap: 4px;
+}
+
+.pricing-toggle strong {
+    color: var(--text);
+
+    font-size: 12px;
+}
+
+.pricing-toggle div span {
+    color: var(--text-secondary);
+
+    font-size: 11px;
+}
+
+.pricing-toggle input {
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+.pricing-toggle-slider {
+    position: relative;
+
+    width: 42px;
+    height: 23px;
+
+    flex-shrink: 0;
+
+    border-radius: 20px;
+
+    background: #64748b;
+
+    transition: 0.2s ease;
+}
+
+.pricing-toggle-slider::after {
+    content: "";
+
+    position: absolute;
+
+    width: 17px;
+    height: 17px;
+
+    top: 3px;
+    left: 3px;
+
+    border-radius: 50%;
+
+    background: #ffffff;
+
+    transition: 0.2s ease;
+}
+
+.pricing-toggle input:checked + .pricing-toggle-slider {
+    background: var(--primary);
+}
+
+.pricing-toggle input:checked + .pricing-toggle-slider::after {
+    transform: translateX(19px);
+}
+
+
+/* =========================================================
+   MODAL ACTIONS
+========================================================= */
+
+.pricing-modal-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 9px;
+
+    padding-top: 4px;
+}
+
+.pricing-cancel-btn,
+.pricing-save-btn {
+    height: 42px;
+
+    padding: 0 16px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 7px;
+
+    border-radius: 8px;
+
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.pricing-cancel-btn {
+    border: 1px solid var(--border);
+
+    background: var(--card-secondary);
+
+    color: var(--text-secondary);
+}
+
+.pricing-save-btn {
+    border: 0;
+
+    background:
+        linear-gradient(
+            90deg,
+            #6f5eff,
+            #563bff
+        );
+
+    color: #ffffff;
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 850px) {
+
+    .exchange-rate-card {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .exchange-rate-form {
+        width: 100%;
+    }
+
+    .rate-input {
+        flex: 1;
+    }
+
+    .rate-input input {
+        flex: 1;
+        width: auto;
+    }
+}
+
+@media (max-width: 700px) {
+
+    /* =========================
+       EXCHANGE RATE CARD
+    ========================= */
+
+    .exchange-rate-card {
+        width: 100%;
+        box-sizing: border-box;
+
+        padding: 17px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+
+        gap: 18px;
+    }
+
+    .exchange-rate-info {
+        width: 100%;
+    }
+
+    .exchange-rate-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+
+    /* =========================
+       EXCHANGE FORM
+    ========================= */
+
+    .exchange-rate-form {
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+
+    /* =========================
+       RATE INPUT
+    ========================= */
+
+    .rate-input {
+        width: 100%;
+        height: 46px;
+
+        box-sizing: border-box;
+
+        display: flex;
+        align-items: center;
+
+        border: 1px solid var(--border);
+        border-radius: 9px;
+
+        background: var(--card-secondary);
+
+        overflow: hidden;
+    }
+
+    .rate-input span {
+        flex-shrink: 0;
+
+        padding: 0 12px;
+
+        color: var(--text-secondary);
+
+        font-size: 12px;
+        font-weight: 600;
+    }
+
+    .rate-input .equals {
+        padding: 0 4px;
+
+        color: var(--text-secondary);
+
+        opacity: 0.6;
+    }
+
+    .rate-input input {
+        min-width: 0;
+        width: 100%;
+        flex: 1;
+
+        height: 50px;
+
+        padding: 0 8px;
+
+        border: 0;
+        outline: 0;
+
+        background: transparent;
+
+        color: var(--text);
+
+        text-align: center;
+
+        font-family: inherit;
+        font-size: 14px;
+        font-weight: 700;
+    }
+
+
+    /* =========================
+       UPDATE BUTTON
+    ========================= */
+
+    .save-rate-btn {
+        width: 100%;
+        height: 44px;
+
+        box-sizing: border-box;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 9px;
+    }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+
+    .pricing-page {
+        width: 100%;
+
+        gap: 20px;
+    }
+
+
+    /* -----------------------------------------
+       HEADER
+    ----------------------------------------- */
+
+    .pricing-header {
+        width: 100%;
+
+        flex-direction: column;
+        align-items: stretch;
+
+        gap: 14px;
+    }
+
+    .pricing-header h1 {
+        font-size: 24px;
+        letter-spacing: -0.3px;
+    }
+
+    .pricing-header p {
+        font-size: 12px;
+    }
+
+    .pricing-refresh-btn {
+        width: 100%;
+        height: 40px;
+    }
+
+
+    /* -----------------------------------------
+       EXCHANGE RATE CARD
+    ----------------------------------------- */
+
+    .exchange-rate-card {
+        width: 100%;
+        box-sizing: border-box;
+
+        padding: 17px;
+
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+
+        gap: 18px;
+
+        border-radius: 14px;
+    }
+
+    /* -----------------------------------------
+       RULE HEADER
+    ----------------------------------------- */
+
+    .rules-header {
+        width: 100%;
+
+        align-items: flex-start;
+        flex-direction: column;
+
+        gap: 12px;
+
+        margin-top: 0;
+    }
+
+    .rules-header h2 {
+        font-size: 18px;
+    }
+
+    .rules-header p {
+        font-size: 11px;
+    }
+
+    .add-rule-btn {
+        width: 100%;
+        height: 42px;
+    }
+
+
+    /* -----------------------------------------
+       DESKTOP TABLE HIDDEN
+    ----------------------------------------- */
+
+    .pricing-rules-card {
+        display: none;
+    }
+
+
+    /* -----------------------------------------
+       MOBILE RULE CARDS
+    ----------------------------------------- */
+
+    .pricing-mobile-list {
+        width: 100%;
+
+        display: flex;
+        flex-direction: column;
+
+        gap: 11px;
+    }
+
+    .pricing-mobile-card {
+        width: 100%;
+
+        box-sizing: border-box;
+
+        padding: 16px;
+
+        border: 1px solid var(--border);
+        border-radius: 12px;
+
+        background: var(--card);
+
+        box-shadow:
+            0 5px 20px rgba(0, 0, 0, 0.04);
+    }
+
+    .mobile-rule-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+
+        gap: 12px;
+
+        padding-bottom: 13px;
+
+        border-bottom: 1px solid var(--border);
+    }
+
+    .mobile-rule-header > div {
+        display: flex;
+        flex-direction: column;
+
+        gap: 5px;
+    }
+
+    .mobile-rule-header > div > span {
+        color: var(--text-secondary);
+
+        font-size: 9px;
+        font-weight: 600;
+
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+
+    .mobile-rule-header strong {
+        color: var(--text);
+
+        font-size: 13px;
+        font-weight: 700;
+    }
+
+    .mobile-rule-grid {
+        display: grid;
+
+        grid-template-columns: repeat(3, 1fr);
+
+        gap: 10px;
+
+        padding: 15px 0;
+    }
+
+    .mobile-rule-grid div {
+        display: flex;
+        flex-direction: column;
+
+        gap: 5px;
+    }
+
+    .mobile-rule-grid span {
+        color: var(--text-secondary);
+
+        font-size: 9px;
+    }
+
+    .mobile-rule-grid strong {
+        color: var(--text);
+
+        font-size: 11px;
+        font-weight: 700;
+    }
+
+    .mobile-rule-actions {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+
+        gap: 8px;
+    }
+
+    .mobile-rule-actions button {
+        width: 100%;
+        height: 37px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        gap: 7px;
+
+        border-radius: 8px;
+
+        font-family: inherit;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .mobile-rule-actions .edit-rule-btn,
+    .mobile-rule-actions .delete-rule-btn {
+        border: 1px solid var(--border);
+    }
+
+
+    /* -----------------------------------------
+       MODAL
+    ----------------------------------------- */
+
+    .pricing-modal-overlay {
+        padding: 12px;
+    }
+
+    .pricing-modal {
+        width: 100%;
+
+        max-height: calc(100vh - 24px);
+
+        border-radius: 14px;
+    }
+
+    .pricing-modal-header {
+        padding: 18px;
+    }
+
+    .pricing-modal-header h2 {
+        font-size: 16px;
+    }
+
+    .pricing-modal-header p {
+        font-size: 11px;
+    }
+
+    .pricing-form {
+        padding: 18px;
+
+        gap: 15px;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .pricing-page {
+        gap: 18px;
+    }
+
+    .pricing-header h1 {
+        font-size: 22px;
+    }
+
+
+    /* Exchange */
+
+    .exchange-rate-card {
+        padding: 15px;
+
+        gap: 16px;
+    }
+
+    .exchange-rate-info {
+        gap: 10px;
+    }
+
+    .exchange-rate-icon {
+        width: 40px;
+        height: 40px;
+    }
+
+    .exchange-rate-info h2 {
+        font-size: 14px;
+    }
+
+    .exchange-rate-info p {
+        font-size: 10px;
+    }
+
+
+    /* Rate input */
+
+    .rate-input {
+        height: 44px;
+    }
+
+    .rate-input span {
+        padding: 0 9px;
+
+        font-size: 11px;
+    }
+
+    .rate-input input {
+        font-size: 13px;
+    }
+
+
+    /* Rules */
+
+    .mobile-rule-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .mobile-rule-grid div:last-child {
+        grid-column: span 2;
+    }
+
+
+    /* Modal */
+
+    .pricing-modal-header,
+    .pricing-form {
+        padding: 16px;
+    }
+
+    .pricing-form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .pricing-modal-actions {
+        display: grid;
+
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .pricing-cancel-btn,
+    .pricing-save-btn {
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL DEVICES
+========================================================= */
+
+@media (max-width: 360px) {
+
+    .rate-input span {
+        padding: 0 7px;
+    }
+
+    .rate-input input {
+        padding: 0 3px;
+    }
+
+    .exchange-rate-card {
+        padding: 13px;
+    }
+
+    .pricing-mobile-card {
+        padding: 14px;
+    }
+
+}

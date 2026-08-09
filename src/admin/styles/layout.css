@@ -1,0 +1,191 @@
+.dashboard-layout {
+  display: flex;
+  min-height: 100vh;
+
+  background: var(--bg);
+  color: var(--text);
+
+  transition: background 0.3s ease,
+    color 0.3s ease;
+}
+
+.dashboard-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  overflow-x: hidden;
+  margin-top: 80px;
+
+  background: var(--bg);
+}
+
+.dashboard-main {
+  flex: 1;
+  padding: 30px;
+
+  background: var(--bg);
+}
+
+/* TABLE + SMS */
+
+.content-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+
+  gap: 20px;
+  margin-top: 25px;
+}
+
+.bottom-grid {
+  margin-top: 25px;
+}
+
+/* =========================
+FLOATING SUPPORT BUTTON
+========================= */
+
+.floating-support {
+    position: fixed;
+    right: 28px;
+    bottom: 28px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+
+    background: linear-gradient(
+        90deg,
+        #6f5eff,
+        #563bff
+    );
+
+    color: #fff;
+
+    border: none;
+    border-radius: 50px;
+
+    padding: 14px 22px;
+
+    font-family: "Manrope", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 10px 30px rgba(124, 58, 237, 0.35);
+
+    z-index: 999;
+
+    transition:
+        transform .25s ease,
+        box-shadow .25s ease;
+}
+
+
+.floating-support svg {
+    font-size: 20px;
+}
+
+
+.floating-support:hover {
+
+    transform: translateY(-5px);
+
+    box-shadow:
+        0 15px 40px rgba(124, 58, 237, 0.5);
+}
+
+
+
+/* pulse animation */
+
+.floating-support::before {
+
+    content: "";
+
+    position: absolute;
+
+    inset: -6px;
+
+    border-radius: inherit;
+
+    background: rgba(124,58,237,.25);
+
+    z-index: -1;
+
+    animation: supportPulse 2s infinite;
+
+}
+
+
+@keyframes supportPulse {
+
+    0% {
+        transform: scale(.9);
+        opacity: .8;
+    }
+
+    70% {
+        transform: scale(1.25);
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 0;
+    }
+
+}
+
+
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+    .floating-support {
+
+        right:20px;
+        bottom:20px;
+
+        width:56px;
+        height:56px;
+
+        padding:0;
+
+        justify-content:center;
+
+    }
+
+
+    .floating-support span {
+        display:none;
+    }
+
+
+    .floating-support svg {
+        font-size:24px;
+    }
+
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1200px) {
+  .content-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 769px) {
+  .dashboard-content {
+    margin-left: 280px;
+  }
+}
+
+@media (max-width: 768px) {
+  .dashboard-main {
+    padding: 20px;
+  }
+}
