@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import axios from "axios";
+import { useState } from "react";
+
 import {
     FiMail,
     FiUsers,
@@ -9,48 +9,22 @@ import {
 import "../styles/send-mail.css";
 
 const SendMail = () => {
-    const [userCount, setUserCount] = useState(0);
+    // ==========================
+    // FRONTEND SAMPLE DATA
+    // ==========================
+
+    const [userCount] = useState(12);
+
     const [subject, setSubject] = useState("");
     const [message, setMessage] = useState("");
 
-    const [loadingUsers, setLoadingUsers] = useState(true);
     const [sending, setSending] = useState(false);
 
-    const API_URL = process.env.REACT_APP_API_URL;
+    // ==========================
+    // SEND MAIL
+    // ==========================
 
-    useEffect(() => {
-        const fetchUsers = async () => {
-            try {
-                setLoadingUsers(true);
-
-                const token = localStorage.getItem("token");
-
-                const response = await axios.get(
-                    `${API_URL}/api/admin/users`,
-                    {
-                        headers: {
-                            Authorization: `Bearer ${token}`,
-                        },
-                    }
-                );
-
-                const users = response.data.users || [];
-
-                setUserCount(users.length);
-            } catch (error) {
-                console.error(
-                    "Failed to fetch users:",
-                    error
-                );
-            } finally {
-                setLoadingUsers(false);
-            }
-        };
-
-        fetchUsers();
-    }, [API_URL]);
-
-    const handleSendMail = async (e) => {
+    const handleSendMail = (e) => {
         e.preventDefault();
 
         if (!subject.trim()) {
@@ -68,49 +42,27 @@ const SendMail = () => {
             return;
         }
 
-        try {
-            setSending(true);
+        setSending(true);
 
-            const token = localStorage.getItem("token");
-
-            await axios.post(
-                `${API_URL}/api/admin/send-mail`,
-                {
-                    subject,
-                    message,
-                },
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-
+        // Frontend-only simulation
+        setTimeout(() => {
             alert(
                 `Email sent successfully to ${userCount} users.`
             );
 
             setSubject("");
             setMessage("");
-        } catch (error) {
-            console.error(
-                "Failed to send email:",
-                error
-            );
-
-            alert(
-                error.response?.data?.message ||
-                    "Failed to send email."
-            );
-        } finally {
             setSending(false);
-        }
+        }, 1000);
     };
 
     return (
         <div className="send-mail-card">
 
-            {/* Header */}
+            {/* =========================
+                HEADER
+            ========================= */}
+
             <div className="send-mail-header">
 
                 <div className="send-mail-title">
@@ -135,26 +87,29 @@ const SendMail = () => {
                     <FiUsers />
 
                     <span>
-                        {loadingUsers
-                            ? "Loading users..."
-                            : `${userCount} ${
-                                  userCount === 1
-                                      ? "user"
-                                      : "users"
-                              }`}
+                        {userCount}{" "}
+                        {userCount === 1
+                            ? "user"
+                            : "users"}
                     </span>
 
                 </div>
 
             </div>
 
-            {/* Form */}
+            {/* =========================
+                FORM
+            ========================= */}
+
             <form
                 className="mail-form"
                 onSubmit={handleSendMail}
             >
 
-                {/* Recipients */}
+                {/* =========================
+                    RECIPIENTS
+                ========================= */}
+
                 <div className="mail-recipient-box">
 
                     <div className="mail-recipient-icon">
@@ -162,24 +117,27 @@ const SendMail = () => {
                     </div>
 
                     <div>
+
                         <strong>
                             All Users
                         </strong>
 
                         <span>
-                            {loadingUsers
-                                ? "Fetching users from database..."
-                                : `This email will be sent to all ${userCount} registered ${
-                                      userCount === 1
-                                          ? "user"
-                                          : "users"
-                                  }.`}
+                            This email will be sent to all{" "}
+                            {userCount} registered{" "}
+                            {userCount === 1
+                                ? "user"
+                                : "users"}.
                         </span>
+
                     </div>
 
                 </div>
 
-                {/* Subject */}
+                {/* =========================
+                    SUBJECT
+                ========================= */}
+
                 <div className="form-group">
 
                     <label htmlFor="mail-subject">
@@ -192,13 +150,18 @@ const SendMail = () => {
                         placeholder="Enter email subject"
                         value={subject}
                         onChange={(e) =>
-                            setSubject(e.target.value)
+                            setSubject(
+                                e.target.value
+                            )
                         }
                     />
 
                 </div>
 
-                {/* Message */}
+                {/* =========================
+                    MESSAGE
+                ========================= */}
+
                 <div className="form-group">
 
                     <label htmlFor="mail-message">
@@ -210,22 +173,27 @@ const SendMail = () => {
                         placeholder="Write your email message..."
                         value={message}
                         onChange={(e) =>
-                            setMessage(e.target.value)
+                            setMessage(
+                                e.target.value
+                            )
                         }
                     />
 
                 </div>
 
-                {/* Send */}
+                {/* =========================
+                    SEND BUTTON
+                ========================= */}
+
                 <button
                     type="submit"
                     className="send-mail-btn"
                     disabled={
                         sending ||
-                        loadingUsers ||
                         userCount === 0
                     }
                 >
+
                     {sending ? (
                         <>
                             <span className="mail-spinner" />
@@ -237,6 +205,7 @@ const SendMail = () => {
                             Send to All Users
                         </>
                     )}
+
                 </button>
 
             </form>
