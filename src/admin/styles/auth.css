@@ -183,10 +183,10 @@ body.light-theme .auth-card {
 }
 
 /* Left icon */
-.input-wrapper > svg {
+.auth-card .input-wrapper > svg {
   position: absolute;
 
-  left: 15px;
+  left: 16px;
   top: 50%;
 
   width: 17px;
@@ -198,12 +198,15 @@ body.light-theme .auth-card {
 
   pointer-events: none;
 
-  z-index: 2;
+  z-index: 5;
 }
 
-.input-wrapper input {
+/* Input */
+.auth-card .input-wrapper input {
   width: 100%;
   height: 48px;
+
+  box-sizing: border-box;
 
   background: var(--card-secondary);
 
@@ -213,15 +216,15 @@ body.light-theme .auth-card {
 
   color: var(--text);
 
-  /* Left side = icon spacing
-     Right side = password eye spacing */
-  padding: 0 46px 0 48px;
+  /* FORCE text away from icon */
+  padding-top: 0 !important;
+  padding-right: 46px !important;
+  padding-bottom: 0 !important;
+  padding-left: 52px !important;
 
   outline: none;
 
   font-size: 14px;
-
-  box-sizing: border-box;
 
   transition:
     border-color 0.25s ease,
@@ -229,19 +232,19 @@ body.light-theme .auth-card {
     background 0.25s ease;
 }
 
-.input-wrapper input:focus {
+.auth-card .input-wrapper input:focus {
   border-color: var(--primary);
 
   box-shadow:
     0 0 0 3px rgba(124, 58, 237, 0.12);
 }
 
-.input-wrapper input::placeholder {
+.auth-card .input-wrapper input::placeholder {
   color: var(--text-secondary);
   opacity: 1;
 }
 
-body.light-theme .input-wrapper input {
+body.light-theme .auth-card .input-wrapper input {
   background: #fff;
 }
 
