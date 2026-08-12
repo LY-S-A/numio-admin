@@ -5,7 +5,6 @@ import {
     FiMail,
     FiLock,
     FiAlertCircle,
-    FiLoader,
 } from "react-icons/fi";
 
 import { useNavigate } from "react-router-dom";
@@ -347,28 +346,16 @@ export default function Login() {
 
                         {/* Login Button */}
                         <button
-                            type="submit"
-                            className="auth-btn"
-                            disabled={
-                                loading ||
-                                !email.trim() ||
-                                !password
-                            }
-                        >
-
-                            {loading ? (
-                                <>
-                                    <FiLoader className="spin" />
-
-                                    <span>
-                                        Signing In...
-                                    </span>
-                                </>
-                            ) : (
-                                "Sign In"
-                            )}
-
-                        </button>
+    type="submit"
+    className="auth-btn"
+    disabled={
+        loading ||
+        !email.trim() ||
+        !password
+    }
+>
+    {loading ? "Signing In..." : "Sign In"}
+</button>
 
                     </form>
 
