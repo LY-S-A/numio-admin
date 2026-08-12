@@ -165,9 +165,9 @@ export default function Login() {
 
         try {
             const response = await axios.post(
-                `${API_URL}/api/auth/login`,
+                `${API_URL}/api/admin/login`,
                 {
-                    email,
+                    email: email.trim(),
                     password,
                 }
             );
@@ -193,7 +193,20 @@ export default function Login() {
 
             /*
             ========================================
-            SAVE AUTH DATA
+            CHECK TOKEN
+            ========================================
+            */
+
+            if (!data.token) {
+                setError(
+                    "Login successful, but authentication token was not returned."
+                );
+                return;
+            }
+
+            /*
+            ========================================
+            SAVE ADMIN AUTH DATA
             ========================================
             */
 
@@ -224,7 +237,7 @@ export default function Login() {
             setError(
                 err.response?.data?.message ||
                 err.message ||
-                "Invalid email or password"
+                "Invalid admin email or password"
             );
         } finally {
             setLoading(false);
