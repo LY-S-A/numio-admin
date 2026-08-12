@@ -310,7 +310,7 @@ export default function Login() {
                                 <input
                                     id="admin-password"
                                     type="password"
-                                    placeholder="Enter your password"
+                                    placeholder="••••••••"
                                     value={password}
                                     onChange={(e) =>
                                         setPassword(
