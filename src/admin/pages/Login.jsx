@@ -164,6 +164,33 @@ export default function Login() {
         setLoading(true);
 
         try {
+            /*
+            ========================================
+            VALIDATE API URL
+            ========================================
+            */
+
+            if (!API_URL) {
+                throw new Error(
+                    "API URL is not configured."
+                );
+            }
+
+            /*
+            ========================================
+            CLEAR OLD AUTH DATA
+            ========================================
+            */
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+
+            /*
+            ========================================
+            ADMIN LOGIN
+            ========================================
+            */
+
             const response = await axios.post(
                 `${API_URL}/api/admin/login`,
                 {
@@ -174,9 +201,16 @@ export default function Login() {
 
             const data = response.data;
 
+            /*
+            ========================================
+            CHECK RESPONSE
+            ========================================
+            */
+
             if (!data.success) {
                 throw new Error(
-                    data.message || "Login failed"
+                    data.message ||
+                    "Admin login failed"
                 );
             }
 
@@ -186,9 +220,13 @@ export default function Login() {
             ========================================
             */
 
-            if (data.user?.role !== "admin") {
-                setError("Admin access denied.");
-                return;
+            if (
+                !data.user ||
+                data.user.role !== "admin"
+            ) {
+                throw new Error(
+                    "Admin access denied."
+                );
             }
 
             /*
@@ -198,15 +236,14 @@ export default function Login() {
             */
 
             if (!data.token) {
-                setError(
-                    "Login successful, but authentication token was not returned."
+                throw new Error(
+                    "Authentication token was not returned."
                 );
-                return;
             }
 
             /*
             ========================================
-            SAVE ADMIN AUTH DATA
+            SAVE ADMIN SESSION
             ========================================
             */
 
@@ -222,7 +259,18 @@ export default function Login() {
 
             /*
             ========================================
-            GO TO ADMIN DASHBOARD
+            OPTIONAL: SAVE LOGIN TYPE
+            ========================================
+            */
+
+            localStorage.setItem(
+                "authType",
+                "admin"
+            );
+
+            /*
+            ========================================
+            REDIRECT
             ========================================
             */
 
@@ -234,11 +282,41 @@ export default function Login() {
                 err
             );
 
-            setError(
-                err.response?.data?.message ||
-                err.message ||
-                "Invalid admin email or password"
-            );
+            /*
+            ========================================
+            CLEAR INVALID AUTH DATA
+            ========================================
+            */
+
+            localStorage.removeItem("token");
+            localStorage.removeItem("user");
+
+            /*
+            ========================================
+            ERROR MESSAGE
+            ========================================
+            */
+
+            if (err.response?.status === 401) {
+                setError(
+                    err.response?.data?.message ||
+                    "Invalid admin email or password."
+                );
+            } else if (
+                err.response?.status === 403
+            ) {
+                setError(
+                    err.response?.data?.message ||
+                    "Admin access denied."
+                );
+            } else {
+                setError(
+                    err.response?.data?.message ||
+                    err.message ||
+                    "Unable to sign in. Please try again."
+                );
+            }
+
         } finally {
             setLoading(false);
         }
@@ -300,18 +378,26 @@ export default function Login() {
 
                     {/* Error */}
                     {error && (
-                        <div className="auth-error">
+                        <div
+                            className="auth-error"
+                            role="alert"
+                        >
                             <FiAlertCircle />
-                            <span>{error}</span>
+
+                            <span>
+                                {error}
+                            </span>
                         </div>
                     )}
 
-                    <form onSubmit={handleSubmit}>
+                    <form
+                        onSubmit={handleSubmit}
+                    >
 
                         {/* Email */}
                         <div className="form-group">
 
-                            <label>
+                            <label htmlFor="admin-email">
                                 Email Address
                             </label>
 
@@ -320,6 +406,7 @@ export default function Login() {
                                 <FiMail />
 
                                 <input
+                                    id="admin-email"
                                     type="email"
                                     placeholder="admin@numio.com"
                                     value={email}
@@ -340,7 +427,7 @@ export default function Login() {
                         {/* Password */}
                         <div className="form-group">
 
-                            <label>
+                            <label htmlFor="admin-password">
                                 Password
                             </label>
 
@@ -349,6 +436,7 @@ export default function Login() {
                                 <FiLock />
 
                                 <input
+                                    id="admin-password"
                                     type="password"
                                     placeholder="Enter your password"
                                     value={password}
@@ -376,7 +464,9 @@ export default function Login() {
                                     disabled={loading}
                                 />
 
-                                Remember me
+                                <span>
+                                    Remember me
+                                </span>
 
                             </label>
 
@@ -390,13 +480,20 @@ export default function Login() {
                         <button
                             type="submit"
                             className="auth-btn"
-                            disabled={loading}
+                            disabled={
+                                loading ||
+                                !email.trim() ||
+                                !password
+                            }
                         >
 
                             {loading ? (
                                 <>
                                     <FiLoader className="spin" />
-                                    Signing In...
+
+                                    <span>
+                                        Signing In...
+                                    </span>
                                 </>
                             ) : (
                                 "Sign In"
