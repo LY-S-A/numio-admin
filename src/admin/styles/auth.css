@@ -174,7 +174,7 @@ body.light-theme .auth-card {
 }
 
 /* ====================================
-   INPUT WRAPPER
+   INPUT
 ==================================== */
 
 .input-wrapper {
@@ -182,7 +182,8 @@ body.light-theme .auth-card {
   width: 100%;
 }
 
-.input-wrapper svg {
+/* Left icon */
+.input-wrapper > svg {
   position: absolute;
 
   left: 15px;
@@ -212,8 +213,9 @@ body.light-theme .auth-card {
 
   color: var(--text);
 
-  /* More space between icon and text */
-  padding: 0 14px 0 48px;
+  /* Left side = icon spacing
+     Right side = password eye spacing */
+  padding: 0 46px 0 48px;
 
   outline: none;
 
