@@ -145,7 +145,7 @@ export default function Login() {
             ========================================
             */
 
-            navigate("/");
+            navigate("/dashboard");
 
         } catch (err) {
             console.error(
