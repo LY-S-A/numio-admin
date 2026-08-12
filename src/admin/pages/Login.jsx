@@ -279,7 +279,7 @@ export default function Login() {
                                 <input
                                     id="admin-email"
                                     type="email"
-                                    placeholder="admin@numio.com"
+                                    placeholder="you@example.com"
                                     value={email}
                                     onChange={(e) =>
                                         setEmail(
