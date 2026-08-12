@@ -4,6 +4,8 @@ import axios from "axios";
 import {
     FiMail,
     FiLock,
+    FiEye,
+    FiEyeOff,
     FiAlertCircle,
 } from "react-icons/fi";
 
@@ -27,6 +29,7 @@ export default function Login() {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const [showPassword, setShowPassword] = useState(false);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -293,34 +296,53 @@ export default function Login() {
                         </div>
 
                         {/* Password */}
-                        <div className="form-group">
+                        {/* Password */}
+<div className="form-group">
 
-                            <label htmlFor="admin-password">
-                                Password
-                            </label>
+    <label htmlFor="admin-password">
+        Password
+    </label>
 
-                            <div className="input-wrapper">
+    <div className="input-wrapper">
 
-                                <FiLock />
+        <FiLock />
 
-                                <input
-                                    id="admin-password"
-                                    type="password"
-                                    placeholder="••••••••"
-                                    value={password}
-                                    onChange={(e) =>
-                                        setPassword(
-                                            e.target.value
-                                        )
-                                    }
-                                    required
-                                    disabled={loading}
-                                    autoComplete="current-password"
-                                />
+        <input
+            id="admin-password"
+            type={showPassword ? "text" : "password"}
+            placeholder="••••••••"
+            value={password}
+            onChange={(e) =>
+                setPassword(e.target.value)
+            }
+            required
+            disabled={loading}
+            autoComplete="current-password"
+        />
 
-                            </div>
+        <button
+            type="button"
+            className="password-toggle"
+            onClick={() =>
+                setShowPassword((prev) => !prev)
+            }
+            disabled={loading}
+            aria-label={
+                showPassword
+                    ? "Hide password"
+                    : "Show password"
+            }
+        >
+            {showPassword ? (
+                <FiEyeOff />
+            ) : (
+                <FiEye />
+            )}
+        </button>
 
-                        </div>
+    </div>
+
+</div>
 
                         {/* Remember Me */}
                         <div className="form-row">
