@@ -173,6 +173,42 @@ body.light-theme .auth-card {
   font-weight: 500;
 }
 
+.password-toggle {
+    position: absolute;
+    top: 50%;
+    right: 14px;
+    transform: translateY(-50%);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 24px;
+    height: 24px;
+
+    background: transparent;
+    border: none;
+    padding: 0;
+
+    color: var(--text-secondary);
+    cursor: pointer;
+
+    transition: color 0.2s ease;
+}
+
+.password-toggle:hover {
+    color: var(--primary);
+}
+
+.password-toggle:focus {
+    outline: none;
+}
+
+.password-toggle svg {
+    position: static !important;
+    transform: none !important;
+    font-size: 18px;
+}
 /* ====================================
    INPUT
 ==================================== */
