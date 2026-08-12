@@ -34,7 +34,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
         localStorage.removeItem("adminToken");
         localStorage.removeItem("admin");
 
-        navigate("/login");
+        navigate("/");
     };
 
     const closeSidebar = () => {
