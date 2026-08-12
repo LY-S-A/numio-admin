@@ -66,7 +66,7 @@ function App() {
         <Routes>
           {/* Auth Pages */}
           <Route
-            path="/login"
+            path="/"
             element={<Login />}
           />
 
@@ -75,7 +75,7 @@ function App() {
           <Route element={<Layout />}>
 
             <Route
-              path="/"
+              path="/dashboard"
               element={<Dashboard />}
             />
 
