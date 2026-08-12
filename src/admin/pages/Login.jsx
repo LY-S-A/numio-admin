@@ -242,10 +242,7 @@ export default function Login() {
 
                     <p className="auth-subtitle">
                         Sign in to access the Numio Admin
-                        Dashboard and manage users,
-                        services, orders, transactions,
-                        announcements, and platform
-                        settings.
+                        Dashboard.
                     </p>
 
                     {/* Error */}
