@@ -72,7 +72,7 @@ const Sidebar = ({ sidebarOpen, setSidebarOpen }) => {
                 <nav>
 
                     <NavLink
-                        to="/"
+                        to="/dashboard"
                         end
                         className={({ isActive }) =>
                             isActive
