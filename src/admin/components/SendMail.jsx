@@ -46,28 +46,7 @@ const SendMail = () => {
                     );
                     return;
                 }
-
-                // const response = await axios.get(
-                //     `${API_URL}/api/admin/users/count`,
-                //     {
-                //         headers: {
-                //             Authorization:
-                //                 `Bearer ${token}`,
-                //         },
-                //     }
-                // );
-
-                // if (response.data.success) {
-                //     setUserCount(
-                //         response.data.userCount
-                //     );
-                // } else {
-                //     setError(
-                //         response.data.message ||
-                //         "Failed to fetch user count."
-                //     );
-                // }
-
+                
                 const response = await axios.get(
     `${API_URL}/api/admin/users/count`,
     {
