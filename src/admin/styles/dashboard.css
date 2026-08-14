@@ -4,6 +4,164 @@
     gap: 28px;
 }
 
+/* ========================================
+   STAT CARD SKELETON
+======================================== */
+
+.stat-card-skeleton {
+    position: relative;
+    overflow: hidden;
+}
+
+
+/* ========================================
+   SKELETON BASE
+======================================== */
+
+.skeleton {
+    position: relative;
+    overflow: hidden;
+
+    background: var(--border-color, #e5e7eb);
+
+    border-radius: 8px;
+}
+
+
+/* ========================================
+   SHIMMER
+======================================== */
+
+.skeleton::after {
+    content: "";
+
+    position: absolute;
+
+    top: 0;
+    left: -150%;
+
+    width: 150%;
+    height: 100%;
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.45),
+        transparent
+    );
+
+    animation: skeleton-shimmer 1.5s infinite;
+}
+
+
+@keyframes skeleton-shimmer {
+
+    0% {
+        left: -150%;
+    }
+
+    100% {
+        left: 150%;
+    }
+
+}
+
+
+/* ========================================
+   SKELETON ICON
+======================================== */
+
+.skeleton-icon {
+    width: 46px;
+    height: 46px;
+
+    border-radius: 12px;
+}
+
+
+/* ========================================
+   SKELETON TITLE
+======================================== */
+
+.skeleton-title {
+    width: 95px;
+    height: 14px;
+
+    margin-top: 20px;
+}
+
+
+/* ========================================
+   SKELETON VALUE
+======================================== */
+
+.skeleton-value {
+    width: 145px;
+    height: 30px;
+
+    margin-top: 10px;
+
+    border-radius: 7px;
+}
+
+
+/* ========================================
+   SKELETON TREND
+======================================== */
+
+.skeleton-trend {
+    width: 170px;
+    height: 13px;
+
+    margin-top: 14px;
+}
+
+
+/* ========================================
+   DARK MODE
+======================================== */
+
+[data-theme="dark"] .skeleton {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+
+[data-theme="dark"] .skeleton::after {
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.08),
+        transparent
+    );
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 768px) {
+
+    .skeleton-icon {
+        width: 42px;
+        height: 42px;
+    }
+
+    .skeleton-title {
+        margin-top: 16px;
+    }
+
+    .skeleton-value {
+        width: 120px;
+        height: 27px;
+    }
+
+    .skeleton-trend {
+        width: 145px;
+    }
+
+}
+
 @media (max-width: 768px) {
     .dashboard-page {
         padding-top: 0px;
