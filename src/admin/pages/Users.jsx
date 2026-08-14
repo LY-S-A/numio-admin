@@ -437,34 +437,11 @@ const Users = () => {
                 TABLE
             ========================= */}
 
-            <UsersTable
-                search={search}
-                status={status}
-                sort={sort}
-                onTotalChange={(total) => {
-
-                    /*
-                    Keep the stat card in sync
-                    with the actual user count.
-
-                    Stats endpoint remains the
-                    source of truth for the
-                    initial value.
-                    */
-
-                    if (
-                        total === 0 &&
-                        !search &&
-                        status === "all"
-                    ) {
-                        setStats((prev) => ({
-                            ...prev,
-                            totalUsers: 0,
-                        }));
-                    }
-
-                }}
-            />
+           <UsersTable
+    search={search}
+    status={status}
+    sort={sort}
+/>
 
         </div>
     );
