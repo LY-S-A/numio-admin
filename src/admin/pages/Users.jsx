@@ -109,6 +109,7 @@
 // export default Users;
 
 import React, {
+    useCallback,
     useEffect,
     useState,
 } from "react";
@@ -129,8 +130,16 @@ import {
 
 import "../styles/users.css";
 
+
+/*
+========================================
+API URL
+========================================
+*/
+
 const API_URL =
     process.env.REACT_APP_API_URL;
+
 
 const Users = () => {
 
@@ -153,7 +162,7 @@ const Users = () => {
 
     /*
     ========================================
-    FILTERS
+    SEARCH / FILTERS
     ========================================
     */
 
@@ -169,16 +178,18 @@ const Users = () => {
 
     /*
     ========================================
-    GET TOKEN
+    GET ADMIN TOKEN
     ========================================
     */
 
     const getToken = () => {
-        return localStorage.getItem(
-            "adminToken"
-        ) ||
-        localStorage.getItem(
-            "token"
+        return (
+            localStorage.getItem(
+                "adminToken"
+            ) ||
+            localStorage.getItem(
+                "token"
+            )
         );
     };
 
@@ -189,51 +200,65 @@ const Users = () => {
     ========================================
     */
 
-    const fetchUserStats = async () => {
+    const fetchUserStats = useCallback(
+        async () => {
 
-        try {
+            try {
 
-            setStatsLoading(true);
+                setStatsLoading(true);
 
-            const token = getToken();
+                const token =
+                    getToken();
 
-            const response =
-                await axios.get(
-                    `${API_URL}/api/admin/users/stats`,
-                    {
-                        headers: {
-                            Authorization:
-                                `Bearer ${token}`,
-                        },
-                    }
+                const response =
+                    await axios.get(
+                        `${API_URL}/api/admin/users/stats`,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ${token}`,
+                            },
+                        }
+                    );
+
+
+                /*
+                ================================
+                SUCCESS
+                ================================
+                */
+
+                if (
+                    response.data.success
+                ) {
+
+                    setStats(
+                        response.data.stats
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to fetch user stats:",
+                    error
                 );
 
-            if (response.data.success) {
+            } finally {
 
-                setStats(
-                    response.data.stats
-                );
+                setStatsLoading(false);
 
             }
 
-        } catch (error) {
-
-            console.error(
-                "Failed to fetch user stats:",
-                error
-            );
-
-        } finally {
-
-            setStatsLoading(false);
-
-        }
-    };
+        },
+        []
+    );
 
 
     /*
     ========================================
-    LOAD STATS
+    LOAD USER STATS
     ========================================
     */
 
@@ -241,7 +266,9 @@ const Users = () => {
 
         fetchUserStats();
 
-    }, []);
+    }, [
+        fetchUserStats,
+    ]);
 
 
     /*
@@ -250,10 +277,12 @@ const Users = () => {
     ========================================
     */
 
-    const handleSearchChange = (e) => {
+    const handleSearchChange = (
+        event
+    ) => {
 
         setSearch(
-            e.target.value
+            event.target.value
         );
 
     };
@@ -268,32 +297,53 @@ const Users = () => {
     const totalUsers =
         statsLoading
             ? "..."
-            : stats.totalUsers.toLocaleString();
+            : Number(
+                stats.totalUsers || 0
+            ).toLocaleString();
+
 
     const fundedUsers =
         statsLoading
             ? "..."
-            : stats.fundedUsers.toLocaleString();
+            : Number(
+                stats.fundedUsers || 0
+            ).toLocaleString();
+
 
     const activeUsers =
         statsLoading
             ? "..."
-            : stats.activeUsers.toLocaleString();
+            : Number(
+                stats.activeUsers || 0
+            ).toLocaleString();
+
 
     const bannedUsers =
         statsLoading
             ? "..."
-            : stats.bannedUsers.toLocaleString();
+            : Number(
+                stats.bannedUsers || 0
+            ).toLocaleString();
 
+
+    /*
+    ========================================
+    RENDER
+    ========================================
+    */
 
     return (
+
         <div className="users-page">
 
-            {/* =========================
+            {/* ========================================
                 STATS
-            ========================= */}
+            ======================================== */}
 
             <div className="stats-grid">
+
+
+                {/* TOTAL USERS */}
 
                 <StatCard
                     icon={<FaUsers />}
@@ -305,6 +355,8 @@ const Users = () => {
                 />
 
 
+                {/* FUNDED USERS */}
+
                 <StatCard
                     icon={<FaWallet />}
                     title="Funded Users"
@@ -315,6 +367,8 @@ const Users = () => {
                 />
 
 
+                {/* ACTIVE USERS */}
+
                 <StatCard
                     icon={<FaUserClock />}
                     title="Active Users"
@@ -324,6 +378,8 @@ const Users = () => {
                     color="orange"
                 />
 
+
+                {/* BANNED USERS */}
 
                 <StatCard
                     icon={<FaUserSlash />}
@@ -337,13 +393,16 @@ const Users = () => {
             </div>
 
 
-            {/* =========================
-                FILTERS
-            ========================= */}
+            {/* ========================================
+                USERS TOOLBAR
+            ======================================== */}
 
             <div className="users-toolbar">
 
-                {/* SEARCH */}
+
+                {/* ====================================
+                    SEARCH
+                ==================================== */}
 
                 <div className="users-search">
 
@@ -361,9 +420,12 @@ const Users = () => {
                 </div>
 
 
-                {/* FILTERS */}
+                {/* ====================================
+                    FILTERS
+                ==================================== */}
 
                 <div className="users-filters">
+
 
                     {/* STATUS */}
 
@@ -371,9 +433,11 @@ const Users = () => {
 
                         <select
                             value={status}
-                            onChange={(e) =>
+                            onChange={(
+                                event
+                            ) =>
                                 setStatus(
-                                    e.target.value
+                                    event.target.value
                                 )
                             }
                         >
@@ -401,9 +465,11 @@ const Users = () => {
 
                         <select
                             value={sort}
-                            onChange={(e) =>
+                            onChange={(
+                                event
+                            ) =>
                                 setSort(
-                                    e.target.value
+                                    event.target.value
                                 )
                             }
                         >
@@ -433,18 +499,21 @@ const Users = () => {
             </div>
 
 
-            {/* =========================
-                TABLE
-            ========================= */}
+            {/* ========================================
+                USERS TABLE
+            ======================================== */}
 
-           <UsersTable
-    search={search}
-    status={status}
-    sort={sort}
-/>
+            <UsersTable
+                search={search}
+                status={status}
+                sort={sort}
+            />
 
         </div>
+
     );
+
 };
+
 
 export default Users;
