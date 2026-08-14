@@ -108,6 +108,416 @@
 
 // export default Users;
 
+// import React, {
+//     useCallback,
+//     useEffect,
+//     useState,
+// } from "react";
+
+// import axios from "axios";
+
+// import { FiSearch } from "react-icons/fi";
+
+// import StatCard from "../components/StatCard";
+// import UsersTable from "../components/UsersTable";
+
+// import {
+//     FaUsers,
+//     FaWallet,
+//     FaUserClock,
+//     FaUserSlash,
+// } from "react-icons/fa";
+
+// import "../styles/users.css";
+
+
+// /*
+// ========================================
+// API URL
+// ========================================
+// */
+
+// const API_URL =
+//     process.env.REACT_APP_API_URL;
+
+
+// const Users = () => {
+
+//     /*
+//     ========================================
+//     USER STATS
+//     ========================================
+//     */
+
+//     const [stats, setStats] = useState({
+//         totalUsers: 0,
+//         fundedUsers: 0,
+//         activeUsers: 0,
+//         bannedUsers: 0,
+//     });
+
+//     const [statsLoading, setStatsLoading] =
+//         useState(true);
+
+
+//     /*
+//     ========================================
+//     SEARCH / FILTERS
+//     ========================================
+//     */
+
+//     const [search, setSearch] =
+//         useState("");
+
+//     const [status, setStatus] =
+//         useState("all");
+
+//     const [sort, setSort] =
+//         useState("newest");
+
+
+//     /*
+//     ========================================
+//     GET ADMIN TOKEN
+//     ========================================
+//     */
+
+//     const getToken = () => {
+//         return (
+//             localStorage.getItem(
+//                 "adminToken"
+//             ) ||
+//             localStorage.getItem(
+//                 "token"
+//             )
+//         );
+//     };
+
+
+//     /*
+//     ========================================
+//     FETCH USER STATS
+//     ========================================
+//     */
+
+//     const fetchUserStats = useCallback(
+//         async () => {
+
+//             try {
+
+//                 setStatsLoading(true);
+
+//                 const token =
+//                     getToken();
+
+//                 const response =
+//                     await axios.get(
+//                         `${API_URL}/api/admin/users/stats`,
+//                         {
+//                             headers: {
+//                                 Authorization:
+//                                     `Bearer ${token}`,
+//                             },
+//                         }
+//                     );
+
+
+//                 /*
+//                 ================================
+//                 SUCCESS
+//                 ================================
+//                 */
+
+//                 if (
+//                     response.data.success
+//                 ) {
+
+//                     setStats(
+//                         response.data.stats
+//                     );
+
+//                 }
+
+//             } catch (error) {
+
+//                 console.error(
+//                     "Failed to fetch user stats:",
+//                     error
+//                 );
+
+//             } finally {
+
+//                 setStatsLoading(false);
+
+//             }
+
+//         },
+//         []
+//     );
+
+
+//     /*
+//     ========================================
+//     LOAD USER STATS
+//     ========================================
+//     */
+
+//     useEffect(() => {
+
+//         fetchUserStats();
+
+//     }, [
+//         fetchUserStats,
+//     ]);
+
+
+//     /*
+//     ========================================
+//     SEARCH
+//     ========================================
+//     */
+
+//     const handleSearchChange = (
+//         event
+//     ) => {
+
+//         setSearch(
+//             event.target.value
+//         );
+
+//     };
+
+
+//     /*
+//     ========================================
+//     FORMAT STATS
+//     ========================================
+//     */
+
+//     const totalUsers =
+//         statsLoading
+//             ? "..."
+//             : Number(
+//                 stats.totalUsers || 0
+//             ).toLocaleString();
+
+
+//     const fundedUsers =
+//         statsLoading
+//             ? "..."
+//             : Number(
+//                 stats.fundedUsers || 0
+//             ).toLocaleString();
+
+
+//     const activeUsers =
+//         statsLoading
+//             ? "..."
+//             : Number(
+//                 stats.activeUsers || 0
+//             ).toLocaleString();
+
+
+//     const bannedUsers =
+//         statsLoading
+//             ? "..."
+//             : Number(
+//                 stats.bannedUsers || 0
+//             ).toLocaleString();
+
+
+//     /*
+//     ========================================
+//     RENDER
+//     ========================================
+//     */
+
+//     return (
+
+//         <div className="users-page">
+
+//             {/* ========================================
+//                 STATS
+//             ======================================== */}
+
+//             <div className="stats-grid">
+
+
+//                 {/* TOTAL USERS */}
+
+//                 <StatCard
+//                     icon={<FaUsers />}
+//                     title="Total Users"
+//                     value={totalUsers}
+//                     trend="up"
+//                     trendText="Registered users"
+//                     color="purple"
+//                 />
+
+
+//                 {/* FUNDED USERS */}
+
+//                 <StatCard
+//                     icon={<FaWallet />}
+//                     title="Funded Users"
+//                     value={fundedUsers}
+//                     trend="up"
+//                     trendText="Users with wallet balance"
+//                     color="green"
+//                 />
+
+
+//                 {/* ACTIVE USERS */}
+
+//                 <StatCard
+//                     icon={<FaUserClock />}
+//                     title="Active Users"
+//                     value={activeUsers}
+//                     trend="up"
+//                     trendText="Currently active"
+//                     color="orange"
+//                 />
+
+
+//                 {/* BANNED USERS */}
+
+//                 <StatCard
+//                     icon={<FaUserSlash />}
+//                     title="Banned Users"
+//                     value={bannedUsers}
+//                     trend="down"
+//                     trendText="Currently banned"
+//                     color="red"
+//                 />
+
+//             </div>
+
+
+//             {/* ========================================
+//                 USERS TOOLBAR
+//             ======================================== */}
+
+//             <div className="users-toolbar">
+
+
+//                 {/* ====================================
+//                     SEARCH
+//                 ==================================== */}
+
+//                 <div className="users-search">
+
+//                     <FiSearch />
+
+//                     <input
+//                         type="text"
+//                         value={search}
+//                         onChange={
+//                             handleSearchChange
+//                         }
+//                         placeholder="Search by name, email or username..."
+//                     />
+
+//                 </div>
+
+
+//                 {/* ====================================
+//                     FILTERS
+//                 ==================================== */}
+
+//                 <div className="users-filters">
+
+
+//                     {/* STATUS */}
+
+//                     <div className="select-wrapper">
+
+//                         <select
+//                             value={status}
+//                             onChange={(
+//                                 event
+//                             ) =>
+//                                 setStatus(
+//                                     event.target.value
+//                                 )
+//                             }
+//                         >
+
+//                             <option value="all">
+//                                 All Status
+//                             </option>
+
+//                             <option value="active">
+//                                 Active
+//                             </option>
+
+//                             <option value="banned">
+//                                 Banned
+//                             </option>
+
+//                         </select>
+
+//                     </div>
+
+
+//                     {/* SORT */}
+
+//                     <div className="select-wrapper">
+
+//                         <select
+//                             value={sort}
+//                             onChange={(
+//                                 event
+//                             ) =>
+//                                 setSort(
+//                                     event.target.value
+//                                 )
+//                             }
+//                         >
+
+//                             <option value="newest">
+//                                 Newest
+//                             </option>
+
+//                             <option value="oldest">
+//                                 Oldest
+//                             </option>
+
+//                             <option value="highest">
+//                                 Highest Balance
+//                             </option>
+
+//                             <option value="lowest">
+//                                 Lowest Balance
+//                             </option>
+
+//                         </select>
+
+//                     </div>
+
+//                 </div>
+
+//             </div>
+
+
+//             {/* ========================================
+//                 USERS TABLE
+//             ======================================== */}
+
+//             <UsersTable
+//                 search={search}
+//                 status={status}
+//                 sort={sort}
+//             />
+
+//         </div>
+
+//     );
+
+// };
+
+
+// export default Users;
+
 import React, {
     useCallback,
     useEffect,
@@ -115,6 +525,7 @@ import React, {
 } from "react";
 
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 import { FiSearch } from "react-icons/fi";
 
@@ -143,6 +554,9 @@ const API_URL =
 
 const Users = () => {
 
+    const navigate = useNavigate();
+
+
     /*
     ========================================
     USER STATS
@@ -155,6 +569,13 @@ const Users = () => {
         activeUsers: 0,
         bannedUsers: 0,
     });
+
+
+    /*
+    ========================================
+    STATS LOADING
+    ========================================
+    */
 
     const [statsLoading, setStatsLoading] =
         useState(true);
@@ -182,7 +603,8 @@ const Users = () => {
     ========================================
     */
 
-    const getToken = () => {
+    const getToken = useCallback(() => {
+
         return (
             localStorage.getItem(
                 "adminToken"
@@ -191,7 +613,36 @@ const Users = () => {
                 "token"
             )
         );
-    };
+
+    }, []);
+
+
+    /*
+    ========================================
+    HANDLE UNAUTHORIZED
+    ========================================
+    */
+
+    const handleUnauthorized =
+        useCallback(() => {
+
+            localStorage.removeItem(
+                "adminToken"
+            );
+
+            localStorage.removeItem(
+                "token"
+            );
+
+            localStorage.removeItem(
+                "user"
+            );
+
+            navigate("/login", {
+                replace: true,
+            });
+
+        }, [navigate]);
 
 
     /*
@@ -200,71 +651,224 @@ const Users = () => {
     ========================================
     */
 
-    const fetchUserStats = useCallback(
-        async () => {
+    const fetchUserStats =
+        useCallback(
+            async () => {
 
-            try {
+                try {
 
-                setStatsLoading(true);
+                    setStatsLoading(true);
 
-                const token =
-                    getToken();
 
-                const response =
-                    await axios.get(
-                        `${API_URL}/api/admin/users/stats`,
-                        {
-                            headers: {
-                                Authorization:
-                                    `Bearer ${token}`,
-                            },
-                        }
+                    /*
+                    ================================
+                    GET TOKEN
+                    ================================
+                    */
+
+                    const token =
+                        getToken();
+
+
+                    /*
+                    ================================
+                    NO TOKEN
+                    ================================
+                    */
+
+                    if (!token) {
+
+                        handleUnauthorized();
+
+                        return;
+                    }
+
+
+                    /*
+                    ================================
+                    API REQUEST
+                    ================================
+                    */
+
+                    const response =
+                        await axios.get(
+                            `${API_URL}/api/admin/users/stats`,
+                            {
+                                timeout: 15000,
+
+                                headers: {
+                                    Authorization:
+                                        `Bearer ${token}`,
+                                },
+                            }
+                        );
+
+
+                    /*
+                    ================================
+                    SUCCESS
+                    ================================
+                    */
+
+                    if (
+                        response.data.success
+                    ) {
+
+                        setStats(
+                            response.data.stats
+                        );
+
+                    }
+
+                } catch (error) {
+
+                    console.error(
+                        "Failed to fetch user stats:",
+                        error
                     );
 
 
-                /*
-                ================================
-                SUCCESS
-                ================================
-                */
+                    /*
+                    ================================
+                    SESSION EXPIRED
+                    ================================
+                    */
 
-                if (
-                    response.data.success
-                ) {
+                    if (
+                        error.response?.status ===
+                        401
+                    ) {
 
-                    setStats(
-                        response.data.stats
-                    );
+                        handleUnauthorized();
+
+                        return;
+                    }
+
+
+                    /*
+                    ================================
+                    REQUEST TIMEOUT
+                    ================================
+                    */
+
+                    if (
+                        error.code ===
+                        "ECONNABORTED"
+                    ) {
+
+                        console.error(
+                            "User stats request timed out."
+                        );
+
+                    }
+
+                } finally {
+
+                    /*
+                    ================================
+                    ALWAYS STOP LOADING
+                    ================================
+                    */
+
+                    setStatsLoading(false);
 
                 }
 
-            } catch (error) {
-
-                console.error(
-                    "Failed to fetch user stats:",
-                    error
-                );
-
-            } finally {
-
-                setStatsLoading(false);
-
-            }
-
-        },
-        []
-    );
+            },
+            [
+                getToken,
+                handleUnauthorized,
+            ]
+        );
 
 
     /*
     ========================================
-    LOAD USER STATS
+    INITIAL LOAD
     ========================================
     */
 
     useEffect(() => {
 
         fetchUserStats();
+
+    }, [
+        fetchUserStats,
+    ]);
+
+
+    /*
+    ========================================
+    REFRESH WHEN TAB BECOMES VISIBLE
+    ========================================
+    */
+
+    useEffect(() => {
+
+        const handleVisibilityChange =
+            () => {
+
+                if (
+                    document.visibilityState ===
+                    "visible"
+                ) {
+
+                    fetchUserStats();
+
+                }
+
+            };
+
+
+        document.addEventListener(
+            "visibilitychange",
+            handleVisibilityChange
+        );
+
+
+        return () => {
+
+            document.removeEventListener(
+                "visibilitychange",
+                handleVisibilityChange
+            );
+
+        };
+
+    }, [
+        fetchUserStats,
+    ]);
+
+
+    /*
+    ========================================
+    REFRESH WHEN WINDOW GETS FOCUS
+    ========================================
+    */
+
+    useEffect(() => {
+
+        const handleFocus = () => {
+
+            fetchUserStats();
+
+        };
+
+
+        window.addEventListener(
+            "focus",
+            handleFocus
+        );
+
+
+        return () => {
+
+            window.removeEventListener(
+                "focus",
+                handleFocus
+            );
+
+        };
 
     }, [
         fetchUserStats,
@@ -336,6 +940,7 @@ const Users = () => {
 
         <div className="users-page">
 
+
             {/* ========================================
                 STATS
             ======================================== */}
@@ -343,50 +948,94 @@ const Users = () => {
             <div className="stats-grid">
 
 
-                {/* TOTAL USERS */}
+                {/* ====================================
+                    TOTAL USERS
+                ==================================== */}
 
                 <StatCard
-                    icon={<FaUsers />}
+                    icon={
+                        <FaUsers />
+                    }
+
                     title="Total Users"
-                    value={totalUsers}
+
+                    value={
+                        totalUsers
+                    }
+
                     trend="up"
+
                     trendText="Registered users"
+
                     color="purple"
                 />
 
 
-                {/* FUNDED USERS */}
+                {/* ====================================
+                    FUNDED USERS
+                ==================================== */}
 
                 <StatCard
-                    icon={<FaWallet />}
+                    icon={
+                        <FaWallet />
+                    }
+
                     title="Funded Users"
-                    value={fundedUsers}
+
+                    value={
+                        fundedUsers
+                    }
+
                     trend="up"
+
                     trendText="Users with wallet balance"
+
                     color="green"
                 />
 
 
-                {/* ACTIVE USERS */}
+                {/* ====================================
+                    ACTIVE USERS
+                ==================================== */}
 
                 <StatCard
-                    icon={<FaUserClock />}
+                    icon={
+                        <FaUserClock />
+                    }
+
                     title="Active Users"
-                    value={activeUsers}
+
+                    value={
+                        activeUsers
+                    }
+
                     trend="up"
+
                     trendText="Currently active"
+
                     color="orange"
                 />
 
 
-                {/* BANNED USERS */}
+                {/* ====================================
+                    BANNED USERS
+                ==================================== */}
 
                 <StatCard
-                    icon={<FaUserSlash />}
+                    icon={
+                        <FaUserSlash />
+                    }
+
                     title="Banned Users"
-                    value={bannedUsers}
+
+                    value={
+                        bannedUsers
+                    }
+
                     trend="down"
+
                     trendText="Currently banned"
+
                     color="red"
                 />
 
@@ -410,10 +1059,15 @@ const Users = () => {
 
                     <input
                         type="text"
-                        value={search}
+
+                        value={
+                            search
+                        }
+
                         onChange={
                             handleSearchChange
                         }
+
                         placeholder="Search by name, email or username..."
                     />
 
@@ -427,12 +1081,17 @@ const Users = () => {
                 <div className="users-filters">
 
 
-                    {/* STATUS */}
+                    {/* ==================================
+                        STATUS
+                    ================================== */}
 
                     <div className="select-wrapper">
 
                         <select
-                            value={status}
+                            value={
+                                status
+                            }
+
                             onChange={(
                                 event
                             ) =>
@@ -459,12 +1118,17 @@ const Users = () => {
                     </div>
 
 
-                    {/* SORT */}
+                    {/* ==================================
+                        SORT
+                    ================================== */}
 
                     <div className="select-wrapper">
 
                         <select
-                            value={sort}
+                            value={
+                                sort
+                            }
+
                             onChange={(
                                 event
                             ) =>
@@ -504,10 +1168,19 @@ const Users = () => {
             ======================================== */}
 
             <UsersTable
-                search={search}
-                status={status}
-                sort={sort}
+                search={
+                    search
+                }
+
+                status={
+                    status
+                }
+
+                sort={
+                    sort
+                }
             />
+
 
         </div>
 
