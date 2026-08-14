@@ -369,7 +369,12 @@
 
 // export default UsersTable;
 
-import React, { useEffect, useState } from "react";
+import React, {
+    useCallback,
+    useEffect,
+    useState,
+} from "react";
+
 import axios from "axios";
 
 import {
@@ -383,35 +388,56 @@ import {
 
 const ITEMS_PER_PAGE = 4;
 
-const API_URL = process.env.REACT_APP_API_URL;
+const API_URL =
+    process.env.REACT_APP_API_URL;
 
 const UsersTable = ({
     search = "",
     status = "all",
     sort = "newest",
-    onTotalChange,
 }) => {
-    const [users, setUsers] = useState([]);
-
-    const [currentPage, setCurrentPage] = useState(1);
-
-    const [totalPages, setTotalPages] = useState(1);
-    const [totalUsers, setTotalUsers] = useState(0);
-
-    const [loading, setLoading] = useState(true);
-
-    const [actionLoading, setActionLoading] = useState(null);
 
     /*
     ========================================
-    GET TOKEN
+    STATE
+    ========================================
+    */
+
+    const [users, setUsers] = useState([]);
+
+    const [currentPage, setCurrentPage] =
+        useState(1);
+
+    const [totalPages, setTotalPages] =
+        useState(1);
+
+    const [totalUsers, setTotalUsers] =
+        useState(0);
+
+    const [loading, setLoading] =
+        useState(true);
+
+    const [actionLoading, setActionLoading] =
+        useState(null);
+
+
+    /*
+    ========================================
+    GET ADMIN TOKEN
     ========================================
     */
 
     const getToken = () => {
-        return localStorage.getItem("adminToken") ||
-            localStorage.getItem("token");
+        return (
+            localStorage.getItem(
+                "adminToken"
+            ) ||
+            localStorage.getItem(
+                "token"
+            )
+        );
     };
+
 
     /*
     ========================================
@@ -419,69 +445,109 @@ const UsersTable = ({
     ========================================
     */
 
-    const fetchUsers = async () => {
-        try {
-            setLoading(true);
+    const fetchUsers = useCallback(
+        async () => {
 
-            const token = getToken();
+            try {
 
-            const response = await axios.get(
-                `${API_URL}/api/admin/users`,
-                {
-                    params: {
-                        search,
-                        status,
-                        sort,
-                        page: currentPage,
-                        limit: ITEMS_PER_PAGE,
-                    },
+                setLoading(true);
 
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
+                const token =
+                    getToken();
 
-            if (response.data.success) {
-                setUsers(response.data.users || []);
+                const response =
+                    await axios.get(
+                        `${API_URL}/api/admin/users`,
+                        {
+                            params: {
+                                search,
+                                status,
+                                sort,
+                                page:
+                                    currentPage,
+                                limit:
+                                    ITEMS_PER_PAGE,
+                            },
 
-                setTotalPages(
-                    response.data.pagination?.totalPages || 1
-                );
+                            headers: {
+                                Authorization:
+                                    `Bearer ${token}`,
+                            },
+                        }
+                    );
 
-                setTotalUsers(
-                    response.data.pagination?.totalUsers || 0
-                );
+                if (
+                    response.data.success
+                ) {
 
-                if (onTotalChange) {
-                    onTotalChange(
-                        response.data.pagination?.totalUsers || 0
+                    const fetchedUsers =
+                        response.data.users ||
+                        [];
+
+                    const pagination =
+                        response.data
+                            .pagination || {};
+
+                    setUsers(
+                        fetchedUsers
+                    );
+
+                    setTotalPages(
+                        pagination.totalPages ||
+                        1
+                    );
+
+                    setTotalUsers(
+                        pagination.totalUsers ||
+                        0
                     );
                 }
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to fetch users:",
+                    error
+                );
+
+                setUsers([]);
+
+                setTotalPages(1);
+
+                setTotalUsers(0);
+
+            } finally {
+
+                setLoading(false);
+
             }
 
-        } catch (error) {
-            console.error(
-                "Failed to fetch users:",
-                error
-            );
+        },
+        [
+            search,
+            status,
+            sort,
+            currentPage,
+        ]
+    );
 
-            setUsers([]);
-
-        } finally {
-            setLoading(false);
-        }
-    };
 
     /*
     ========================================
-    RESET PAGE WHEN FILTERS CHANGE
+    RESET PAGE WHEN FILTER CHANGES
     ========================================
     */
 
     useEffect(() => {
+
         setCurrentPage(1);
-    }, [search, status, sort]);
+
+    }, [
+        search,
+        status,
+        sort,
+    ]);
+
 
     /*
     ========================================
@@ -490,13 +556,13 @@ const UsersTable = ({
     */
 
     useEffect(() => {
+
         fetchUsers();
+
     }, [
-        currentPage,
-        search,
-        status,
-        sort,
+        fetchUsers,
     ]);
+
 
     /*
     ========================================
@@ -504,11 +570,18 @@ const UsersTable = ({
     ========================================
     */
 
-    const formatCurrency = (amount) => {
-        return `₦${Number(amount || 0).toLocaleString(
+    const formatCurrency = (
+        amount
+    ) => {
+
+        return `₦${Number(
+            amount || 0
+        ).toLocaleString(
             "en-NG"
         )}`;
+
     };
+
 
     /*
     ========================================
@@ -516,12 +589,26 @@ const UsersTable = ({
     ========================================
     */
 
-    const formatDate = (date) => {
+    const formatDate = (
+        date
+    ) => {
+
         if (!date) {
             return "-";
         }
 
-        return new Date(date).toLocaleDateString(
+        const parsedDate =
+            new Date(date);
+
+        if (
+            Number.isNaN(
+                parsedDate.getTime()
+            )
+        ) {
+            return "-";
+        }
+
+        return parsedDate.toLocaleDateString(
             "en-GB",
             {
                 day: "numeric",
@@ -529,49 +616,77 @@ const UsersTable = ({
                 year: "numeric",
             }
         );
+
     };
+
 
     /*
     ========================================
-    BAN / UNBAN
+    BAN / UNBAN USER
     ========================================
     */
 
-    const handleToggleBan = async (user) => {
-        try {
-            setActionLoading(user.id);
+    const handleToggleBan =
+        async (user) => {
 
-            const token = getToken();
+            try {
 
-            const response = await axios.patch(
-                `${API_URL}/api/admin/users/${user.id}/toggle-ban`,
-                {},
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
+                setActionLoading(
+                    user.id
+                );
+
+                const token =
+                    getToken();
+
+                const response =
+                    await axios.patch(
+                        `${API_URL}/api/admin/users/${user.id}/toggle-ban`,
+                        {},
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ${token}`,
+                            },
+                        }
+                    );
+
+                if (
+                    response.data.success
+                ) {
+
+                    /*
+                    Refresh the current
+                    page after changing
+                    the user's status.
+                    */
+
+                    await fetchUsers();
+
                 }
-            );
 
-            if (response.data.success) {
-                await fetchUsers();
+            } catch (error) {
+
+                console.error(
+                    "Failed to update user status:",
+                    error
+                );
+
+                alert(
+                    error.response?.data
+                        ?.message ||
+                    "Failed to update user status"
+                );
+
+            } finally {
+
+                setActionLoading(
+                    null
+                );
+
             }
 
-        } catch (error) {
-            console.error(
-                "Failed to update user status:",
-                error
-            );
+        };
 
-            alert(
-                error.response?.data?.message ||
-                "Failed to update user status"
-            );
-
-        } finally {
-            setActionLoading(null);
-        }
-    };
 
     /*
     ========================================
@@ -579,70 +694,90 @@ const UsersTable = ({
     ========================================
     */
 
-    const handleDelete = async (user) => {
-        const confirmed = window.confirm(
-            `Are you sure you want to delete ${user.username}? This action cannot be undone.`
-        );
+    const handleDelete =
+        async (user) => {
 
-        if (!confirmed) {
-            return;
-        }
+            const confirmed =
+                window.confirm(
+                    `Are you sure you want to delete ${user.username}? This action cannot be undone.`
+                );
 
-        try {
-            setActionLoading(user.id);
-
-            const token = getToken();
-
-            const response = await axios.delete(
-                `${API_URL}/api/admin/users/${user.id}`,
-                {
-                    headers: {
-                        Authorization: `Bearer ${token}`,
-                    },
-                }
-            );
-
-            if (response.data.success) {
-
-                /*
-                If deleting the final user
-                on the current page, move back
-                one page.
-                */
-
-                if (
-                    users.length === 1 &&
-                    currentPage > 1
-                ) {
-                    setCurrentPage(
-                        (prev) => prev - 1
-                    );
-                } else {
-                    await fetchUsers();
-                }
-
-                if (onTotalChange) {
-                    onTotalChange(
-                        Math.max(totalUsers - 1, 0)
-                    );
-                }
+            if (!confirmed) {
+                return;
             }
 
-        } catch (error) {
-            console.error(
-                "Failed to delete user:",
-                error
-            );
+            try {
 
-            alert(
-                error.response?.data?.message ||
-                "Failed to delete user"
-            );
+                setActionLoading(
+                    user.id
+                );
 
-        } finally {
-            setActionLoading(null);
-        }
-    };
+                const token =
+                    getToken();
+
+                const response =
+                    await axios.delete(
+                        `${API_URL}/api/admin/users/${user.id}`,
+                        {
+                            headers: {
+                                Authorization:
+                                    `Bearer ${token}`,
+                            },
+                        }
+                    );
+
+                if (
+                    response.data.success
+                ) {
+
+                    /*
+                    If this was the last
+                    user on the current
+                    page, move to the
+                    previous page.
+                    */
+
+                    if (
+                        users.length === 1 &&
+                        currentPage > 1
+                    ) {
+
+                        setCurrentPage(
+                            (prev) =>
+                                prev - 1
+                        );
+
+                    } else {
+
+                        await fetchUsers();
+
+                    }
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to delete user:",
+                    error
+                );
+
+                alert(
+                    error.response?.data
+                        ?.message ||
+                    "Failed to delete user"
+                );
+
+            } finally {
+
+                setActionLoading(
+                    null
+                );
+
+            }
+
+        };
+
 
     /*
     ========================================
@@ -650,56 +785,71 @@ const UsersTable = ({
     ========================================
     */
 
-    const handleEdit = (user) => {
+    const handleEdit = (
+        user
+    ) => {
+
         console.log(
             "Edit user:",
             user
         );
 
         /*
-        Add edit modal here when
-        update-user backend endpoint
-        is available.
+        Edit functionality can
+        be connected when the
+        backend update-user
+        endpoint is available.
         */
+
     };
+
 
     /*
     ========================================
-    LOADING
+    LOADING STATE
     ========================================
     */
 
     if (loading) {
+
         return (
             <div className="tx-table">
 
                 <div className="users-loading">
+
                     <div className="users-spinner"></div>
 
                     <p>
                         Loading users...
                     </p>
+
                 </div>
 
             </div>
         );
+
     }
+
 
     /*
     ========================================
-    EMPTY
+    EMPTY STATE
     ========================================
     */
 
     if (!users.length) {
+
         return (
             <div className="tx-table">
 
                 <div className="users-empty">
+
                     <p>
                         No users found.
                     </p>
+
                 </div>
+
 
                 <div className="users-pagination">
 
@@ -711,9 +861,18 @@ const UsersTable = ({
 
             </div>
         );
+
     }
 
+
+    /*
+    ========================================
+    MAIN TABLE
+    ========================================
+    */
+
     return (
+
         <div className="tx-table">
 
             {/* =========================
@@ -722,17 +881,29 @@ const UsersTable = ({
 
             <div className="tx-table-head users-head">
 
-                <span>User</span>
+                <span>
+                    User
+                </span>
 
-                <span>Balance</span>
+                <span>
+                    Balance
+                </span>
 
-                <span>Total Deposit</span>
+                <span>
+                    Total Deposit
+                </span>
 
-                <span>Status</span>
+                <span>
+                    Status
+                </span>
 
-                <span>Joined</span>
+                <span>
+                    Joined
+                </span>
 
-                <span>Actions</span>
+                <span>
+                    Actions
+                </span>
 
             </div>
 
@@ -741,174 +912,232 @@ const UsersTable = ({
                 USERS
             ========================= */}
 
-            {users.map((user) => {
+            {users.map(
+                (user) => {
 
-                const isBanned =
-                    user.banned === true;
+                    const isBanned =
+                        user.banned === true;
 
-                const isLoading =
-                    actionLoading === user.id;
+                    const isLoading =
+                        actionLoading ===
+                        user.id;
 
-                return (
-                    <div
-                        className="tx-row users-row"
-                        key={user.id}
-                    >
+                    return (
 
-                        {/* USER */}
+                        <div
+                            className="tx-row users-row"
+                            key={user.id}
+                        >
 
-                        <div className="tx-info">
+                            {/* =====================
+                                USER
+                            ===================== */}
 
-                            <div className="user-details">
+                            <div className="tx-info">
 
-                                <h4>
-                                    {user.username}
-                                </h4>
+                                <div className="user-details">
 
-                                <p className="user-email">
-                                    {user.email}
-                                </p>
+                                    <h4>
+                                        {
+                                            user.username ||
+                                            "Unknown User"
+                                        }
+                                    </h4>
+
+                                    <p className="user-email">
+                                        {
+                                            user.email ||
+                                            "-"
+                                        }
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            {/* =====================
+                                BALANCE
+                            ===================== */}
+
+                            <div className="user-balance">
+
+                                {
+                                    formatCurrency(
+                                        user.balance
+                                    )
+                                }
+
+                            </div>
+
+
+                            {/* =====================
+                                TOTAL DEPOSIT
+                            ===================== */}
+
+                            <div className="user-deposit">
+
+                                {
+                                    formatCurrency(
+                                        user.totalDeposit
+                                    )
+                                }
+
+                            </div>
+
+
+                            {/* =====================
+                                STATUS
+                            ===================== */}
+
+                            <div className="tx-status-wrapper">
+
+                                <span
+                                    className={`tx-status ${
+                                        isBanned
+                                            ? "banned"
+                                            : "active"
+                                    }`}
+                                >
+
+                                    {
+                                        isBanned
+                                            ? "Banned"
+                                            : "Active"
+                                    }
+
+                                </span>
+
+                            </div>
+
+
+                            {/* =====================
+                                JOINED
+                            ===================== */}
+
+                            <div className="tx-date">
+
+                                <span>
+                                    {
+                                        formatDate(
+                                            user.joined
+                                        )
+                                    }
+                                </span>
+
+                            </div>
+
+
+                            {/* =====================
+                                ACTIONS
+                            ===================== */}
+
+                            <div className="user-actions">
+
+                                {/* EDIT */}
+
+                                <button
+                                    type="button"
+                                    className="user-edit-btn"
+                                    title="Edit user"
+                                    disabled={
+                                        isLoading
+                                    }
+                                    onClick={() =>
+                                        handleEdit(
+                                            user
+                                        )
+                                    }
+                                >
+
+                                    <FiEdit2 />
+
+                                    <span>
+                                        Edit
+                                    </span>
+
+                                </button>
+
+
+                                {/* BAN / UNBAN */}
+
+                                <button
+                                    type="button"
+                                    className={
+                                        isBanned
+                                            ? "user-unban-btn"
+                                            : "user-ban-btn"
+                                    }
+                                    title={
+                                        isBanned
+                                            ? "Unban user"
+                                            : "Ban user"
+                                    }
+                                    disabled={
+                                        isLoading
+                                    }
+                                    onClick={() =>
+                                        handleToggleBan(
+                                            user
+                                        )
+                                    }
+                                >
+
+                                    {
+                                        isBanned ? (
+                                            <FiUserCheck />
+                                        ) : (
+                                            <FiUserX />
+                                        )
+                                    }
+
+                                    <span>
+
+                                        {
+                                            isLoading
+                                                ? "..."
+                                                : isBanned
+                                                ? "Unban"
+                                                : "Ban"
+                                        }
+
+                                    </span>
+
+                                </button>
+
+
+                                {/* DELETE */}
+
+                                <button
+                                    type="button"
+                                    className="user-delete-btn"
+                                    title="Delete user"
+                                    disabled={
+                                        isLoading
+                                    }
+                                    onClick={() =>
+                                        handleDelete(
+                                            user
+                                        )
+                                    }
+                                >
+
+                                    <FiTrash2 />
+
+                                    <span>
+                                        Delete
+                                    </span>
+
+                                </button>
 
                             </div>
 
                         </div>
 
+                    );
 
-                        {/* BALANCE */}
-
-                        <div className="user-balance">
-                            {formatCurrency(
-                                user.balance
-                            )}
-                        </div>
-
-
-                        {/* TOTAL DEPOSIT */}
-
-                        <div className="user-deposit">
-                            {formatCurrency(
-                                user.totalDeposit
-                            )}
-                        </div>
-
-
-                        {/* STATUS */}
-
-                        <div className="tx-status-wrapper">
-
-                            <span
-                                className={`tx-status ${
-                                    isBanned
-                                        ? "banned"
-                                        : "active"
-                                }`}
-                            >
-                                {isBanned
-                                    ? "Banned"
-                                    : "Active"}
-                            </span>
-
-                        </div>
-
-
-                        {/* JOINED */}
-
-                        <div className="tx-date">
-
-                            <span>
-                                {formatDate(
-                                    user.joined
-                                )}
-                            </span>
-
-                        </div>
-
-
-                        {/* ACTIONS */}
-
-                        <div className="user-actions">
-
-                            {/* EDIT */}
-
-                            <button
-                                className="user-edit-btn"
-                                title="Edit user"
-                                disabled={isLoading}
-                                onClick={() =>
-                                    handleEdit(user)
-                                }
-                            >
-                                <FiEdit2 />
-
-                                <span>
-                                    Edit
-                                </span>
-                            </button>
-
-
-                            {/* BAN / UNBAN */}
-
-                            <button
-                                className={
-                                    isBanned
-                                        ? "user-unban-btn"
-                                        : "user-ban-btn"
-                                }
-                                title={
-                                    isBanned
-                                        ? "Unban user"
-                                        : "Ban user"
-                                }
-                                disabled={isLoading}
-                                onClick={() =>
-                                    handleToggleBan(
-                                        user
-                                    )
-                                }
-                            >
-
-                                {isBanned ? (
-                                    <FiUserCheck />
-                                ) : (
-                                    <FiUserX />
-                                )}
-
-                                <span>
-                                    {isLoading
-                                        ? "..."
-                                        : isBanned
-                                        ? "Unban"
-                                        : "Ban"}
-                                </span>
-
-                            </button>
-
-
-                            {/* DELETE */}
-
-                            <button
-                                className="user-delete-btn"
-                                title="Delete user"
-                                disabled={isLoading}
-                                onClick={() =>
-                                    handleDelete(
-                                        user
-                                    )
-                                }
-                            >
-                                <FiTrash2 />
-
-                                <span>
-                                    Delete
-                                </span>
-
-                            </button>
-
-                        </div>
-
-                    </div>
-                );
-            })}
+                }
+            )}
 
 
             {/* =========================
@@ -920,44 +1149,79 @@ const UsersTable = ({
                 <p className="pagination-text">
 
                     Showing{" "}
-                    {(currentPage - 1) *
-                        ITEMS_PER_PAGE +
-                        1}
+
+                    {
+                        totalUsers === 0
+                            ? 0
+                            : (
+                                (
+                                    currentPage -
+                                    1
+                                ) *
+                                ITEMS_PER_PAGE
+                            ) + 1
+                    }
+
                     {" "}to{" "}
-                    {Math.min(
-                        currentPage *
-                            ITEMS_PER_PAGE,
-                        totalUsers
-                    )}
-                    {" "}of {totalUsers} users
+
+                    {
+                        Math.min(
+                            currentPage *
+                                ITEMS_PER_PAGE,
+                            totalUsers
+                        )
+                    }
+
+                    {" "}of{" "}
+
+                    {totalUsers}
+
+                    {" "}users
 
                 </p>
 
 
                 <div className="tx-pages">
 
+                    {/* PREVIOUS */}
+
                     <button
+                        type="button"
                         className="prev-btn"
                         disabled={
-                            currentPage === 1
+                            currentPage <=
+                            1
                         }
                         onClick={() =>
                             setCurrentPage(
                                 (prev) =>
-                                    prev - 1
+                                    Math.max(
+                                        prev - 1,
+                                        1
+                                    )
                             )
                         }
                     >
+
                         <FiChevronLeft />
+
                     </button>
 
 
-                    <button className="active">
+                    {/* CURRENT PAGE */}
+
+                    <button
+                        type="button"
+                        className="active"
+                    >
                         {currentPage}
                     </button>
 
 
+                    {/* NEXT */}
+
                     <button
+                        type="button"
                         className="next-btn"
                         disabled={
                             currentPage >=
@@ -966,11 +1230,16 @@ const UsersTable = ({
                         onClick={() =>
                             setCurrentPage(
                                 (prev) =>
-                                    prev + 1
+                                    Math.min(
+                                        prev + 1,
+                                        totalPages
+                                    )
                             )
                         }
                     >
+
                         <FiChevronRight />
+
                     </button>
 
                 </div>
@@ -978,7 +1247,9 @@ const UsersTable = ({
             </div>
 
         </div>
+
     );
+
 };
 
 export default UsersTable;
