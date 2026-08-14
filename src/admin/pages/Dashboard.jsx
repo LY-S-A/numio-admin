@@ -1,4 +1,219 @@
-import { useEffect, useState } from "react";
+// import { useEffect, useState } from "react";
+// import axios from "axios";
+// import { useNavigate } from "react-router-dom";
+
+// import StatCard from "../components/StatCard";
+// import SendMail from "../components/SendMail";
+
+// import {
+//     FaUsers,
+//     FaClipboardList,
+//     FaExchangeAlt,
+//     FaMoneyBillWave,
+// } from "react-icons/fa";
+
+// import "../styles/dashboard.css";
+
+// const API_URL = process.env.REACT_APP_API_URL;
+
+// const Dashboard = () => {
+//     const navigate = useNavigate();
+
+//     const [stats, setStats] = useState({
+//         totalUsers: 0,
+//         totalOrders: 0,
+//         totalTransactions: 0,
+//         totalRevenue: 0,
+
+//         trends: {
+//             users: 0,
+//             orders: 0,
+//             transactions: 0,
+//             revenue: 0,
+//         },
+//     });
+
+//     const [loading, setLoading] = useState(true);
+
+//     useEffect(() => {
+//         const fetchDashboardStats = async () => {
+//             try {
+//                 const token =
+//                     localStorage.getItem("token");
+
+//                 if (!token) {
+//                     navigate("/login");
+//                     return;
+//                 }
+
+//                 const response = await axios.get(
+//                     `${API_URL}/api/admin/dashboard/stats`,
+//                     {
+//                         headers: {
+//                             Authorization:
+//                                 `Bearer ${token}`,
+//                         },
+//                     }
+//                 );
+
+//                 if (response.data.success) {
+//                     setStats(
+//                         response.data.stats
+//                     );
+//                 }
+
+//             } catch (error) {
+//                 console.error(
+//                     "Failed to fetch dashboard stats:",
+//                     error
+//                 );
+
+//                 if (
+//                     error.response?.status ===
+//                     401
+//                 ) {
+//                     localStorage.removeItem(
+//                         "token"
+//                     );
+
+//                     localStorage.removeItem(
+//                         "user"
+//                     );
+
+//                     navigate("/login");
+//                 }
+
+//             } finally {
+//                 setLoading(false);
+//             }
+//         };
+
+//         fetchDashboardStats();
+//     }, [navigate]);
+
+//     const formatCurrency = (amount) => {
+//         return `₦${Number(amount || 0).toLocaleString(
+//             "en-NG",
+//             {
+//                 minimumFractionDigits: 2,
+//                 maximumFractionDigits: 2,
+//             }
+//         )}`;
+//     };
+
+//     const getTrendType = (value) => {
+//         return value >= 0
+//             ? "up"
+//             : "down";
+//     };
+
+//     const getTrendText = (value) => {
+//         const absoluteValue = Math.abs(value);
+
+//         return `${absoluteValue}% from last week`;
+//     };
+
+//     return (
+//         <div className="dashboard-page">
+
+//             <div className="stats-grid">
+
+//                 {/* USERS */}
+//                 <StatCard
+//                     icon={<FaUsers />}
+//                     title="Total Users"
+//                     value={
+//                         loading
+//                             ? "..."
+//                             : stats.totalUsers
+//                     }
+//                     color="purple"
+//                     trend={getTrendType(
+//                         stats.trends.users
+//                     )}
+//                     trendText={getTrendText(
+//                         stats.trends.users
+//                     )}
+//                 />
+
+//                 {/* ORDERS */}
+//                 <StatCard
+//                     icon={
+//                         <FaClipboardList />
+//                     }
+//                     title="Total Orders"
+//                     value={
+//                         loading
+//                             ? "..."
+//                             : stats.totalOrders
+//                     }
+//                     color="green"
+//                     trend={getTrendType(
+//                         stats.trends.orders
+//                     )}
+//                     trendText={getTrendText(
+//                         stats.trends.orders
+//                     )}
+//                 />
+
+//                 {/* TRANSACTIONS */}
+//                 <StatCard
+//                     icon={
+//                         <FaExchangeAlt />
+//                     }
+//                     title="Total Transactions"
+//                     value={
+//                         loading
+//                             ? "..."
+//                             : stats.totalTransactions
+//                     }
+//                     color="orange"
+//                     trend={getTrendType(
+//                         stats.trends.transactions
+//                     )}
+//                     trendText={getTrendText(
+//                         stats.trends.transactions
+//                     )}
+//                 />
+
+//                 {/* REVENUE */}
+//                 <StatCard
+//                     icon={
+//                         <FaMoneyBillWave />
+//                     }
+//                     title="Total Revenue"
+//                     value={
+//                         loading
+//                             ? "..."
+//                             : formatCurrency(
+//                                 stats.totalRevenue
+//                             )
+//                     }
+//                     color="blue"
+//                     trend={getTrendType(
+//                         stats.trends.revenue
+//                     )}
+//                     trendText={getTrendText(
+//                         stats.trends.revenue
+//                     )}
+//                 />
+
+//             </div>
+
+//             <SendMail />
+
+//         </div>
+//     );
+// };
+
+// export default Dashboard;
+
+import {
+    useCallback,
+    useEffect,
+    useState,
+} from "react";
+
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -14,10 +229,33 @@ import {
 
 import "../styles/dashboard.css";
 
-const API_URL = process.env.REACT_APP_API_URL;
+
+/*
+========================================
+API URL
+========================================
+*/
+
+const API_URL =
+    process.env.REACT_APP_API_URL;
+
+
+/*
+========================================
+DASHBOARD
+========================================
+*/
 
 const Dashboard = () => {
+
     const navigate = useNavigate();
+
+
+    /*
+    ========================================
+    STATS
+    ========================================
+    */
 
     const [stats, setStats] = useState({
         totalUsers: 0,
@@ -33,155 +271,489 @@ const Dashboard = () => {
         },
     });
 
-    const [loading, setLoading] = useState(true);
+
+    /*
+    ========================================
+    LOADING
+    ========================================
+    */
+
+    const [loading, setLoading] =
+        useState(true);
+
+
+    /*
+    ========================================
+    GET ADMIN TOKEN
+    ========================================
+    */
+
+    const getToken = useCallback(() => {
+
+        return (
+            localStorage.getItem(
+                "adminToken"
+            ) ||
+            localStorage.getItem(
+                "token"
+            )
+        );
+
+    }, []);
+
+
+    /*
+    ========================================
+    HANDLE SESSION EXPIRATION
+    ========================================
+    */
+
+    const handleUnauthorized =
+        useCallback(() => {
+
+            localStorage.removeItem(
+                "adminToken"
+            );
+
+            localStorage.removeItem(
+                "token"
+            );
+
+            localStorage.removeItem(
+                "user"
+            );
+
+            navigate("/login", {
+                replace: true,
+            });
+
+        }, [navigate]);
+
+
+    /*
+    ========================================
+    FETCH DASHBOARD STATS
+    ========================================
+    */
+
+    const fetchDashboardStats =
+        useCallback(
+            async () => {
+
+                try {
+
+                    setLoading(true);
+
+
+                    /*
+                    ================================
+                    GET TOKEN
+                    ================================
+                    */
+
+                    const token =
+                        getToken();
+
+
+                    /*
+                    ================================
+                    NO TOKEN
+                    ================================
+                    */
+
+                    if (!token) {
+
+                        handleUnauthorized();
+
+                        return;
+                    }
+
+
+                    /*
+                    ================================
+                    API REQUEST
+                    ================================
+                    */
+
+                    const response =
+                        await axios.get(
+                            `${API_URL}/api/admin/dashboard/stats`,
+                            {
+                                timeout: 15000,
+
+                                headers: {
+                                    Authorization:
+                                        `Bearer ${token}`,
+                                },
+                            }
+                        );
+
+
+                    /*
+                    ================================
+                    SUCCESS
+                    ================================
+                    */
+
+                    if (
+                        response.data.success
+                    ) {
+
+                        setStats(
+                            response.data.stats
+                        );
+
+                    }
+
+                } catch (error) {
+
+                    console.error(
+                        "Failed to fetch dashboard stats:",
+                        error
+                    );
+
+
+                    /*
+                    ================================
+                    SESSION EXPIRED
+                    ================================
+                    */
+
+                    if (
+                        error.response?.status ===
+                        401
+                    ) {
+
+                        handleUnauthorized();
+
+                        return;
+                    }
+
+
+                    /*
+                    ================================
+                    TIMEOUT
+                    ================================
+                    */
+
+                    if (
+                        error.code ===
+                        "ECONNABORTED"
+                    ) {
+
+                        console.error(
+                            "Dashboard request timed out."
+                        );
+
+                    }
+
+                } finally {
+
+                    /*
+                    ================================
+                    ALWAYS STOP LOADING
+                    ================================
+                    */
+
+                    setLoading(false);
+
+                }
+
+            },
+            [
+                getToken,
+                handleUnauthorized,
+            ]
+        );
+
+
+    /*
+    ========================================
+    INITIAL LOAD
+    ========================================
+    */
 
     useEffect(() => {
-        const fetchDashboardStats = async () => {
-            try {
-                const token =
-                    localStorage.getItem("token");
-
-                if (!token) {
-                    navigate("/login");
-                    return;
-                }
-
-                const response = await axios.get(
-                    `${API_URL}/api/admin/dashboard/stats`,
-                    {
-                        headers: {
-                            Authorization:
-                                `Bearer ${token}`,
-                        },
-                    }
-                );
-
-                if (response.data.success) {
-                    setStats(
-                        response.data.stats
-                    );
-                }
-
-            } catch (error) {
-                console.error(
-                    "Failed to fetch dashboard stats:",
-                    error
-                );
-
-                if (
-                    error.response?.status ===
-                    401
-                ) {
-                    localStorage.removeItem(
-                        "token"
-                    );
-
-                    localStorage.removeItem(
-                        "user"
-                    );
-
-                    navigate("/login");
-                }
-
-            } finally {
-                setLoading(false);
-            }
-        };
 
         fetchDashboardStats();
-    }, [navigate]);
 
-    const formatCurrency = (amount) => {
-        return `₦${Number(amount || 0).toLocaleString(
+    }, [
+        fetchDashboardStats,
+    ]);
+
+
+    /*
+    ========================================
+    REFRESH WHEN TAB BECOMES VISIBLE
+    ========================================
+    */
+
+    useEffect(() => {
+
+        const handleVisibilityChange =
+            () => {
+
+                if (
+                    document.visibilityState ===
+                    "visible"
+                ) {
+
+                    fetchDashboardStats();
+
+                }
+
+            };
+
+
+        document.addEventListener(
+            "visibilitychange",
+            handleVisibilityChange
+        );
+
+
+        return () => {
+
+            document.removeEventListener(
+                "visibilitychange",
+                handleVisibilityChange
+            );
+
+        };
+
+    }, [
+        fetchDashboardStats,
+    ]);
+
+
+    /*
+    ========================================
+    REFRESH WHEN WINDOW GETS FOCUS
+    ========================================
+    */
+
+    useEffect(() => {
+
+        const handleFocus = () => {
+
+            fetchDashboardStats();
+
+        };
+
+
+        window.addEventListener(
+            "focus",
+            handleFocus
+        );
+
+
+        return () => {
+
+            window.removeEventListener(
+                "focus",
+                handleFocus
+            );
+
+        };
+
+    }, [
+        fetchDashboardStats,
+    ]);
+
+
+    /*
+    ========================================
+    FORMAT CURRENCY
+    ========================================
+    */
+
+    const formatCurrency = (
+        amount
+    ) => {
+
+        return `₦${Number(
+            amount || 0
+        ).toLocaleString(
             "en-NG",
             {
                 minimumFractionDigits: 2,
                 maximumFractionDigits: 2,
             }
         )}`;
+
     };
 
-    const getTrendType = (value) => {
+
+    /*
+    ========================================
+    TREND TYPE
+    ========================================
+    */
+
+    const getTrendType = (
+        value
+    ) => {
+
         return value >= 0
             ? "up"
             : "down";
+
     };
 
-    const getTrendText = (value) => {
-        const absoluteValue = Math.abs(value);
+
+    /*
+    ========================================
+    TREND TEXT
+    ========================================
+    */
+
+    const getTrendText = (
+        value
+    ) => {
+
+        const absoluteValue =
+            Math.abs(
+                Number(value || 0)
+            );
 
         return `${absoluteValue}% from last week`;
+
     };
 
+
+    /*
+    ========================================
+    RENDER
+    ========================================
+    */
+
     return (
+
         <div className="dashboard-page">
+
+
+            {/* ========================================
+                STATS
+            ======================================== */}
 
             <div className="stats-grid">
 
-                {/* USERS */}
+
+                {/* ====================================
+                    USERS
+                ==================================== */}
+
                 <StatCard
-                    icon={<FaUsers />}
+                    icon={
+                        <FaUsers />
+                    }
+
                     title="Total Users"
+
                     value={
                         loading
                             ? "..."
-                            : stats.totalUsers
+                            : Number(
+                                stats.totalUsers || 0
+                            ).toLocaleString()
                     }
+
                     color="purple"
-                    trend={getTrendType(
-                        stats.trends.users
-                    )}
-                    trendText={getTrendText(
-                        stats.trends.users
-                    )}
+
+                    trend={
+                        getTrendType(
+                            stats.trends?.users || 0
+                        )
+                    }
+
+                    trendText={
+                        getTrendText(
+                            stats.trends?.users || 0
+                        )
+                    }
                 />
 
-                {/* ORDERS */}
+
+                {/* ====================================
+                    ORDERS
+                ==================================== */}
+
                 <StatCard
                     icon={
                         <FaClipboardList />
                     }
+
                     title="Total Orders"
+
                     value={
                         loading
                             ? "..."
-                            : stats.totalOrders
+                            : Number(
+                                stats.totalOrders || 0
+                            ).toLocaleString()
                     }
+
                     color="green"
-                    trend={getTrendType(
-                        stats.trends.orders
-                    )}
-                    trendText={getTrendText(
-                        stats.trends.orders
-                    )}
+
+                    trend={
+                        getTrendType(
+                            stats.trends?.orders || 0
+                        )
+                    }
+
+                    trendText={
+                        getTrendText(
+                            stats.trends?.orders || 0
+                        )
+                    }
                 />
 
-                {/* TRANSACTIONS */}
+
+                {/* ====================================
+                    TRANSACTIONS
+                ==================================== */}
+
                 <StatCard
                     icon={
                         <FaExchangeAlt />
                     }
+
                     title="Total Transactions"
+
                     value={
                         loading
                             ? "..."
-                            : stats.totalTransactions
+                            : Number(
+                                stats.totalTransactions || 0
+                            ).toLocaleString()
                     }
+
                     color="orange"
-                    trend={getTrendType(
-                        stats.trends.transactions
-                    )}
-                    trendText={getTrendText(
-                        stats.trends.transactions
-                    )}
+
+                    trend={
+                        getTrendType(
+                            stats.trends?.transactions || 0
+                        )
+                    }
+
+                    trendText={
+                        getTrendText(
+                            stats.trends?.transactions || 0
+                        )
+                    }
                 />
 
-                {/* REVENUE */}
+
+                {/* ====================================
+                    REVENUE
+                ==================================== */}
+
                 <StatCard
                     icon={
                         <FaMoneyBillWave />
                     }
+
                     title="Total Revenue"
+
                     value={
                         loading
                             ? "..."
@@ -189,21 +761,37 @@ const Dashboard = () => {
                                 stats.totalRevenue
                             )
                     }
+
                     color="blue"
-                    trend={getTrendType(
-                        stats.trends.revenue
-                    )}
-                    trendText={getTrendText(
-                        stats.trends.revenue
-                    )}
+
+                    trend={
+                        getTrendType(
+                            stats.trends?.revenue || 0
+                        )
+                    }
+
+                    trendText={
+                        getTrendText(
+                            stats.trends?.revenue || 0
+                        )
+                    }
                 />
 
             </div>
 
+
+            {/* ========================================
+                SEND MAIL
+            ======================================== */}
+
             <SendMail />
 
+
         </div>
+
     );
+
 };
+
 
 export default Dashboard;
