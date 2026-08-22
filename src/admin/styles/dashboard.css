@@ -5,12 +5,19 @@
 }
 
 /* ========================================
-   STAT CARD SKELETON
+   ADMIN STAT CARD SKELETON
 ======================================== */
 
-.stat-card-skeleton {
+.admin-stat-skeleton {
     position: relative;
     overflow: hidden;
+    pointer-events: none;
+
+    background: var(--card);
+    border: 1px solid var(--border);
+
+    display: flex;
+    align-items: center;
 }
 
 
@@ -18,13 +25,14 @@
    SKELETON BASE
 ======================================== */
 
-.skeleton {
+.admin-skeleton-icon,
+.admin-skeleton-title,
+.admin-skeleton-value,
+.admin-skeleton-trend {
     position: relative;
     overflow: hidden;
 
-    background: var(--border-color, #e5e7eb);
-
-    border-radius: 8px;
+    background: var(--border);
 }
 
 
@@ -32,107 +40,119 @@
    SHIMMER
 ======================================== */
 
-.skeleton::after {
+.admin-skeleton-icon::after,
+.admin-skeleton-title::after,
+.admin-skeleton-value::after,
+.admin-skeleton-trend::after {
     content: "";
 
     position: absolute;
+    inset: 0;
 
-    top: 0;
-    left: -150%;
-
-    width: 150%;
-    height: 100%;
+    transform: translateX(-100%);
 
     background: linear-gradient(
         90deg,
         transparent,
-        rgba(255, 255, 255, 0.45),
+        rgba(255, 255, 255, 0.18),
         transparent
     );
 
-    animation: skeleton-shimmer 1.5s infinite;
-}
-
-
-@keyframes skeleton-shimmer {
-
-    0% {
-        left: -150%;
-    }
-
-    100% {
-        left: 150%;
-    }
-
+    animation: admin-skeleton-loading 1.4s infinite;
 }
 
 
 /* ========================================
-   SKELETON ICON
+   LIGHT THEME SHIMMER
 ======================================== */
 
-.skeleton-icon {
-    width: 46px;
-    height: 46px;
-
-    border-radius: 12px;
-}
-
-
-/* ========================================
-   SKELETON TITLE
-======================================== */
-
-.skeleton-title {
-    width: 95px;
-    height: 14px;
-
-    margin-top: 20px;
-}
-
-
-/* ========================================
-   SKELETON VALUE
-======================================== */
-
-.skeleton-value {
-    width: 145px;
-    height: 30px;
-
-    margin-top: 10px;
-
-    border-radius: 7px;
-}
-
-
-/* ========================================
-   SKELETON TREND
-======================================== */
-
-.skeleton-trend {
-    width: 170px;
-    height: 13px;
-
-    margin-top: 14px;
-}
-
-
-/* ========================================
-   DARK MODE
-======================================== */
-
-[data-theme="dark"] .skeleton {
-    background: rgba(255, 255, 255, 0.08);
-}
-
-
-[data-theme="dark"] .skeleton::after {
+body.light-theme .admin-skeleton-icon::after,
+body.light-theme .admin-skeleton-title::after,
+body.light-theme .admin-skeleton-value::after,
+body.light-theme .admin-skeleton-trend::after {
     background: linear-gradient(
         90deg,
         transparent,
-        rgba(255, 255, 255, 0.08),
+        rgba(255, 255, 255, 0.9),
         transparent
     );
+}
+
+
+/* ========================================
+   ICON
+======================================== */
+
+.admin-skeleton-icon {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    border-radius: 10px;
+}
+
+
+/* ========================================
+   DETAILS
+======================================== */
+
+.admin-stat-skeleton .stats-details {
+    flex: 1;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    gap: 7px;
+}
+
+
+/* ========================================
+   TITLE
+======================================== */
+
+.admin-skeleton-title {
+    width: 105px;
+    height: 12px;
+
+    border-radius: 6px;
+}
+
+
+/* ========================================
+   VALUE
+======================================== */
+
+.admin-skeleton-value {
+    width: 75px;
+    height: 26px;
+
+    border-radius: 6px;
+}
+
+
+/* ========================================
+   TREND
+======================================== */
+
+.admin-skeleton-trend {
+    width: 125px;
+    height: 11px;
+
+    border-radius: 6px;
+}
+
+
+/* ========================================
+   ANIMATION
+======================================== */
+
+@keyframes admin-skeleton-loading {
+    to {
+        transform: translateX(100%);
+    }
 }
 
 
@@ -142,22 +162,27 @@
 
 @media (max-width: 768px) {
 
-    .skeleton-icon {
+    .admin-skeleton-icon {
         width: 42px;
         height: 42px;
     }
 
-    .skeleton-title {
-        margin-top: 16px;
+
+    .admin-skeleton-title {
+        width: 95px;
+        height: 11px;
     }
 
-    .skeleton-value {
-        width: 120px;
-        height: 27px;
+
+    .admin-skeleton-value {
+        width: 70px;
+        height: 22px;
     }
 
-    .skeleton-trend {
-        width: 145px;
+
+    .admin-skeleton-trend {
+        width: 115px;
+        height: 10px;
     }
 
 }
