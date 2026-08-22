@@ -8,6 +8,118 @@
     gap: 28px;
 }
 
+/* ====================================
+   ORDERS TABLE SKELETON
+==================================== */
+
+.skeleton-row {
+    pointer-events: none;
+}
+
+.skeleton {
+    position: relative;
+    overflow: hidden;
+
+    background: var(--card-secondary);
+    border-radius: 8px;
+}
+
+.skeleton::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    transform: translateX(-100%);
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.12),
+        transparent
+    );
+
+    animation: skeleton-loading 1.2s infinite;
+}
+
+body.light-theme .skeleton {
+    background: #e5e7eb;
+}
+
+body.light-theme .skeleton::after {
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.7),
+        transparent
+    );
+}
+
+@keyframes skeleton-loading {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+
+/* ====================================
+   ORDER / USER / SERVICE
+==================================== */
+
+.skeleton-title {
+    width: 110px;
+    height: 15px;
+
+    margin-bottom: 7px;
+}
+
+.skeleton-text {
+    width: 90px;
+    height: 11px;
+}
+
+
+/* ====================================
+   PRICE
+==================================== */
+
+.skeleton-price {
+    width: 80px;
+    height: 16px;
+}
+
+
+/* ====================================
+   OTP
+==================================== */
+
+.skeleton-otp {
+    width: 55px;
+    height: 16px;
+}
+
+
+/* ====================================
+   STATUS
+==================================== */
+
+.skeleton-status {
+    width: 75px;
+    height: 26px;
+
+    border-radius: 999px;
+}
+
+
+/* ====================================
+   DATE
+==================================== */
+
+.skeleton-date {
+    width: 85px;
+    height: 14px;
+}
+
 /* ===========================
    USERS TOOLBAR
 =========================== */
