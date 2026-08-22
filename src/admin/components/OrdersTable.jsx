@@ -267,6 +267,7 @@
 // export default OrdersTable;
 
 import React, {
+    useCallback,
     useEffect,
     useState,
 } from "react";
@@ -312,7 +313,8 @@ const OrdersTable = () => {
     ========================================
     */
 
-    const [orders, setOrders] = useState([]);
+    const [orders, setOrders] =
+        useState([]);
 
     const [loading, setLoading] =
         useState(true);
@@ -338,88 +340,96 @@ const OrdersTable = () => {
     ========================================
     */
 
-    const fetchOrders = async (
-        page = currentPage
-    ) => {
+    const fetchOrders = useCallback(
+        async (page) => {
 
-        try {
+            try {
 
-            setLoading(true);
-            setError("");
+                setLoading(true);
+                setError("");
 
-            const token =
-                localStorage.getItem(
-                    "token"
-                );
+                const token =
+                    localStorage.getItem(
+                        "token"
+                    );
 
-            const response =
-                await axios.get(
-                    `${API_URL}/api/admin/orders`,
-                    {
-                        params: {
-                            page,
+
+                /*
+                ========================================
+                API REQUEST
+                ========================================
+                */
+
+                const response =
+                    await axios.get(
+                        `${API_URL}/api/admin/orders`,
+                        {
+                            params: {
+                                page,
+                                limit: ITEMS_PER_PAGE,
+                            },
+
+                            headers: {
+                                Authorization:
+                                    `Bearer ${token}`,
+                            },
+                        }
+                    );
+
+
+                /*
+                ========================================
+                SUCCESS RESPONSE
+                ========================================
+                */
+
+                if (
+                    response.data?.success
+                ) {
+
+                    setOrders(
+                        response.data.orders || []
+                    );
+
+                    setPagination(
+                        response.data.pagination || {
+                            currentPage: page,
+                            totalPages: 1,
+                            totalOrders: 0,
                             limit: ITEMS_PER_PAGE,
-                        },
+                        }
+                    );
 
-                        headers: {
-                            Authorization:
-                                `Bearer ${token}`,
-                        },
-                    }
+                } else {
+
+                    setError(
+                        response.data?.message ||
+                        "Failed to fetch orders"
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Fetch admin orders error:",
+                    error
                 );
-
-
-            /*
-            ========================================
-            RESPONSE
-            ========================================
-            */
-
-            if (
-                response.data?.success
-            ) {
-
-                setOrders(
-                    response.data.orders || []
-                );
-
-                setPagination(
-                    response.data.pagination || {
-                        currentPage: page,
-                        totalPages: 1,
-                        totalOrders: 0,
-                        limit: ITEMS_PER_PAGE,
-                    }
-                );
-
-            } else {
 
                 setError(
-                    response.data?.message ||
+                    error.response?.data?.message ||
                     "Failed to fetch orders"
                 );
 
+            } finally {
+
+                setLoading(false);
+
             }
 
-        } catch (error) {
-
-            console.error(
-                "Fetch admin orders error:",
-                error
-            );
-
-            setError(
-                error.response?.data?.message ||
-                "Failed to fetch orders"
-            );
-
-        } finally {
-
-            setLoading(false);
-
-        }
-
-    };
+        },
+        []
+    );
 
 
     /*
@@ -434,7 +444,10 @@ const OrdersTable = () => {
             currentPage
         );
 
-    }, [currentPage]);
+    }, [
+        currentPage,
+        fetchOrders,
+    ]);
 
 
     /*
@@ -498,7 +511,9 @@ const OrdersTable = () => {
             !Array.isArray(order.sms) ||
             order.sms.length === 0
         ) {
+
             return "—";
+
         }
 
 
@@ -516,26 +531,37 @@ const OrdersTable = () => {
 
         /*
         ========================================
-        POSSIBLE OTP FIELDS
+        DIRECT CODE
         ========================================
         */
 
         if (
             latestSMS?.code
         ) {
-            return latestSMS.code;
-        }
 
-        if (
-            latestSMS?.otp
-        ) {
-            return latestSMS.otp;
+            return latestSMS.code;
+
         }
 
 
         /*
         ========================================
-        EXTRACT CODE FROM MESSAGE
+        DIRECT OTP
+        ========================================
+        */
+
+        if (
+            latestSMS?.otp
+        ) {
+
+            return latestSMS.otp;
+
+        }
+
+
+        /*
+        ========================================
+        EXTRACT FROM TEXT
         ========================================
         */
 
@@ -549,10 +575,19 @@ const OrdersTable = () => {
                 );
 
             if (match) {
+
                 return match[0];
+
             }
 
         }
+
+
+        /*
+        ========================================
+        EXTRACT FROM MESSAGE
+        ========================================
+        */
 
         if (
             latestSMS?.message
@@ -564,7 +599,9 @@ const OrdersTable = () => {
                 );
 
             if (match) {
+
                 return match[0];
+
             }
 
         }
@@ -586,7 +623,9 @@ const OrdersTable = () => {
     ) => {
 
         if (!status) {
+
             return "";
+
         }
 
         return status
@@ -608,91 +647,125 @@ const OrdersTable = () => {
 
             <div className="tx-table">
 
+                {/* TABLE HEADER */}
+
                 <div className="tx-table-head orders-head">
 
-                    <span>Order</span>
+                    <span>
+                        Order
+                    </span>
 
-                    <span>User</span>
+                    <span>
+                        User
+                    </span>
 
-                    <span>Service</span>
+                    <span>
+                        Service
+                    </span>
 
-                    <span>Price</span>
+                    <span>
+                        Price
+                    </span>
 
-                    <span>OTP</span>
+                    <span>
+                        OTP
+                    </span>
 
-                    <span>Status</span>
+                    <span>
+                        Status
+                    </span>
 
-                    <span>Date</span>
+                    <span>
+                        Date
+                    </span>
 
                 </div>
 
 
+                {/* SKELETON ROWS */}
+
                 {Array.from(
                     { length: 5 }
-                ).map((_, index) => (
+                ).map(
+                    (_, index) => (
 
-                    <div
-                        className="tx-row orders-row"
-                        key={index}
-                    >
+                        <div
+                            className="tx-row orders-row"
+                            key={index}
+                        >
 
-                        <div className="order-info">
+                            {/* Order */}
 
-                            <div className="skeleton skeleton-title" />
+                            <div className="order-info">
 
-                            <div className="skeleton skeleton-text" />
+                                <div className="skeleton skeleton-title" />
+
+                                <div className="skeleton skeleton-text" />
+
+                            </div>
+
+
+                            {/* User */}
+
+                            <div className="tx-info">
+
+                                <div className="skeleton skeleton-title" />
+
+                                <div className="skeleton skeleton-text" />
+
+                            </div>
+
+
+                            {/* Service */}
+
+                            <div className="order-service">
+
+                                <div className="skeleton skeleton-title" />
+
+                                <div className="skeleton skeleton-text" />
+
+                            </div>
+
+
+                            {/* Price */}
+
+                            <div className="user-balance">
+
+                                <div className="skeleton skeleton-price" />
+
+                            </div>
+
+
+                            {/* OTP */}
+
+                            <div className="order-otp">
+
+                                <div className="skeleton skeleton-otp" />
+
+                            </div>
+
+
+                            {/* Status */}
+
+                            <div className="tx-status-wrapper">
+
+                                <div className="skeleton skeleton-status" />
+
+                            </div>
+
+
+                            {/* Date */}
+
+                            <div className="tx-date">
+
+                                <div className="skeleton skeleton-date" />
+
+                            </div>
 
                         </div>
 
-
-                        <div className="tx-info">
-
-                            <div className="skeleton skeleton-title" />
-
-                            <div className="skeleton skeleton-text" />
-
-                        </div>
-
-
-                        <div className="order-service">
-
-                            <div className="skeleton skeleton-title" />
-
-                            <div className="skeleton skeleton-text" />
-
-                        </div>
-
-
-                        <div className="user-balance">
-
-                            <div className="skeleton skeleton-price" />
-
-                        </div>
-
-
-                        <div className="order-otp">
-
-                            <div className="skeleton skeleton-otp" />
-
-                        </div>
-
-
-                        <div className="tx-status-wrapper">
-
-                            <div className="skeleton skeleton-status" />
-
-                        </div>
-
-
-                        <div className="tx-date">
-
-                            <div className="skeleton skeleton-date" />
-
-                        </div>
-
-                    </div>
-
-                ))}
+                    )
+                )}
 
             </div>
 
@@ -718,6 +791,7 @@ const OrdersTable = () => {
                     <p>
                         {error}
                     </p>
+
 
                     <button
                         type="button"
@@ -753,24 +827,42 @@ const OrdersTable = () => {
 
             <div className="tx-table">
 
+                {/* TABLE HEADER */}
+
                 <div className="tx-table-head orders-head">
 
-                    <span>Order</span>
+                    <span>
+                        Order
+                    </span>
 
-                    <span>User</span>
+                    <span>
+                        User
+                    </span>
 
-                    <span>Service</span>
+                    <span>
+                        Service
+                    </span>
 
-                    <span>Price</span>
+                    <span>
+                        Price
+                    </span>
 
-                    <span>OTP</span>
+                    <span>
+                        OTP
+                    </span>
 
-                    <span>Status</span>
+                    <span>
+                        Status
+                    </span>
 
-                    <span>Date</span>
+                    <span>
+                        Date
+                    </span>
 
                 </div>
 
+
+                {/* EMPTY */}
 
                 <div className="orders-empty">
 
@@ -844,6 +936,7 @@ const OrdersTable = () => {
                     const otp =
                         getOTP(order);
 
+
                     return (
 
                         <div
@@ -888,8 +981,10 @@ const OrdersTable = () => {
                                     </h4>
 
                                     <p className="user-email">
+
                                         {order.email ||
                                             "—"}
+
                                     </p>
 
                                 </div>
@@ -1022,7 +1117,7 @@ const OrdersTable = () => {
 
                 <div className="tx-pages">
 
-                    {/* Previous */}
+                    {/* PREVIOUS */}
 
                     <button
                         className="prev-btn"
@@ -1039,18 +1134,22 @@ const OrdersTable = () => {
                             )
                         }
                     >
+
                         <FiChevronLeft />
+
                     </button>
 
 
-                    {/* Current Page */}
+                    {/* CURRENT PAGE */}
 
                     <button className="active">
+
                         {pagination.currentPage}
+
                     </button>
 
 
-                    {/* Next */}
+                    {/* NEXT */}
 
                     <button
                         className="next-btn"
@@ -1065,10 +1164,12 @@ const OrdersTable = () => {
                                         prev + 1,
                                         pagination.totalPages
                                     )
-                            )
+                            }
                         }
                     >
+
                         <FiChevronRight />
+
                     </button>
 
                 </div>
