@@ -1,8 +1,161 @@
-// // import React from "react";
-// // import { FiSearch } from "react-icons/fi";
+// // // import React from "react";
+// // // import { FiSearch } from "react-icons/fi";
 
-// // import StatCard from "../components/StatCard";
-// // import TransactionsTable from "../components/TransactionsTable";
+// // // import StatCard from "../components/StatCard";
+// // // import TransactionsTable from "../components/TransactionsTable";
+
+// // // import {
+// // //     FaExchangeAlt,
+// // //     FaCheckCircle,
+// // //     FaClock,
+// // //     FaTimesCircle,
+// // // } from "react-icons/fa";
+
+// // // import "../styles/users.css";
+
+// // // const Transactions = () => {
+// // //     return (
+// // //         <div className="users-page">
+
+// // //             {/* =========================
+// // //                 STATS
+// // //             ========================= */}
+
+// // //             <div className="stats-grid">
+
+// // //                 <StatCard
+// // //                     icon={<FaExchangeAlt />}
+// // //                     title="Total Transactions"
+// // //                     value="8,426"
+// // //                     trend="up"
+// // //                     trendText="16.4% from last month"
+// // //                     color="purple"
+// // //                 />
+
+// // //                 <StatCard
+// // //                     icon={<FaCheckCircle />}
+// // //                     title="Successful"
+// // //                     value="7,684"
+// // //                     trend="up"
+// // //                     trendText="91.2% success rate"
+// // //                     color="green"
+// // //                 />
+
+// // //                 <StatCard
+// // //                     icon={<FaClock />}
+// // //                     title="Pending"
+// // //                     value="184"
+// // //                     trend="up"
+// // //                     trendText="2.2% of transactions"
+// // //                     color="orange"
+// // //                 />
+
+// // //                 <StatCard
+// // //                     icon={<FaTimesCircle />}
+// // //                     title="Failed"
+// // //                     value="558"
+// // //                     trend="down"
+// // //                     trendText="6.6% of transactions"
+// // //                     color="red"
+// // //                 />
+
+// // //             </div>
+
+
+// // //             {/* =========================
+// // //                 FILTERS
+// // //             ========================= */}
+
+// // //             <div className="users-toolbar">
+
+// // //                 {/* Search */}
+
+// // //                 <div className="users-search">
+
+// // //                     <FiSearch />
+
+// // //                     <input
+// // //                         type="text"
+// // //                         placeholder="Search by reference, username or email..."
+// // //                     />
+
+// // //                 </div>
+
+
+// // //                 {/* Filters */}
+
+// // //                 <div className="users-filters">
+
+// // //                     {/* Status */}
+
+// // //                     <div className="select-wrapper">
+
+// // //                         <select>
+// // //                             <option>All Status</option>
+// // //                             <option>Success</option>
+// // //                             <option>Pending</option>
+// // //                             <option>Failed</option>
+// // //                         </select>
+
+// // //                     </div>
+
+
+// // //                     {/* Type */}
+
+// // //                     <div className="select-wrapper">
+
+// // //                         <select>
+// // //                             <option>All Types</option>
+// // //                             <option>Deposit</option>
+// // //                             <option>Purchase</option>
+// // //                             <option>Refund</option>
+// // //                         </select>
+
+// // //                     </div>
+
+
+// // //                     {/* Sort */}
+
+// // //                     <div className="select-wrapper">
+
+// // //                         <select>
+// // //                             <option>Sort By</option>
+// // //                             <option>Newest</option>
+// // //                             <option>Oldest</option>
+// // //                             <option>Highest Amount</option>
+// // //                             <option>Lowest Amount</option>
+// // //                         </select>
+
+// // //                     </div>
+
+// // //                 </div>
+
+// // //             </div>
+
+
+// // //             {/* =========================
+// // //                 TRANSACTIONS TABLE
+// // //             ========================= */}
+
+// // //             <TransactionsTable />
+
+// // //         </div>
+// // //     );
+// // // };
+
+// // // export default Transactions;
+
+// // import React, {
+// //     useCallback,
+// //     useEffect,
+// //     useState,
+// // } from "react";
+
+// // import axios from "axios";
+
+// // import {
+// //     FiSearch,
+// // } from "react-icons/fi";
 
 // // import {
 // //     FaExchangeAlt,
@@ -11,9 +164,436 @@
 // //     FaTimesCircle,
 // // } from "react-icons/fa";
 
+// // import StatCard from "../components/StatCard";
+// // import TransactionsTable from "../components/TransactionsTable";
+
 // // import "../styles/users.css";
 
+
+// // /*
+// // ========================================
+// // API URL
+// // ========================================
+// // */
+
+// // const API_URL =
+// //     process.env.REACT_APP_API_URL;
+
+
+// // /*
+// // ========================================
+// // TRANSACTIONS PER PAGE
+// // ========================================
+// // */
+
+// // const TRANSACTIONS_PER_PAGE = 10;
+
+
+// // /*
+// // ========================================
+// // TRANSACTIONS PAGE
+// // ========================================
+// // */
+
 // // const Transactions = () => {
+
+// //     /*
+// //     ========================================
+// //     STATS
+// //     ========================================
+// //     */
+
+// //     const [stats, setStats] = useState({
+// //         totalTransactions: 0,
+// //         successfulTransactions: 0,
+// //         pendingTransactions: 0,
+// //         failedTransactions: 0,
+
+// //         successRate: 0,
+// //         pendingRate: 0,
+// //         failedRate: 0,
+// //     });
+
+
+// //     /*
+// //     ========================================
+// //     TRANSACTIONS
+// //     ========================================
+// //     */
+
+// //     const [transactions, setTransactions] =
+// //         useState([]);
+
+
+// //     /*
+// //     ========================================
+// //     FILTERS
+// //     ========================================
+// //     */
+
+// //     const [searchTerm, setSearchTerm] =
+// //         useState("");
+
+// //     const [statusFilter, setStatusFilter] =
+// //         useState("all");
+
+// //     const [typeFilter, setTypeFilter] =
+// //         useState("all");
+
+// //     const [sortFilter, setSortFilter] =
+// //         useState("newest");
+
+
+// //     /*
+// //     ========================================
+// //     PAGINATION
+// //     ========================================
+// //     */
+
+// //     const [currentPage, setCurrentPage] =
+// //         useState(1);
+
+// //     const [pagination, setPagination] =
+// //         useState({
+// //             currentPage: 1,
+// //             totalPages: 1,
+// //             totalTransactions: 0,
+// //             limit: TRANSACTIONS_PER_PAGE,
+// //         });
+
+
+// //     /*
+// //     ========================================
+// //     LOADING
+// //     ========================================
+// //     */
+
+// //     const [loadingStats, setLoadingStats] =
+// //         useState(true);
+
+// //     const [loadingTransactions, setLoadingTransactions] =
+// //         useState(true);
+
+
+// //     /*
+// //     ========================================
+// //     ERROR
+// //     ========================================
+// //     */
+
+// //     const [error, setError] =
+// //         useState("");
+
+
+// //     /*
+// //     ========================================
+// //     GET AUTH HEADERS
+// //     ========================================
+// //     */
+
+// //     const getHeaders = () => {
+
+// //         const token =
+// //             localStorage.getItem("adminToken") ||
+// //             localStorage.getItem("token");
+
+// //         return {
+// //             headers: {
+// //                 Authorization:
+// //                     `Bearer ${token}`,
+// //             },
+// //         };
+// //     };
+
+
+// //     /*
+// //     ========================================
+// //     FETCH TRANSACTION STATS
+// //     ========================================
+// //     */
+
+// //     const fetchStats =
+// //         useCallback(async () => {
+
+// //             try {
+
+// //                 setLoadingStats(true);
+
+// //                 const response =
+// //                     await axios.get(
+// //                         `${API_URL}/api/admin/transactions/stats`,
+// //                         getHeaders()
+// //                     );
+
+// //                 if (
+// //                     response.data.success
+// //                 ) {
+
+// //                     setStats(
+// //                         response.data.stats
+// //                     );
+
+// //                 }
+
+// //             } catch (error) {
+
+// //                 console.error(
+// //                     "Failed to fetch transaction stats:",
+// //                     error
+// //                 );
+
+// //             } finally {
+
+// //                 setLoadingStats(false);
+
+// //             }
+
+// //         }, []);
+
+
+// //     /*
+// //     ========================================
+// //     FETCH TRANSACTIONS
+// //     ========================================
+// //     */
+
+// //     const fetchTransactions =
+// //         useCallback(async () => {
+
+// //             try {
+
+// //                 setLoadingTransactions(true);
+
+// //                 setError("");
+
+// //                 const response =
+// //                     await axios.get(
+// //                         `${API_URL}/api/admin/transactions`,
+// //                         {
+// //                             ...getHeaders(),
+
+// //                             params: {
+// //                                 search:
+// //                                     searchTerm,
+
+// //                                 status:
+// //                                     statusFilter,
+
+// //                                 type:
+// //                                     typeFilter,
+
+// //                                 sort:
+// //                                     sortFilter,
+
+// //                                 page:
+// //                                     currentPage,
+
+// //                                 limit:
+// //                                     TRANSACTIONS_PER_PAGE,
+// //                             },
+// //                         }
+// //                     );
+
+
+// //                 if (
+// //                     response.data.success
+// //                 ) {
+
+// //                     setTransactions(
+// //                         response.data.transactions || []
+// //                     );
+
+// //                     setPagination(
+// //                         response.data.pagination || {
+// //                             currentPage: 1,
+// //                             totalPages: 1,
+// //                             totalTransactions: 0,
+// //                             limit:
+// //                                 TRANSACTIONS_PER_PAGE,
+// //                         }
+// //                     );
+
+// //                 } else {
+
+// //                     setError(
+// //                         response.data.message ||
+// //                         "Failed to fetch transactions"
+// //                     );
+
+// //                 }
+
+// //             } catch (error) {
+
+// //                 console.error(
+// //                     "Failed to fetch transactions:",
+// //                     error
+// //                 );
+
+// //                 setError(
+// //                     error.response?.data?.message ||
+// //                     "Failed to fetch transactions"
+// //                 );
+
+// //             } finally {
+
+// //                 setLoadingTransactions(false);
+
+// //             }
+
+// //         }, [
+// //             searchTerm,
+// //             statusFilter,
+// //             typeFilter,
+// //             sortFilter,
+// //             currentPage,
+// //         ]);
+
+
+// //     /*
+// //     ========================================
+// //     INITIAL STATS LOAD
+// //     ========================================
+// //     */
+
+// //     useEffect(() => {
+
+// //         fetchStats();
+
+// //     }, [fetchStats]);
+
+
+// //     /*
+// //     ========================================
+// //     TRANSACTIONS LOAD
+// //     ========================================
+// //     */
+
+// //     useEffect(() => {
+
+// //         fetchTransactions();
+
+// //     }, [fetchTransactions]);
+
+
+// //     /*
+// //     ========================================
+// //     RESET PAGE WHEN FILTER CHANGES
+// //     ========================================
+// //     */
+
+// //     useEffect(() => {
+
+// //         setCurrentPage(1);
+
+// //     }, [
+// //         statusFilter,
+// //         typeFilter,
+// //         sortFilter,
+// //     ]);
+
+
+// //     /*
+// //     ========================================
+// //     SEARCH
+// //     ========================================
+// //     */
+
+// //     const handleSearchChange = (event) => {
+
+// //         setSearchTerm(
+// //             event.target.value
+// //         );
+
+// //         setCurrentPage(1);
+
+// //     };
+
+
+// //     /*
+// //     ========================================
+// //     STATUS FILTER
+// //     ========================================
+// //     */
+
+// //     const handleStatusChange = (event) => {
+
+// //         setStatusFilter(
+// //             event.target.value
+// //         );
+
+// //         setCurrentPage(1);
+
+// //     };
+
+
+// //     /*
+// //     ========================================
+// //     TYPE FILTER
+// //     ========================================
+// //     */
+
+// //     const handleTypeChange = (event) => {
+
+// //         setTypeFilter(
+// //             event.target.value
+// //         );
+
+// //         setCurrentPage(1);
+
+// //     };
+
+
+// //     /*
+// //     ========================================
+// //     SORT
+// //     ========================================
+// //     */
+
+// //     const handleSortChange = (event) => {
+
+// //         setSortFilter(
+// //             event.target.value
+// //         );
+
+// //         setCurrentPage(1);
+
+// //     };
+
+
+// //     /*
+// //     ========================================
+// //     PAGE CHANGE
+// //     ========================================
+// //     */
+
+// //     const handlePageChange = (page) => {
+
+// //         if (
+// //             page < 1 ||
+// //             page > pagination.totalPages
+// //         ) {
+// //             return;
+// //         }
+
+// //         setCurrentPage(page);
+
+// //     };
+
+
+// //     /*
+// //     ========================================
+// //     DOCUMENT TITLE
+// //     ========================================
+// //     */
+
+// //     useEffect(() => {
+
+// //         document.title =
+// //             "Transactions - RealSMS";
+
+// //     }, []);
+
+
 // //     return (
 // //         <div className="users-page">
 
@@ -26,36 +606,61 @@
 // //                 <StatCard
 // //                     icon={<FaExchangeAlt />}
 // //                     title="Total Transactions"
-// //                     value="8,426"
+// //                     value={
+// //                         loadingStats
+// //                             ? "..."
+// //                             : stats.totalTransactions
+// //                     }
 // //                     trend="up"
-// //                     trendText="16.4% from last month"
+// //                     trendText="All transactions"
 // //                     color="purple"
 // //                 />
+
 
 // //                 <StatCard
 // //                     icon={<FaCheckCircle />}
 // //                     title="Successful"
-// //                     value="7,684"
+// //                     value={
+// //                         loadingStats
+// //                             ? "..."
+// //                             : stats.successfulTransactions
+// //                     }
 // //                     trend="up"
-// //                     trendText="91.2% success rate"
+// //                     trendText={
+// //                         `${stats.successRate}% success rate`
+// //                     }
 // //                     color="green"
 // //                 />
+
 
 // //                 <StatCard
 // //                     icon={<FaClock />}
 // //                     title="Pending"
-// //                     value="184"
+// //                     value={
+// //                         loadingStats
+// //                             ? "..."
+// //                             : stats.pendingTransactions
+// //                     }
 // //                     trend="up"
-// //                     trendText="2.2% of transactions"
+// //                     trendText={
+// //                         `${stats.pendingRate}% of transactions`
+// //                     }
 // //                     color="orange"
 // //                 />
+
 
 // //                 <StatCard
 // //                     icon={<FaTimesCircle />}
 // //                     title="Failed"
-// //                     value="558"
+// //                     value={
+// //                         loadingStats
+// //                             ? "..."
+// //                             : stats.failedTransactions
+// //                     }
 // //                     trend="down"
-// //                     trendText="6.6% of transactions"
+// //                     trendText={
+// //                         `${stats.failedRate}% of transactions`
+// //                     }
 // //                     color="red"
 // //                 />
 
@@ -68,7 +673,9 @@
 
 // //             <div className="users-toolbar">
 
-// //                 {/* Search */}
+// //                 {/* =====================
+// //                     SEARCH
+// //                 ===================== */}
 
 // //                 <div className="users-search">
 
@@ -76,54 +683,117 @@
 
 // //                     <input
 // //                         type="text"
+// //                         value={searchTerm}
+// //                         onChange={
+// //                             handleSearchChange
+// //                         }
 // //                         placeholder="Search by reference, username or email..."
 // //                     />
 
 // //                 </div>
 
 
-// //                 {/* Filters */}
+// //                 {/* =====================
+// //                     FILTERS
+// //                 ===================== */}
 
 // //                 <div className="users-filters">
 
-// //                     {/* Status */}
+// //                     {/* STATUS */}
 
 // //                     <div className="select-wrapper">
 
-// //                         <select>
-// //                             <option>All Status</option>
-// //                             <option>Success</option>
-// //                             <option>Pending</option>
-// //                             <option>Failed</option>
+// //                         <select
+// //                             value={statusFilter}
+// //                             onChange={
+// //                                 handleStatusChange
+// //                             }
+// //                         >
+
+// //                             <option value="all">
+// //                                 All Status
+// //                             </option>
+
+// //                             <option value="success">
+// //                                 Success
+// //                             </option>
+
+// //                             <option value="pending">
+// //                                 Pending
+// //                             </option>
+
+// //                             <option value="failed">
+// //                                 Failed
+// //                             </option>
+
 // //                         </select>
 
 // //                     </div>
 
 
-// //                     {/* Type */}
+// //                     {/* TYPE */}
 
 // //                     <div className="select-wrapper">
 
-// //                         <select>
-// //                             <option>All Types</option>
-// //                             <option>Deposit</option>
-// //                             <option>Purchase</option>
-// //                             <option>Refund</option>
+// //                         <select
+// //                             value={typeFilter}
+// //                             onChange={
+// //                                 handleTypeChange
+// //                             }
+// //                         >
+
+// //                             <option value="all">
+// //                                 All Types
+// //                             </option>
+
+// //                             <option value="deposit">
+// //                                 Deposit
+// //                             </option>
+
+// //                             <option value="purchase">
+// //                                 Purchase
+// //                             </option>
+
+// //                             <option value="withdrawal">
+// //                                 Withdrawal
+// //                             </option>
+
+// //                             <option value="refund">
+// //                                 Refund
+// //                             </option>
+
 // //                         </select>
 
 // //                     </div>
 
 
-// //                     {/* Sort */}
+// //                     {/* SORT */}
 
 // //                     <div className="select-wrapper">
 
-// //                         <select>
-// //                             <option>Sort By</option>
-// //                             <option>Newest</option>
-// //                             <option>Oldest</option>
-// //                             <option>Highest Amount</option>
-// //                             <option>Lowest Amount</option>
+// //                         <select
+// //                             value={sortFilter}
+// //                             onChange={
+// //                                 handleSortChange
+// //                             }
+// //                         >
+
+// //                             <option value="newest">
+// //                                 Newest
+// //                             </option>
+
+// //                             <option value="oldest">
+// //                                 Oldest
+// //                             </option>
+
+// //                             <option value="highest">
+// //                                 Highest Amount
+// //                             </option>
+
+// //                             <option value="lowest">
+// //                                 Lowest Amount
+// //                             </option>
+
 // //                         </select>
 
 // //                     </div>
@@ -134,10 +804,80 @@
 
 
 // //             {/* =========================
+// //                 ERROR
+// //             ========================= */}
+
+// //             {error && (
+// //                 <div className="users-error">
+// //                     {error}
+// //                 </div>
+// //             )}
+
+
+// //             {/* =========================
 // //                 TRANSACTIONS TABLE
 // //             ========================= */}
 
-// //             <TransactionsTable />
+// //             <TransactionsTable
+// //                 transactions={
+// //                     transactions
+// //                 }
+// //                 loading={
+// //                     loadingTransactions
+// //                 }
+// //             />
+
+
+// //             {/* =========================
+// //                 PAGINATION
+// //             ========================= */}
+
+// //             {!loadingTransactions &&
+// //                 pagination.totalPages > 1 && (
+
+// //                 <div className="users-pagination">
+
+// //                     <button
+// //                         type="button"
+// //                         disabled={
+// //                             currentPage === 1
+// //                         }
+// //                         onClick={() =>
+// //                             handlePageChange(
+// //                                 currentPage - 1
+// //                             )
+// //                         }
+// //                     >
+// //                         Previous
+// //                     </button>
+
+
+// //                     <span>
+// //                         Page{" "}
+// //                         {pagination.currentPage}
+// //                         {" "}
+// //                         of{" "}
+// //                         {pagination.totalPages}
+// //                     </span>
+
+
+// //                     <button
+// //                         type="button"
+// //                         disabled={
+// //                             currentPage ===
+// //                             pagination.totalPages
+// //                         }
+// //                         onClick={() =>
+// //                             handlePageChange(
+// //                                 currentPage + 1
+// //                             )
+// //                         }
+// //                     >
+// //                         Next
+// //                     </button>
+
+// //                 </div>
+// //             )}
 
 // //         </div>
 // //     );
@@ -152,10 +892,12 @@
 // } from "react";
 
 // import axios from "axios";
+// import { useNavigate } from "react-router-dom";
 
-// import {
-//     FiSearch,
-// } from "react-icons/fi";
+// import { FiSearch } from "react-icons/fi";
+
+// import StatCard from "../components/StatCard";
+// import TransactionsTable from "../components/TransactionsTable";
 
 // import {
 //     FaExchangeAlt,
@@ -163,9 +905,6 @@
 //     FaClock,
 //     FaTimesCircle,
 // } from "react-icons/fa";
-
-// import StatCard from "../components/StatCard";
-// import TransactionsTable from "../components/TransactionsTable";
 
 // import "../styles/users.css";
 
@@ -191,28 +930,48 @@
 
 // /*
 // ========================================
-// TRANSACTIONS PAGE
+// TRANSACTIONS
 // ========================================
 // */
 
 // const Transactions = () => {
 
+//     const navigate = useNavigate();
+
+
 //     /*
 //     ========================================
-//     STATS
+//     TRANSACTION STATS
 //     ========================================
 //     */
 
 //     const [stats, setStats] = useState({
+
 //         totalTransactions: 0,
+
 //         successfulTransactions: 0,
+
 //         pendingTransactions: 0,
+
 //         failedTransactions: 0,
 
 //         successRate: 0,
+
 //         pendingRate: 0,
+
 //         failedRate: 0,
+
 //     });
+
+
+//     /*
+//     ========================================
+//     STATS LOADING
+//     ========================================
+//     */
+
+//     const [statsLoading, setStatsLoading] =
+//         useState(true);
 
 
 //     /*
@@ -227,20 +986,51 @@
 
 //     /*
 //     ========================================
-//     FILTERS
+//     TRANSACTIONS LOADING
 //     ========================================
 //     */
 
-//     const [searchTerm, setSearchTerm] =
+//     const [transactionsLoading, setTransactionsLoading] =
+//         useState(true);
+
+
+//     /*
+//     ========================================
+//     SEARCH
+//     ========================================
+//     */
+
+//     const [search, setSearch] =
 //         useState("");
 
-//     const [statusFilter, setStatusFilter] =
+
+//     /*
+//     ========================================
+//     STATUS
+//     ========================================
+//     */
+
+//     const [status, setStatus] =
 //         useState("all");
 
-//     const [typeFilter, setTypeFilter] =
+
+//     /*
+//     ========================================
+//     TYPE
+//     ========================================
+//     */
+
+//     const [type, setType] =
 //         useState("all");
 
-//     const [sortFilter, setSortFilter] =
+
+//     /*
+//     ========================================
+//     SORT
+//     ========================================
+//     */
+
+//     const [sort, setSort] =
 //         useState("newest");
 
 
@@ -255,24 +1045,17 @@
 
 //     const [pagination, setPagination] =
 //         useState({
+
 //             currentPage: 1,
+
 //             totalPages: 1,
+
 //             totalTransactions: 0,
-//             limit: TRANSACTIONS_PER_PAGE,
+
+//             limit:
+//                 TRANSACTIONS_PER_PAGE,
+
 //         });
-
-
-//     /*
-//     ========================================
-//     LOADING
-//     ========================================
-//     */
-
-//     const [loadingStats, setLoadingStats] =
-//         useState(true);
-
-//     const [loadingTransactions, setLoadingTransactions] =
-//         useState(true);
 
 
 //     /*
@@ -287,23 +1070,50 @@
 
 //     /*
 //     ========================================
-//     GET AUTH HEADERS
+//     GET ADMIN TOKEN
 //     ========================================
 //     */
 
-//     const getHeaders = () => {
+//     const getToken = useCallback(() => {
 
-//         const token =
-//             localStorage.getItem("adminToken") ||
-//             localStorage.getItem("token");
+//         return (
+//             localStorage.getItem(
+//                 "adminToken"
+//             ) ||
+//             localStorage.getItem(
+//                 "token"
+//             )
+//         );
 
-//         return {
-//             headers: {
-//                 Authorization:
-//                     `Bearer ${token}`,
-//             },
-//         };
-//     };
+//     }, []);
+
+
+//     /*
+//     ========================================
+//     HANDLE UNAUTHORIZED
+//     ========================================
+//     */
+
+//     const handleUnauthorized =
+//         useCallback(() => {
+
+//             localStorage.removeItem(
+//                 "adminToken"
+//             );
+
+//             localStorage.removeItem(
+//                 "token"
+//             );
+
+//             localStorage.removeItem(
+//                 "user"
+//             );
+
+//             navigate("/login", {
+//                 replace: true,
+//             });
+
+//         }, [navigate]);
 
 
 //     /*
@@ -312,43 +1122,134 @@
 //     ========================================
 //     */
 
-//     const fetchStats =
-//         useCallback(async () => {
+//     const fetchTransactionStats =
+//         useCallback(
+//             async () => {
 
-//             try {
+//                 try {
 
-//                 setLoadingStats(true);
+//                     setStatsLoading(true);
 
-//                 const response =
-//                     await axios.get(
-//                         `${API_URL}/api/admin/transactions/stats`,
-//                         getHeaders()
+
+//                     /*
+//                     ================================
+//                     GET TOKEN
+//                     ================================
+//                     */
+
+//                     const token =
+//                         getToken();
+
+
+//                     /*
+//                     ================================
+//                     NO TOKEN
+//                     ================================
+//                     */
+
+//                     if (!token) {
+
+//                         handleUnauthorized();
+
+//                         return;
+
+//                     }
+
+
+//                     /*
+//                     ================================
+//                     API REQUEST
+//                     ================================
+//                     */
+
+//                     const response =
+//                         await axios.get(
+//                             `${API_URL}/api/admin/transactions/stats`,
+//                             {
+//                                 timeout: 15000,
+
+//                                 headers: {
+
+//                                     Authorization:
+//                                         `Bearer ${token}`,
+
+//                                 },
+
+//                             }
+//                         );
+
+
+//                     /*
+//                     ================================
+//                     SUCCESS
+//                     ================================
+//                     */
+
+//                     if (
+//                         response.data.success
+//                     ) {
+
+//                         setStats(
+//                             response.data.stats
+//                         );
+
+//                     }
+
+//                 } catch (error) {
+
+//                     console.error(
+//                         "Failed to fetch transaction stats:",
+//                         error
 //                     );
 
-//                 if (
-//                     response.data.success
-//                 ) {
 
-//                     setStats(
-//                         response.data.stats
-//                     );
+//                     /*
+//                     ================================
+//                     SESSION EXPIRED
+//                     ================================
+//                     */
+
+//                     if (
+//                         error.response?.status ===
+//                         401
+//                     ) {
+
+//                         handleUnauthorized();
+
+//                         return;
+
+//                     }
+
+
+//                     /*
+//                     ================================
+//                     TIMEOUT
+//                     ================================
+//                     */
+
+//                     if (
+//                         error.code ===
+//                         "ECONNABORTED"
+//                     ) {
+
+//                         console.error(
+//                             "Transaction stats request timed out."
+//                         );
+
+//                     }
+
+//                 } finally {
+
+//                     setStatsLoading(false);
 
 //                 }
 
-//             } catch (error) {
-
-//                 console.error(
-//                     "Failed to fetch transaction stats:",
-//                     error
-//                 );
-
-//             } finally {
-
-//                 setLoadingStats(false);
-
-//             }
-
-//         }, []);
+//             },
+//             [
+//                 getToken,
+//                 handleUnauthorized,
+//             ]
+//         );
 
 
 //     /*
@@ -358,108 +1259,209 @@
 //     */
 
 //     const fetchTransactions =
-//         useCallback(async () => {
+//         useCallback(
+//             async () => {
 
-//             try {
+//                 try {
 
-//                 setLoadingTransactions(true);
+//                     setTransactionsLoading(
+//                         true
+//                     );
 
-//                 setError("");
+//                     setError("");
 
-//                 const response =
-//                     await axios.get(
-//                         `${API_URL}/api/admin/transactions`,
-//                         {
-//                             ...getHeaders(),
 
-//                             params: {
-//                                 search:
-//                                     searchTerm,
+//                     /*
+//                     ================================
+//                     GET TOKEN
+//                     ================================
+//                     */
 
-//                                 status:
-//                                     statusFilter,
+//                     const token =
+//                         getToken();
 
-//                                 type:
-//                                     typeFilter,
 
-//                                 sort:
-//                                     sortFilter,
+//                     /*
+//                     ================================
+//                     NO TOKEN
+//                     ================================
+//                     */
 
-//                                 page:
-//                                     currentPage,
+//                     if (!token) {
+
+//                         handleUnauthorized();
+
+//                         return;
+
+//                     }
+
+
+//                     /*
+//                     ================================
+//                     API REQUEST
+//                     ================================
+//                     */
+
+//                     const response =
+//                         await axios.get(
+//                             `${API_URL}/api/admin/transactions`,
+//                             {
+//                                 timeout: 15000,
+
+//                                 headers: {
+
+//                                     Authorization:
+//                                         `Bearer ${token}`,
+
+//                                 },
+
+//                                 params: {
+
+//                                     search,
+
+//                                     status,
+
+//                                     type,
+
+//                                     sort,
+
+//                                     page:
+//                                         currentPage,
+
+//                                     limit:
+//                                         TRANSACTIONS_PER_PAGE,
+
+//                                 },
+
+//                             }
+//                         );
+
+
+//                     /*
+//                     ================================
+//                     SUCCESS
+//                     ================================
+//                     */
+
+//                     if (
+//                         response.data.success
+//                     ) {
+
+//                         setTransactions(
+//                             response.data.transactions ||
+//                             []
+//                         );
+
+//                         setPagination(
+//                             response.data.pagination ||
+//                             {
+//                                 currentPage: 1,
+
+//                                 totalPages: 1,
+
+//                                 totalTransactions: 0,
 
 //                                 limit:
 //                                     TRANSACTIONS_PER_PAGE,
-//                             },
-//                         }
+//                             }
+//                         );
+
+//                     } else {
+
+//                         setError(
+//                             response.data.message ||
+//                             "Failed to fetch transactions"
+//                         );
+
+//                     }
+
+//                 } catch (error) {
+
+//                     console.error(
+//                         "Failed to fetch transactions:",
+//                         error
 //                     );
 
 
-//                 if (
-//                     response.data.success
-//                 ) {
+//                     /*
+//                     ================================
+//                     SESSION EXPIRED
+//                     ================================
+//                     */
 
-//                     setTransactions(
-//                         response.data.transactions || []
-//                     );
+//                     if (
+//                         error.response?.status ===
+//                         401
+//                     ) {
 
-//                     setPagination(
-//                         response.data.pagination || {
-//                             currentPage: 1,
-//                             totalPages: 1,
-//                             totalTransactions: 0,
-//                             limit:
-//                                 TRANSACTIONS_PER_PAGE,
-//                         }
-//                     );
+//                         handleUnauthorized();
 
-//                 } else {
+//                         return;
 
-//                     setError(
-//                         response.data.message ||
-//                         "Failed to fetch transactions"
+//                     }
+
+
+//                     /*
+//                     ================================
+//                     TIMEOUT
+//                     ================================
+//                     */
+
+//                     if (
+//                         error.code ===
+//                         "ECONNABORTED"
+//                     ) {
+
+//                         setError(
+//                             "Transaction request timed out. Please try again."
+//                         );
+
+//                     } else {
+
+//                         setError(
+//                             error.response?.data?.message ||
+//                             "Failed to fetch transactions"
+//                         );
+
+//                     }
+
+//                 } finally {
+
+//                     setTransactionsLoading(
+//                         false
 //                     );
 
 //                 }
 
-//             } catch (error) {
-
-//                 console.error(
-//                     "Failed to fetch transactions:",
-//                     error
-//                 );
-
-//                 setError(
-//                     error.response?.data?.message ||
-//                     "Failed to fetch transactions"
-//                 );
-
-//             } finally {
-
-//                 setLoadingTransactions(false);
-
-//             }
-
-//         }, [
-//             searchTerm,
-//             statusFilter,
-//             typeFilter,
-//             sortFilter,
-//             currentPage,
-//         ]);
+//             },
+//             [
+//                 getToken,
+//                 handleUnauthorized,
+//                 search,
+//                 status,
+//                 type,
+//                 sort,
+//                 currentPage,
+//             ]
+//         );
 
 
 //     /*
 //     ========================================
-//     INITIAL STATS LOAD
+//     INITIAL LOAD
 //     ========================================
 //     */
 
 //     useEffect(() => {
 
-//         fetchStats();
+//         document.title =
+//             "Transactions - Numio";
 
-//     }, [fetchStats]);
+//         fetchTransactionStats();
+
+//     }, [
+//         fetchTransactionStats,
+//     ]);
 
 
 //     /*
@@ -472,90 +1474,110 @@
 
 //         fetchTransactions();
 
-//     }, [fetchTransactions]);
-
-
-//     /*
-//     ========================================
-//     RESET PAGE WHEN FILTER CHANGES
-//     ========================================
-//     */
-
-//     useEffect(() => {
-
-//         setCurrentPage(1);
-
 //     }, [
-//         statusFilter,
-//         typeFilter,
-//         sortFilter,
+//         fetchTransactions,
 //     ]);
 
 
 //     /*
 //     ========================================
-//     SEARCH
+//     REFRESH WHEN TAB BECOMES VISIBLE
 //     ========================================
 //     */
 
-//     const handleSearchChange = (event) => {
+//     useEffect(() => {
 
-//         setSearchTerm(
-//             event.target.value
+//         const handleVisibilityChange =
+//             () => {
+
+//                 if (
+//                     document.visibilityState ===
+//                     "visible"
+//                 ) {
+
+//                     fetchTransactionStats();
+
+//                     fetchTransactions();
+
+//                 }
+
+//             };
+
+
+//         document.addEventListener(
+//             "visibilitychange",
+//             handleVisibilityChange
 //         );
 
-//         setCurrentPage(1);
 
-//     };
+//         return () => {
+
+//             document.removeEventListener(
+//                 "visibilitychange",
+//                 handleVisibilityChange
+//             );
+
+//         };
+
+//     }, [
+//         fetchTransactionStats,
+//         fetchTransactions,
+//     ]);
 
 
 //     /*
 //     ========================================
-//     STATUS FILTER
+//     REFRESH WHEN WINDOW GETS FOCUS
 //     ========================================
 //     */
 
-//     const handleStatusChange = (event) => {
+//     useEffect(() => {
 
-//         setStatusFilter(
-//             event.target.value
+//         const handleFocus = () => {
+
+//             fetchTransactionStats();
+
+//             fetchTransactions();
+
+//         };
+
+
+//         window.addEventListener(
+//             "focus",
+//             handleFocus
 //         );
 
-//         setCurrentPage(1);
 
-//     };
+//         return () => {
+
+//             window.removeEventListener(
+//                 "focus",
+//                 handleFocus
+//             );
+
+//         };
+
+//     }, [
+//         fetchTransactionStats,
+//         fetchTransactions,
+//     ]);
 
 
 //     /*
 //     ========================================
-//     TYPE FILTER
+//     FORMAT NUMBER
 //     ========================================
 //     */
 
-//     const handleTypeChange = (event) => {
+//     const formatNumber = (
+//         value
+//     ) => {
 
-//         setTypeFilter(
-//             event.target.value
+//         return Number(
+//             value || 0
+//         ).toLocaleString(
+//             "en-US"
 //         );
-
-//         setCurrentPage(1);
-
-//     };
-
-
-//     /*
-//     ========================================
-//     SORT
-//     ========================================
-//     */
-
-//     const handleSortChange = (event) => {
-
-//         setSortFilter(
-//             event.target.value
-//         );
-
-//         setCurrentPage(1);
 
 //     };
 
@@ -566,7 +1588,9 @@
 //     ========================================
 //     */
 
-//     const handlePageChange = (page) => {
+//     const handlePageChange = (
+//         page
+//     ) => {
 
 //         if (
 //             page < 1 ||
@@ -582,132 +1606,321 @@
 
 //     /*
 //     ========================================
-//     DOCUMENT TITLE
+//     RENDER
 //     ========================================
 //     */
 
-//     useEffect(() => {
-
-//         document.title =
-//             "Transactions - RealSMS";
-
-//     }, []);
-
-
 //     return (
+
 //         <div className="users-page">
 
-//             {/* =========================
+
+//             {/* ========================================
 //                 STATS
-//             ========================= */}
+//             ======================================== */}
 
 //             <div className="stats-grid">
 
-//                 <StatCard
-//                     icon={<FaExchangeAlt />}
-//                     title="Total Transactions"
-//                     value={
-//                         loadingStats
-//                             ? "..."
-//                             : stats.totalTransactions
-//                     }
-//                     trend="up"
-//                     trendText="All transactions"
-//                     color="purple"
-//                 />
+
+//                 {statsLoading ? (
+
+//                     <>
+
+//                         {/* ====================================
+//                             TOTAL TRANSACTIONS SKELETON
+//                         ==================================== */}
+
+//                         <div className="stat-card admin-stat-skeleton">
+
+//                             <div className="admin-skeleton-icon"></div>
+
+//                             <div className="stats-details">
+
+//                                 <div className="admin-skeleton-title"></div>
+
+//                                 <div className="admin-skeleton-value"></div>
+
+//                                 <div className="admin-skeleton-trend"></div>
+
+//                             </div>
+
+//                         </div>
 
 
-//                 <StatCard
-//                     icon={<FaCheckCircle />}
-//                     title="Successful"
-//                     value={
-//                         loadingStats
-//                             ? "..."
-//                             : stats.successfulTransactions
-//                     }
-//                     trend="up"
-//                     trendText={
-//                         `${stats.successRate}% success rate`
-//                     }
-//                     color="green"
-//                 />
+//                         {/* ====================================
+//                             SUCCESSFUL TRANSACTIONS SKELETON
+//                         ==================================== */}
+
+//                         <div className="stat-card admin-stat-skeleton">
+
+//                             <div className="admin-skeleton-icon"></div>
+
+//                             <div className="stats-details">
+
+//                                 <div className="admin-skeleton-title"></div>
+
+//                                 <div className="admin-skeleton-value"></div>
+
+//                                 <div className="admin-skeleton-trend"></div>
+
+//                             </div>
+
+//                         </div>
 
 
-//                 <StatCard
-//                     icon={<FaClock />}
-//                     title="Pending"
-//                     value={
-//                         loadingStats
-//                             ? "..."
-//                             : stats.pendingTransactions
-//                     }
-//                     trend="up"
-//                     trendText={
-//                         `${stats.pendingRate}% of transactions`
-//                     }
-//                     color="orange"
-//                 />
+//                         {/* ====================================
+//                             PENDING TRANSACTIONS SKELETON
+//                         ==================================== */}
+
+//                         <div className="stat-card admin-stat-skeleton">
+
+//                             <div className="admin-skeleton-icon"></div>
+
+//                             <div className="stats-details">
+
+//                                 <div className="admin-skeleton-title"></div>
+
+//                                 <div className="admin-skeleton-value"></div>
+
+//                                 <div className="admin-skeleton-trend"></div>
+
+//                             </div>
+
+//                         </div>
 
 
-//                 <StatCard
-//                     icon={<FaTimesCircle />}
-//                     title="Failed"
-//                     value={
-//                         loadingStats
-//                             ? "..."
-//                             : stats.failedTransactions
-//                     }
-//                     trend="down"
-//                     trendText={
-//                         `${stats.failedRate}% of transactions`
-//                     }
-//                     color="red"
-//                 />
+//                         {/* ====================================
+//                             FAILED TRANSACTIONS SKELETON
+//                         ==================================== */}
+
+//                         <div className="stat-card admin-stat-skeleton">
+
+//                             <div className="admin-skeleton-icon"></div>
+
+//                             <div className="stats-details">
+
+//                                 <div className="admin-skeleton-title"></div>
+
+//                                 <div className="admin-skeleton-value"></div>
+
+//                                 <div className="admin-skeleton-trend"></div>
+
+//                             </div>
+
+//                         </div>
+
+//                     </>
+
+//                 ) : (
+
+//                     <>
+
+
+//                         {/* ====================================
+//                             TOTAL TRANSACTIONS
+//                         ==================================== */}
+
+//                         <StatCard
+
+//                             icon={
+//                                 <FaExchangeAlt />
+//                             }
+
+//                             title="Total Transactions"
+
+//                             value={
+//                                 formatNumber(
+//                                     stats.totalTransactions
+//                                 )
+//                             }
+
+//                             trend={
+//                                 stats.totalTransactions > 0
+//                                     ? "up"
+//                                     : "down"
+//                             }
+
+//                             trendText="All transactions"
+
+//                             color="purple"
+
+//                         />
+
+
+//                         {/* ====================================
+//                             SUCCESSFUL
+//                         ==================================== */}
+
+//                         <StatCard
+
+//                             icon={
+//                                 <FaCheckCircle />
+//                             }
+
+//                             title="Successful"
+
+//                             value={
+//                                 formatNumber(
+//                                     stats.successfulTransactions
+//                                 )
+//                             }
+
+//                             trend={
+//                                 stats.successfulTransactions > 0
+//                                     ? "up"
+//                                     : "down"
+//                             }
+
+//                             trendText={
+//                                 `${stats.successRate || 0}% success rate`
+//                             }
+
+//                             color="green"
+
+//                         />
+
+
+//                         {/* ====================================
+//                             PENDING
+//                         ==================================== */}
+
+//                         <StatCard
+
+//                             icon={
+//                                 <FaClock />
+//                             }
+
+//                             title="Pending"
+
+//                             value={
+//                                 formatNumber(
+//                                     stats.pendingTransactions
+//                                 )
+//                             }
+
+//                             trend={
+//                                 stats.pendingTransactions > 0
+//                                     ? "up"
+//                                     : "down"
+//                             }
+
+//                             trendText={
+//                                 `${stats.pendingRate || 0}% of transactions`
+//                             }
+
+//                             color="orange"
+
+//                         />
+
+
+//                         {/* ====================================
+//                             FAILED
+//                         ==================================== */}
+
+//                         <StatCard
+
+//                             icon={
+//                                 <FaTimesCircle />
+//                             }
+
+//                             title="Failed"
+
+//                             value={
+//                                 formatNumber(
+//                                     stats.failedTransactions
+//                                 )
+//                             }
+
+//                             trend={
+//                                 stats.failedTransactions > 0
+//                                     ? "down"
+//                                     : "up"
+//                             }
+
+//                             trendText={
+//                                 `${stats.failedRate || 0}% of transactions`
+//                             }
+
+//                             color="red"
+
+//                         />
+
+//                     </>
+
+//                 )}
 
 //             </div>
 
 
-//             {/* =========================
+//             {/* ========================================
 //                 FILTERS
-//             ========================= */}
+//             ======================================== */}
 
 //             <div className="users-toolbar">
 
-//                 {/* =====================
+
+//                 {/* ====================================
 //                     SEARCH
-//                 ===================== */}
+//                 ==================================== */}
 
 //                 <div className="users-search">
 
 //                     <FiSearch />
 
 //                     <input
+
 //                         type="text"
-//                         value={searchTerm}
-//                         onChange={
-//                             handleSearchChange
+
+//                         value={
+//                             search
 //                         }
+
+//                         onChange={(event) => {
+
+//                             setSearch(
+//                                 event.target.value
+//                             );
+
+//                             setCurrentPage(1);
+
+//                         }}
+
 //                         placeholder="Search by reference, username or email..."
+
 //                     />
 
 //                 </div>
 
 
-//                 {/* =====================
+//                 {/* ====================================
 //                     FILTERS
-//                 ===================== */}
+//                 ==================================== */}
 
 //                 <div className="users-filters">
 
-//                     {/* STATUS */}
+
+//                     {/* ==================================
+//                         STATUS
+//                     ================================== */}
 
 //                     <div className="select-wrapper">
 
 //                         <select
-//                             value={statusFilter}
-//                             onChange={
-//                                 handleStatusChange
+
+//                             value={
+//                                 status
 //                             }
+
+//                             onChange={(event) => {
+
+//                                 setStatus(
+//                                     event.target.value
+//                                 );
+
+//                                 setCurrentPage(1);
+
+//                             }}
+
 //                         >
 
 //                             <option value="all">
@@ -731,15 +1944,28 @@
 //                     </div>
 
 
-//                     {/* TYPE */}
+//                     {/* ==================================
+//                         TYPE
+//                     ================================== */}
 
 //                     <div className="select-wrapper">
 
 //                         <select
-//                             value={typeFilter}
-//                             onChange={
-//                                 handleTypeChange
+
+//                             value={
+//                                 type
 //                             }
+
+//                             onChange={(event) => {
+
+//                                 setType(
+//                                     event.target.value
+//                                 );
+
+//                                 setCurrentPage(1);
+
+//                             }}
+
 //                         >
 
 //                             <option value="all">
@@ -767,15 +1993,28 @@
 //                     </div>
 
 
-//                     {/* SORT */}
+//                     {/* ==================================
+//                         SORT
+//                     ================================== */}
 
 //                     <div className="select-wrapper">
 
 //                         <select
-//                             value={sortFilter}
-//                             onChange={
-//                                 handleSortChange
+
+//                             value={
+//                                 sort
 //                             }
+
+//                             onChange={(event) => {
+
+//                                 setSort(
+//                                     event.target.value
+//                                 );
+
+//                                 setCurrentPage(1);
+
+//                             }}
+
 //                         >
 
 //                             <option value="newest">
@@ -803,87 +2042,117 @@
 //             </div>
 
 
-//             {/* =========================
+//             {/* ========================================
 //                 ERROR
-//             ========================= */}
+//             ======================================== */}
 
 //             {error && (
+
 //                 <div className="users-error">
+
 //                     {error}
+
 //                 </div>
+
 //             )}
 
 
-//             {/* =========================
+//             {/* ========================================
 //                 TRANSACTIONS TABLE
-//             ========================= */}
+//             ======================================== */}
 
 //             <TransactionsTable
+
 //                 transactions={
 //                     transactions
 //                 }
+
 //                 loading={
-//                     loadingTransactions
+//                     transactionsLoading
 //                 }
+
 //             />
 
 
-//             {/* =========================
+//             {/* ========================================
 //                 PAGINATION
-//             ========================= */}
+//             ======================================== */}
 
-//             {!loadingTransactions &&
+//             {!transactionsLoading &&
 //                 pagination.totalPages > 1 && (
 
-//                 <div className="users-pagination">
+//                     <div className="users-pagination">
 
-//                     <button
-//                         type="button"
-//                         disabled={
-//                             currentPage === 1
-//                         }
-//                         onClick={() =>
-//                             handlePageChange(
-//                                 currentPage - 1
-//                             )
-//                         }
-//                     >
-//                         Previous
-//                     </button>
+//                         <button
 
+//                             type="button"
 
-//                     <span>
-//                         Page{" "}
-//                         {pagination.currentPage}
-//                         {" "}
-//                         of{" "}
-//                         {pagination.totalPages}
-//                     </span>
+//                             disabled={
+//                                 currentPage === 1
+//                             }
+
+//                             onClick={() =>
+//                                 handlePageChange(
+//                                     currentPage - 1
+//                                 )
+//                             }
+
+//                         >
+//                             Previous
+
+//                         </button>
 
 
-//                     <button
-//                         type="button"
-//                         disabled={
-//                             currentPage ===
-//                             pagination.totalPages
-//                         }
-//                         onClick={() =>
-//                             handlePageChange(
-//                                 currentPage + 1
-//                             )
-//                         }
-//                     >
-//                         Next
-//                     </button>
+//                         <span>
 
-//                 </div>
-//             )}
+//                             Page{" "}
+
+//                             {
+//                                 pagination.currentPage
+//                             }
+
+//                             {" "}of{" "}
+
+//                             {
+//                                 pagination.totalPages
+//                             }
+
+//                         </span>
+
+
+//                         <button
+
+//                             type="button"
+
+//                             disabled={
+//                                 currentPage ===
+//                                 pagination.totalPages
+//                             }
+
+//                             onClick={() =>
+//                                 handlePageChange(
+//                                     currentPage + 1
+//                                 )
+//                             }
+
+//                         >
+//                             Next
+
+//                         </button>
+
+//                     </div>
+
+//                 )}
 
 //         </div>
+
 //     );
+
 // };
 
+
 // export default Transactions;
+
 
 import React, {
     useCallback,
@@ -917,15 +2186,6 @@ API URL
 
 const API_URL =
     process.env.REACT_APP_API_URL;
-
-
-/*
-========================================
-TRANSACTIONS PER PAGE
-========================================
-*/
-
-const TRANSACTIONS_PER_PAGE = 10;
 
 
 /*
@@ -1036,30 +2296,6 @@ const Transactions = () => {
 
     /*
     ========================================
-    PAGINATION
-    ========================================
-    */
-
-    const [currentPage, setCurrentPage] =
-        useState(1);
-
-    const [pagination, setPagination] =
-        useState({
-
-            currentPage: 1,
-
-            totalPages: 1,
-
-            totalTransactions: 0,
-
-            limit:
-                TRANSACTIONS_PER_PAGE,
-
-        });
-
-
-    /*
-    ========================================
     ERROR
     ========================================
     */
@@ -1131,21 +2367,9 @@ const Transactions = () => {
                     setStatsLoading(true);
 
 
-                    /*
-                    ================================
-                    GET TOKEN
-                    ================================
-                    */
-
                     const token =
                         getToken();
 
-
-                    /*
-                    ================================
-                    NO TOKEN
-                    ================================
-                    */
 
                     if (!token) {
 
@@ -1156,12 +2380,6 @@ const Transactions = () => {
                     }
 
 
-                    /*
-                    ================================
-                    API REQUEST
-                    ================================
-                    */
-
                     const response =
                         await axios.get(
                             `${API_URL}/api/admin/transactions/stats`,
@@ -1169,21 +2387,12 @@ const Transactions = () => {
                                 timeout: 15000,
 
                                 headers: {
-
                                     Authorization:
                                         `Bearer ${token}`,
-
                                 },
-
                             }
                         );
 
-
-                    /*
-                    ================================
-                    SUCCESS
-                    ================================
-                    */
 
                     if (
                         response.data.success
@@ -1203,12 +2412,6 @@ const Transactions = () => {
                     );
 
 
-                    /*
-                    ================================
-                    SESSION EXPIRED
-                    ================================
-                    */
-
                     if (
                         error.response?.status ===
                         401
@@ -1220,12 +2423,6 @@ const Transactions = () => {
 
                     }
 
-
-                    /*
-                    ================================
-                    TIMEOUT
-                    ================================
-                    */
 
                     if (
                         error.code ===
@@ -1271,21 +2468,9 @@ const Transactions = () => {
                     setError("");
 
 
-                    /*
-                    ================================
-                    GET TOKEN
-                    ================================
-                    */
-
                     const token =
                         getToken();
 
-
-                    /*
-                    ================================
-                    NO TOKEN
-                    ================================
-                    */
 
                     if (!token) {
 
@@ -1295,12 +2480,6 @@ const Transactions = () => {
 
                     }
 
-
-                    /*
-                    ================================
-                    API REQUEST
-                    ================================
-                    */
 
                     const response =
                         await axios.get(
@@ -1325,23 +2504,11 @@ const Transactions = () => {
 
                                     sort,
 
-                                    page:
-                                        currentPage,
-
-                                    limit:
-                                        TRANSACTIONS_PER_PAGE,
-
                                 },
 
                             }
                         );
 
-
-                    /*
-                    ================================
-                    SUCCESS
-                    ================================
-                    */
 
                     if (
                         response.data.success
@@ -1350,20 +2517,6 @@ const Transactions = () => {
                         setTransactions(
                             response.data.transactions ||
                             []
-                        );
-
-                        setPagination(
-                            response.data.pagination ||
-                            {
-                                currentPage: 1,
-
-                                totalPages: 1,
-
-                                totalTransactions: 0,
-
-                                limit:
-                                    TRANSACTIONS_PER_PAGE,
-                            }
                         );
 
                     } else {
@@ -1383,12 +2536,6 @@ const Transactions = () => {
                     );
 
 
-                    /*
-                    ================================
-                    SESSION EXPIRED
-                    ================================
-                    */
-
                     if (
                         error.response?.status ===
                         401
@@ -1400,12 +2547,6 @@ const Transactions = () => {
 
                     }
 
-
-                    /*
-                    ================================
-                    TIMEOUT
-                    ================================
-                    */
 
                     if (
                         error.code ===
@@ -1441,7 +2582,6 @@ const Transactions = () => {
                 status,
                 type,
                 sort,
-                currentPage,
             ]
         );
 
@@ -1584,28 +2724,6 @@ const Transactions = () => {
 
     /*
     ========================================
-    PAGE CHANGE
-    ========================================
-    */
-
-    const handlePageChange = (
-        page
-    ) => {
-
-        if (
-            page < 1 ||
-            page > pagination.totalPages
-        ) {
-            return;
-        }
-
-        setCurrentPage(page);
-
-    };
-
-
-    /*
-    ========================================
     RENDER
     ========================================
     */
@@ -1621,14 +2739,26 @@ const Transactions = () => {
 
             <div className="stats-grid">
 
-
                 {statsLoading ? (
 
                     <>
 
-                        {/* ====================================
-                            TOTAL TRANSACTIONS SKELETON
-                        ==================================== */}
+                        <div className="stat-card admin-stat-skeleton">
+
+                            <div className="admin-skeleton-icon"></div>
+
+                            <div className="stats-details">
+
+                                <div className="admin-skeleton-title"></div>
+
+                                <div className="admin-skeleton-value"></div>
+
+                                <div className="admin-skeleton-trend"></div>
+
+                            </div>
+
+                        </div>
+
 
                         <div className="stat-card admin-stat-skeleton">
 
@@ -1647,10 +2777,6 @@ const Transactions = () => {
                         </div>
 
 
-                        {/* ====================================
-                            SUCCESSFUL TRANSACTIONS SKELETON
-                        ==================================== */}
-
                         <div className="stat-card admin-stat-skeleton">
 
                             <div className="admin-skeleton-icon"></div>
@@ -1667,31 +2793,6 @@ const Transactions = () => {
 
                         </div>
 
-
-                        {/* ====================================
-                            PENDING TRANSACTIONS SKELETON
-                        ==================================== */}
-
-                        <div className="stat-card admin-stat-skeleton">
-
-                            <div className="admin-skeleton-icon"></div>
-
-                            <div className="stats-details">
-
-                                <div className="admin-skeleton-title"></div>
-
-                                <div className="admin-skeleton-value"></div>
-
-                                <div className="admin-skeleton-trend"></div>
-
-                            </div>
-
-                        </div>
-
-
-                        {/* ====================================
-                            FAILED TRANSACTIONS SKELETON
-                        ==================================== */}
 
                         <div className="stat-card admin-stat-skeleton">
 
@@ -1715,134 +2816,73 @@ const Transactions = () => {
 
                     <>
 
-
-                        {/* ====================================
-                            TOTAL TRANSACTIONS
-                        ==================================== */}
-
                         <StatCard
-
-                            icon={
-                                <FaExchangeAlt />
-                            }
-
+                            icon={<FaExchangeAlt />}
                             title="Total Transactions"
-
-                            value={
-                                formatNumber(
-                                    stats.totalTransactions
-                                )
-                            }
-
+                            value={formatNumber(
+                                stats.totalTransactions
+                            )}
                             trend={
                                 stats.totalTransactions > 0
                                     ? "up"
                                     : "down"
                             }
-
                             trendText="All transactions"
-
                             color="purple"
-
                         />
 
 
-                        {/* ====================================
-                            SUCCESSFUL
-                        ==================================== */}
-
                         <StatCard
-
-                            icon={
-                                <FaCheckCircle />
-                            }
-
+                            icon={<FaCheckCircle />}
                             title="Successful"
-
-                            value={
-                                formatNumber(
-                                    stats.successfulTransactions
-                                )
-                            }
-
+                            value={formatNumber(
+                                stats.successfulTransactions
+                            )}
                             trend={
                                 stats.successfulTransactions > 0
                                     ? "up"
                                     : "down"
                             }
-
                             trendText={
                                 `${stats.successRate || 0}% success rate`
                             }
-
                             color="green"
-
                         />
 
 
-                        {/* ====================================
-                            PENDING
-                        ==================================== */}
-
                         <StatCard
-
-                            icon={
-                                <FaClock />
-                            }
-
+                            icon={<FaClock />}
                             title="Pending"
-
-                            value={
-                                formatNumber(
-                                    stats.pendingTransactions
-                                )
-                            }
-
+                            value={formatNumber(
+                                stats.pendingTransactions
+                            )}
                             trend={
                                 stats.pendingTransactions > 0
                                     ? "up"
                                     : "down"
                             }
-
                             trendText={
                                 `${stats.pendingRate || 0}% of transactions`
                             }
-
                             color="orange"
-
                         />
 
 
-                        {/* ====================================
-                            FAILED
-                        ==================================== */}
-
                         <StatCard
-
-                            icon={
-                                <FaTimesCircle />
-                            }
-
+                            icon={<FaTimesCircle />}
                             title="Failed"
-
-                            value={
-                                formatNumber(
-                                    stats.failedTransactions
-                                )
-                            }
-
+                            value={formatNumber(
+                                stats.failedTransactions
+                            )}
                             trend={
                                 stats.failedTransactions > 0
                                     ? "down"
                                     : "up"
                             }
-
                             trendText={
                                 `${stats.failedRate || 0}% of transactions`
                             }
-
                             color="red"
-
                         />
 
                     </>
@@ -1858,69 +2898,35 @@ const Transactions = () => {
 
             <div className="users-toolbar">
 
-
-                {/* ====================================
-                    SEARCH
-                ==================================== */}
-
                 <div className="users-search">
 
                     <FiSearch />
 
                     <input
-
                         type="text"
-
-                        value={
-                            search
-                        }
-
+                        value={search}
                         onChange={(event) => {
-
                             setSearch(
                                 event.target.value
                             );
-
-                            setCurrentPage(1);
-
                         }}
-
                         placeholder="Search by reference, username or email..."
-
                     />
 
                 </div>
 
 
-                {/* ====================================
-                    FILTERS
-                ==================================== */}
-
                 <div className="users-filters">
-
-
-                    {/* ==================================
-                        STATUS
-                    ================================== */}
 
                     <div className="select-wrapper">
 
                         <select
-
-                            value={
-                                status
-                            }
-
+                            value={status}
                             onChange={(event) => {
-
                                 setStatus(
                                     event.target.value
                                 );
-
-                                setCurrentPage(1);
-
                             }}
-
                         >
 
                             <option value="all">
@@ -1944,28 +2950,15 @@ const Transactions = () => {
                     </div>
 
 
-                    {/* ==================================
-                        TYPE
-                    ================================== */}
-
                     <div className="select-wrapper">
 
                         <select
-
-                            value={
-                                type
-                            }
-
+                            value={type}
                             onChange={(event) => {
-
                                 setType(
                                     event.target.value
                                 );
-
-                                setCurrentPage(1);
-
                             }}
-
                         >
 
                             <option value="all">
@@ -1993,28 +2986,15 @@ const Transactions = () => {
                     </div>
 
 
-                    {/* ==================================
-                        SORT
-                    ================================== */}
-
                     <div className="select-wrapper">
 
                         <select
-
-                            value={
-                                sort
-                            }
-
+                            value={sort}
                             onChange={(event) => {
-
                                 setSort(
                                     event.target.value
                                 );
-
-                                setCurrentPage(1);
-
                             }}
-
                         >
 
                             <option value="newest">
@@ -2062,87 +3042,9 @@ const Transactions = () => {
             ======================================== */}
 
             <TransactionsTable
-
-                transactions={
-                    transactions
-                }
-
-                loading={
-                    transactionsLoading
-                }
-
+                transactions={transactions}
+                loading={transactionsLoading}
             />
-
-
-            {/* ========================================
-                PAGINATION
-            ======================================== */}
-
-            {!transactionsLoading &&
-                pagination.totalPages > 1 && (
-
-                    <div className="users-pagination">
-
-                        <button
-
-                            type="button"
-
-                            disabled={
-                                currentPage === 1
-                            }
-
-                            onClick={() =>
-                                handlePageChange(
-                                    currentPage - 1
-                                )
-                            }
-
-                        >
-                            Previous
-
-                        </button>
-
-
-                        <span>
-
-                            Page{" "}
-
-                            {
-                                pagination.currentPage
-                            }
-
-                            {" "}of{" "}
-
-                            {
-                                pagination.totalPages
-                            }
-
-                        </span>
-
-
-                        <button
-
-                            type="button"
-
-                            disabled={
-                                currentPage ===
-                                pagination.totalPages
-                            }
-
-                            onClick={() =>
-                                handlePageChange(
-                                    currentPage + 1
-                                )
-                            }
-
-                        >
-                            Next
-
-                        </button>
-
-                    </div>
-
-                )}
 
         </div>
 
