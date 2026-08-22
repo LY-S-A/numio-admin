@@ -13,7 +13,7 @@ import {
     FiChevronRight,
 } from "react-icons/fi";
 
-const ITEMS_PER_PAGE = 4;
+const ITEMS_PER_PAGE = 10;
 
 const API_URL =
     process.env.REACT_APP_API_URL;
@@ -611,9 +611,12 @@ const TransactionsTable = () => {
                             <div className="transaction-reference">
 
                                 <h4>
-                                    {transaction.reference ||
-                                        "—"}
-                                </h4>
+    {transaction.reference
+        ? transaction.reference.length > 17
+            ? `${transaction.reference.slice(0, 17)}...`
+            : transaction.reference
+        : "—"}
+</h4>
 
                                 <p>
                                     {formatProvider(
