@@ -506,24 +506,159 @@ const TransactionsTable = () => {
     ========================================
     */
 
-    if (loading) {
+   /*
+========================================
+LOADING STATE
+========================================
+*/
 
-        return (
-            <div className="transactions-table">
+if (loading) {
 
-                <div className="transactions-loading">
+    return (
 
-                    <p>
-                        Loading transactions...
-                    </p>
+        <div className="transactions-table">
 
-                </div>
+            {/* =========================
+                TABLE HEADER
+            ========================= */}
+
+            <div className="transactions-table-head">
+
+                <span>
+                    Reference
+                </span>
+
+                <span>
+                    User
+                </span>
+
+                <span>
+                    Type
+                </span>
+
+                <span>
+                    Amount
+                </span>
+
+                <span>
+                    Status
+                </span>
+
+                <span>
+                    Date
+                </span>
+
+                <span>
+                    Actions
+                </span>
 
             </div>
-        );
 
-    }
 
+            {/* =========================
+                SKELETON LOADING
+            ========================= */}
+
+            {Array.from({ length: 5 }).map(
+                (_, index) => (
+
+                    <div
+                        className="transactions-row transactions-skeleton"
+                        key={index}
+                    >
+
+                        {/* =========================
+                            REFERENCE
+                        ========================= */}
+
+                        <div className="transaction-reference">
+
+                            <div className="transactions-skeleton-item transactions-skeleton-title" />
+
+                            <div className="transactions-skeleton-item transactions-skeleton-text" />
+
+                        </div>
+
+
+                        {/* =========================
+                            USER
+                        ========================= */}
+
+                        <div className="transaction-user">
+
+                            <div className="transactions-skeleton-item transactions-skeleton-title" />
+
+                            <div className="transactions-skeleton-item transactions-skeleton-text" />
+
+                        </div>
+
+
+                        {/* =========================
+                            TYPE
+                        ========================= */}
+
+                        <div className="transaction-type">
+
+                            <div className="transactions-skeleton-item transactions-skeleton-title" />
+
+                            <div className="transactions-skeleton-item transactions-skeleton-text" />
+
+                        </div>
+
+
+                        {/* =========================
+                            AMOUNT
+                        ========================= */}
+
+                        <div className="transaction-amount">
+
+                            <div className="transactions-skeleton-item transactions-skeleton-amount" />
+
+                        </div>
+
+
+                        {/* =========================
+                            STATUS
+                        ========================= */}
+
+                        <div className="transaction-status">
+
+                            <div className="transactions-skeleton-item transactions-skeleton-status" />
+
+                        </div>
+
+
+                        {/* =========================
+                            DATE
+                        ========================= */}
+
+                        <div className="transaction-date">
+
+                            <div className="transactions-skeleton-item transactions-skeleton-date" />
+
+                        </div>
+
+
+                        {/* =========================
+                            ACTIONS
+                        ========================= */}
+
+                        <div className="transaction-actions">
+
+                            <div className="transactions-skeleton-item transactions-skeleton-action" />
+
+                        </div>
+
+                    </div>
+
+                )
+            )}
+
+        </div>
+
+    );
+
+}
 
     /*
     ========================================
