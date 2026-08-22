@@ -435,98 +435,104 @@ const OrdersTable = () => {
                 </div>
 
 
-                {/* SKELETON */}
+               {/* =========================
+    SKELETON LOADING
+========================= */}
 
-                {Array.from(
-                    {
-                        length: 5,
-                    }
-                ).map(
-                    (_, index) => (
+{Array.from({ length: 5 }).map((_, index) => (
+    <div
+        className="tx-row orders-row skeleton-row"
+        key={index}
+    >
 
-                        <div
-                            className="tx-row orders-row"
-                            key={index}
-                        >
+        {/* =========================
+            ORDER
+        ========================= */}
 
-                            {/* Order */}
+        <div className="order-info">
 
-                            <div className="order-info">
+            <div className="skeleton skeleton-title" />
 
-                                <div className="skeleton skeleton-title" />
+            <div className="skeleton skeleton-text" />
 
-                                <div className="skeleton skeleton-text" />
-
-                            </div>
+        </div>
 
 
-                            {/* User */}
+        {/* =========================
+            USER
+        ========================= */}
 
-                            <div className="tx-info">
+        <div className="tx-info">
 
-                                <div className="skeleton skeleton-title" />
+            <div className="user-details">
 
-                                <div className="skeleton skeleton-text" />
+                <div className="skeleton skeleton-title" />
 
-                            </div>
-
-
-                            {/* Service */}
-
-                            <div className="order-service">
-
-                                <div className="skeleton skeleton-title" />
-
-                                <div className="skeleton skeleton-text" />
-
-                            </div>
-
-
-                            {/* Price */}
-
-                            <div className="user-balance">
-
-                                <div className="skeleton skeleton-price" />
-
-                            </div>
-
-
-                            {/* OTP */}
-
-                            <div className="order-otp">
-
-                                <div className="skeleton skeleton-otp" />
-
-                            </div>
-
-
-                            {/* Status */}
-
-                            <div className="tx-status-wrapper">
-
-                                <div className="skeleton skeleton-status" />
-
-                            </div>
-
-
-                            {/* Date */}
-
-                            <div className="tx-date">
-
-                                <div className="skeleton skeleton-date" />
-
-                            </div>
-
-                        </div>
-
-                    )
-                )}
+                <div className="skeleton skeleton-text" />
 
             </div>
 
-        );
+        </div>
 
-    }
+
+        {/* =========================
+            SERVICE
+        ========================= */}
+
+        <div className="order-service">
+
+            <div className="skeleton skeleton-title" />
+
+            <div className="skeleton skeleton-text" />
+
+        </div>
+
+
+        {/* =========================
+            PRICE
+        ========================= */}
+
+        <div className="user-balance">
+
+            <div className="skeleton skeleton-price" />
+
+        </div>
+
+
+        {/* =========================
+            OTP
+        ========================= */}
+
+        <div className="order-otp">
+
+            <div className="skeleton skeleton-otp" />
+
+        </div>
+
+
+        {/* =========================
+            STATUS
+        ========================= */}
+
+        <div className="tx-status-wrapper">
+
+            <div className="skeleton skeleton-status" />
+
+        </div>
+
+
+        {/* =========================
+            DATE
+        ========================= */}
+
+        <div className="tx-date">
+
+            <div className="skeleton skeleton-date" />
+
+        </div>
+
+    </div>
+))}
 
 
     /*
