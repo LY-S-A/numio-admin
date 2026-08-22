@@ -196,6 +196,199 @@ body.light-theme .orders-skeleton-item::after {
 
 }
 
+/* ========================================
+   TRANSACTIONS TABLE SKELETON
+======================================== */
+
+.transactions-skeleton {
+    position: relative;
+    overflow: hidden;
+    pointer-events: none;
+}
+
+
+/* ========================================
+   SKELETON BASE
+======================================== */
+
+.transactions-skeleton-item {
+    position: relative;
+    overflow: hidden;
+
+    background: var(--border);
+}
+
+
+/* ========================================
+   SHIMMER
+======================================== */
+
+.transactions-skeleton-item::after {
+    content: "";
+
+    position: absolute;
+    inset: 0;
+
+    transform: translateX(-100%);
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.18),
+        transparent
+    );
+
+    animation: transactions-skeleton-loading 1.4s infinite;
+}
+
+
+/* ========================================
+   LIGHT THEME SHIMMER
+======================================== */
+
+body.light-theme
+.transactions-skeleton-item::after {
+
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.9),
+        transparent
+    );
+
+}
+
+
+/* ========================================
+   REFERENCE / USER / TYPE TITLE
+======================================== */
+
+.transactions-skeleton-title {
+    width: 110px;
+    height: 14px;
+
+    margin-bottom: 7px;
+
+    border-radius: 6px;
+}
+
+
+/* ========================================
+   SUBTEXT
+======================================== */
+
+.transactions-skeleton-text {
+    width: 90px;
+    height: 11px;
+
+    border-radius: 6px;
+}
+
+
+/* ========================================
+   AMOUNT
+======================================== */
+
+.transactions-skeleton-amount {
+    width: 75px;
+    height: 16px;
+
+    border-radius: 6px;
+}
+
+
+/* ========================================
+   STATUS
+======================================== */
+
+.transactions-skeleton-status {
+    width: 75px;
+    height: 26px;
+
+    border-radius: 999px;
+}
+
+
+/* ========================================
+   DATE
+======================================== */
+
+.transactions-skeleton-date {
+    width: 85px;
+    height: 13px;
+
+    border-radius: 6px;
+}
+
+
+/* ========================================
+   ACTION
+======================================== */
+
+.transactions-skeleton-action {
+    width: 78px;
+    height: 32px;
+
+    border-radius: 7px;
+}
+
+
+/* ========================================
+   ANIMATION
+======================================== */
+
+@keyframes transactions-skeleton-loading {
+
+    to {
+        transform: translateX(100%);
+    }
+
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 768px) {
+
+    .transactions-skeleton-title {
+        width: 90px;
+        height: 12px;
+    }
+
+
+    .transactions-skeleton-text {
+        width: 70px;
+        height: 10px;
+    }
+
+
+    .transactions-skeleton-amount {
+        width: 65px;
+        height: 14px;
+    }
+
+
+    .transactions-skeleton-status {
+        width: 65px;
+        height: 24px;
+    }
+
+
+    .transactions-skeleton-date {
+        width: 70px;
+        height: 12px;
+    }
+
+
+    .transactions-skeleton-action {
+        width: 70px;
+        height: 30px;
+    }
+
+}
+
 /* ===========================
    USERS TOOLBAR
 =========================== */
