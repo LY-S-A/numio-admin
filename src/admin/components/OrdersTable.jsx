@@ -266,383 +266,822 @@
 
 // export default OrdersTable;
 
+import React, {
+    useEffect,
+    useState,
+} from "react";
+
+import axios from "axios";
+
+import {
+    FiChevronLeft,
+    FiChevronRight,
+} from "react-icons/fi";
+
+import "../styles/orders-table.css";
+
+
 /*
 ========================================
-GET ADMIN ORDERS
+API URL
 ========================================
 */
 
-exports.getOrders = async (req, res) => {
-    try {
-
-        const {
-            search = "",
-            status = "all",
-            service = "all",
-            sort = "newest",
-            page = 1,
-            limit = 10,
-        } = req.query;
+const API_URL =
+    process.env.REACT_APP_API_URL;
 
 
-        /*
-        ========================================
-        PAGINATION
-        ========================================
-        */
+/*
+========================================
+ITEMS PER PAGE
+========================================
+*/
 
-        const pageNumber =
-            Math.max(
-                Number(page) || 1,
-                1
-            );
-
-        const limitNumber =
-            Math.max(
-                Number(limit) || 10,
-                1
-            );
-
-        const skip =
-            (pageNumber - 1) *
-            limitNumber;
+const ITEMS_PER_PAGE = 10;
 
 
-        /*
-        ========================================
-        BASE QUERY
-        ========================================
-        */
+/*
+========================================
+ORDERS TABLE
+========================================
+*/
 
-        const query = {};
+const OrdersTable = () => {
+
+    /*
+    ========================================
+    STATE
+    ========================================
+    */
+
+    const [orders, setOrders] = useState([]);
+
+    const [loading, setLoading] =
+        useState(true);
+
+    const [error, setError] =
+        useState("");
+
+    const [currentPage, setCurrentPage] =
+        useState(1);
+
+    const [pagination, setPagination] =
+        useState({
+            currentPage: 1,
+            totalPages: 1,
+            totalOrders: 0,
+            limit: ITEMS_PER_PAGE,
+        });
 
 
-        /*
-        ========================================
-        SEARCH
-        ========================================
-        */
+    /*
+    ========================================
+    FETCH ORDERS
+    ========================================
+    */
 
-        if (search.trim()) {
+    const fetchOrders = async (
+        page = currentPage
+    ) => {
 
-            const searchRegex =
-                new RegExp(
-                    search.trim(),
-                    "i"
+        try {
+
+            setLoading(true);
+            setError("");
+
+            const token =
+                localStorage.getItem(
+                    "token"
                 );
 
-            query.$or = [
-                {
-                    orderId:
-                        searchRegex,
-                },
-                {
-                    phone:
-                        searchRegex,
-                },
-                {
-                    service:
-                        searchRegex,
-                },
-            ];
-        }
+            const response =
+                await axios.get(
+                    `${API_URL}/api/admin/orders`,
+                    {
+                        params: {
+                            page,
+                            limit: ITEMS_PER_PAGE,
+                        },
 
-
-        /*
-        ========================================
-        STATUS FILTER
-        ========================================
-        */
-
-        if (status !== "all") {
-
-            query.status =
-                status;
-
-        }
-
-
-        /*
-        ========================================
-        SERVICE FILTER
-        ========================================
-        */
-
-        if (service !== "all") {
-
-            query.service =
-                service;
-
-        }
-
-
-        /*
-        ========================================
-        SORT
-        ========================================
-        */
-
-        let sortOption = {
-            createdAt: -1,
-        };
-
-        if (sort === "oldest") {
-
-            sortOption = {
-                createdAt: 1,
-            };
-
-        }
-
-        if (sort === "highest") {
-
-            sortOption = {
-                price: -1,
-            };
-
-        }
-
-        if (sort === "lowest") {
-
-            sortOption = {
-                price: 1,
-            };
-
-        }
-
-
-        /*
-        ========================================
-        GET ORDERS
-        ========================================
-        */
-
-        const [
-            orders,
-            totalOrders,
-        ] = await Promise.all([
-
-            NumberOrder.find(query)
-
-                /*
-                ========================================
-                POPULATE USER
-                ========================================
-                */
-
-                .populate(
-                    "user",
-                    "username email"
-                )
-
-                .sort(sortOption)
-
-                .skip(skip)
-
-                .limit(limitNumber)
-
-                .lean(),
+                        headers: {
+                            Authorization:
+                                `Bearer ${token}`,
+                        },
+                    }
+                );
 
 
             /*
             ========================================
-            TOTAL ORDERS
+            RESPONSE
             ========================================
             */
 
-            NumberOrder.countDocuments(
-                query
-            ),
+            if (
+                response.data?.success
+            ) {
 
-        ]);
+                setOrders(
+                    response.data.orders || []
+                );
 
+                setPagination(
+                    response.data.pagination || {
+                        currentPage: page,
+                        totalPages: 1,
+                        totalOrders: 0,
+                        limit: ITEMS_PER_PAGE,
+                    }
+                );
 
-        /*
-        ========================================
-        FORMAT ORDERS
-        ========================================
-        */
+            } else {
 
-        const formattedOrders =
-            orders.map(
-                (order) => ({
+                setError(
+                    response.data?.message ||
+                    "Failed to fetch orders"
+                );
 
-                    /*
-                    ================================
-                    ORDER ID
-                    ================================
-                    */
+            }
 
-                    id:
-                        order._id,
+        } catch (error) {
 
-                    orderId:
-                        order.orderId,
-
-
-                    /*
-                    ================================
-                    USER
-                    ================================
-                    */
-
-                    username:
-                        order.user?.username ||
-                        "—",
-
-                    email:
-                        order.user?.email ||
-                        "—",
-
-
-                    /*
-                    ================================
-                    NUMBER
-                    ================================
-                    */
-
-                    phone:
-                        order.phone ||
-                        "—",
-
-
-                    /*
-                    ================================
-                    SERVICE
-                    ================================
-                    */
-
-                    country:
-                        order.country ||
-                        "—",
-
-                    service:
-                        order.service ||
-                        "—",
-
-                    operator:
-                        order.operator ||
-                        "—",
-
-
-                    /*
-                    ================================
-                    PRICE
-                    ================================
-                    */
-
-                    price:
-                        Number(
-                            order.price || 0
-                        ),
-
-
-                    /*
-                    ================================
-                    STATUS
-                    ================================
-                    */
-
-                    status:
-                        order.status ||
-                        "UNKNOWN",
-
-
-                    /*
-                    ================================
-                    EXPIRATION
-                    ================================
-                    */
-
-                    expires:
-                        order.expires ||
-                        null,
-
-
-                    /*
-                    ================================
-                    SMS / OTP
-                    ================================
-                    */
-
-                    sms:
-                        Array.isArray(
-                            order.sms
-                        )
-                            ? order.sms
-                            : [],
-
-
-                    /*
-                    ================================
-                    CREATED DATE
-                    ================================
-                    */
-
-                    createdAt:
-                        order.createdAt,
-
-                })
+            console.error(
+                "Fetch admin orders error:",
+                error
             );
 
-
-        /*
-        ========================================
-        TOTAL PAGES
-        ========================================
-        */
-
-        const totalPages =
-            Math.ceil(
-                totalOrders /
-                limitNumber
+            setError(
+                error.response?.data?.message ||
+                "Failed to fetch orders"
             );
 
+        } finally {
 
-        /*
-        ========================================
-        RESPONSE
-        ========================================
-        */
+            setLoading(false);
 
-        return res.status(200).json({
+        }
 
-            success: true,
+    };
 
-            orders:
-                formattedOrders,
 
-            pagination: {
+    /*
+    ========================================
+    FETCH ON PAGE CHANGE
+    ========================================
+    */
 
-                currentPage:
-                    pageNumber,
+    useEffect(() => {
 
-                totalPages,
-
-                totalOrders,
-
-                limit:
-                    limitNumber,
-
-            },
-
-        });
-
-    } catch (error) {
-
-        console.error(
-            "Get admin orders error:",
-            error
+        fetchOrders(
+            currentPage
         );
 
-        return res.status(500).json({
+    }, [currentPage]);
 
-            success: false,
 
-            message:
-                "Failed to fetch orders",
+    /*
+    ========================================
+    FORMAT PRICE
+    ========================================
+    */
 
-        });
+    const formatPrice = (price) => {
+
+        return new Intl.NumberFormat(
+            "en-NG",
+            {
+                style: "currency",
+                currency: "NGN",
+                maximumFractionDigits: 0,
+            }
+        ).format(
+            Number(price || 0)
+        );
+
+    };
+
+
+    /*
+    ========================================
+    FORMAT DATE
+    ========================================
+    */
+
+    const formatDate = (date) => {
+
+        if (!date) {
+            return "—";
+        }
+
+        return new Date(
+            date
+        ).toLocaleDateString(
+            "en-GB",
+            {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+            }
+        );
+
+    };
+
+
+    /*
+    ========================================
+    GET OTP
+    ========================================
+    */
+
+    const getOTP = (order) => {
+
+        if (
+            !order.sms ||
+            !Array.isArray(order.sms) ||
+            order.sms.length === 0
+        ) {
+            return "—";
+        }
+
+
+        /*
+        ========================================
+        GET LATEST SMS
+        ========================================
+        */
+
+        const latestSMS =
+            order.sms[
+                order.sms.length - 1
+            ];
+
+
+        /*
+        ========================================
+        POSSIBLE OTP FIELDS
+        ========================================
+        */
+
+        if (
+            latestSMS?.code
+        ) {
+            return latestSMS.code;
+        }
+
+        if (
+            latestSMS?.otp
+        ) {
+            return latestSMS.otp;
+        }
+
+
+        /*
+        ========================================
+        EXTRACT CODE FROM MESSAGE
+        ========================================
+        */
+
+        if (
+            latestSMS?.text
+        ) {
+
+            const match =
+                latestSMS.text.match(
+                    /\b\d{4,8}\b/
+                );
+
+            if (match) {
+                return match[0];
+            }
+
+        }
+
+        if (
+            latestSMS?.message
+        ) {
+
+            const match =
+                latestSMS.message.match(
+                    /\b\d{4,8}\b/
+                );
+
+            if (match) {
+                return match[0];
+            }
+
+        }
+
+
+        return "—";
+
+    };
+
+
+    /*
+    ========================================
+    STATUS CLASS
+    ========================================
+    */
+
+    const getStatusClass = (
+        status
+    ) => {
+
+        if (!status) {
+            return "";
+        }
+
+        return status
+            .toLowerCase()
+            .replace(/\s+/g, "-");
+
+    };
+
+
+    /*
+    ========================================
+    LOADING STATE
+    ========================================
+    */
+
+    if (loading) {
+
+        return (
+
+            <div className="tx-table">
+
+                <div className="tx-table-head orders-head">
+
+                    <span>Order</span>
+
+                    <span>User</span>
+
+                    <span>Service</span>
+
+                    <span>Price</span>
+
+                    <span>OTP</span>
+
+                    <span>Status</span>
+
+                    <span>Date</span>
+
+                </div>
+
+
+                {Array.from(
+                    { length: 5 }
+                ).map((_, index) => (
+
+                    <div
+                        className="tx-row orders-row"
+                        key={index}
+                    >
+
+                        <div className="order-info">
+
+                            <div className="skeleton skeleton-title" />
+
+                            <div className="skeleton skeleton-text" />
+
+                        </div>
+
+
+                        <div className="tx-info">
+
+                            <div className="skeleton skeleton-title" />
+
+                            <div className="skeleton skeleton-text" />
+
+                        </div>
+
+
+                        <div className="order-service">
+
+                            <div className="skeleton skeleton-title" />
+
+                            <div className="skeleton skeleton-text" />
+
+                        </div>
+
+
+                        <div className="user-balance">
+
+                            <div className="skeleton skeleton-price" />
+
+                        </div>
+
+
+                        <div className="order-otp">
+
+                            <div className="skeleton skeleton-otp" />
+
+                        </div>
+
+
+                        <div className="tx-status-wrapper">
+
+                            <div className="skeleton skeleton-status" />
+
+                        </div>
+
+
+                        <div className="tx-date">
+
+                            <div className="skeleton skeleton-date" />
+
+                        </div>
+
+                    </div>
+
+                ))}
+
+            </div>
+
+        );
 
     }
+
+
+    /*
+    ========================================
+    ERROR STATE
+    ========================================
+    */
+
+    if (error) {
+
+        return (
+
+            <div className="tx-table">
+
+                <div className="orders-empty">
+
+                    <p>
+                        {error}
+                    </p>
+
+                    <button
+                        type="button"
+                        onClick={() =>
+                            fetchOrders(
+                                currentPage
+                            )
+                        }
+                    >
+                        Try Again
+                    </button>
+
+                </div>
+
+            </div>
+
+        );
+
+    }
+
+
+    /*
+    ========================================
+    EMPTY STATE
+    ========================================
+    */
+
+    if (
+        !orders.length
+    ) {
+
+        return (
+
+            <div className="tx-table">
+
+                <div className="tx-table-head orders-head">
+
+                    <span>Order</span>
+
+                    <span>User</span>
+
+                    <span>Service</span>
+
+                    <span>Price</span>
+
+                    <span>OTP</span>
+
+                    <span>Status</span>
+
+                    <span>Date</span>
+
+                </div>
+
+
+                <div className="orders-empty">
+
+                    <p>
+                        No orders found.
+                    </p>
+
+                </div>
+
+            </div>
+
+        );
+
+    }
+
+
+    /*
+    ========================================
+    RENDER
+    ========================================
+    */
+
+    return (
+
+        <div className="tx-table">
+
+            {/* =========================
+                TABLE HEADER
+            ========================= */}
+
+            <div className="tx-table-head orders-head">
+
+                <span>
+                    Order
+                </span>
+
+                <span>
+                    User
+                </span>
+
+                <span>
+                    Service
+                </span>
+
+                <span>
+                    Price
+                </span>
+
+                <span>
+                    OTP
+                </span>
+
+                <span>
+                    Status
+                </span>
+
+                <span>
+                    Date
+                </span>
+
+            </div>
+
+
+            {/* =========================
+                ORDERS
+            ========================= */}
+
+            {orders.map(
+                (order) => {
+
+                    const otp =
+                        getOTP(order);
+
+                    return (
+
+                        <div
+                            className="tx-row orders-row"
+                            key={
+                                order.id ||
+                                order.orderId
+                            }
+                        >
+
+                            {/* =========================
+                                ORDER
+                            ========================= */}
+
+                            <div className="order-info">
+
+                                <h4>
+                                    {order.orderId
+                                        ? `ORD-${order.orderId}`
+                                        : "—"}
+                                </h4>
+
+                                <p>
+                                    {order.phone ||
+                                        "—"}
+                                </p>
+
+                            </div>
+
+
+                            {/* =========================
+                                USER
+                            ========================= */}
+
+                            <div className="tx-info">
+
+                                <div className="user-details">
+
+                                    <h4>
+                                        {order.username ||
+                                            "User"}
+                                    </h4>
+
+                                    <p className="user-email">
+                                        {order.email ||
+                                            "—"}
+                                    </p>
+
+                                </div>
+
+                            </div>
+
+
+                            {/* =========================
+                                SERVICE
+                            ========================= */}
+
+                            <div className="order-service">
+
+                                <h4>
+                                    {order.service ||
+                                        "—"}
+                                </h4>
+
+                                <p>
+                                    {order.country ||
+                                        "—"}
+                                </p>
+
+                            </div>
+
+
+                            {/* =========================
+                                PRICE
+                            ========================= */}
+
+                            <div className="user-balance">
+
+                                {formatPrice(
+                                    order.price
+                                )}
+
+                            </div>
+
+
+                            {/* =========================
+                                OTP
+                            ========================= */}
+
+                            <div className="order-otp">
+
+                                {otp}
+
+                            </div>
+
+
+                            {/* =========================
+                                STATUS
+                            ========================= */}
+
+                            <div className="tx-status-wrapper">
+
+                                <span
+                                    className={
+                                        `tx-status ${getStatusClass(
+                                            order.status
+                                        )}`
+                                    }
+                                >
+                                    {order.status ||
+                                        "Unknown"}
+                                </span>
+
+                            </div>
+
+
+                            {/* =========================
+                                DATE
+                            ========================= */}
+
+                            <div className="tx-date">
+
+                                <span>
+                                    {formatDate(
+                                        order.createdAt
+                                    )}
+                                </span>
+
+                            </div>
+
+                        </div>
+
+                    );
+
+                }
+            )}
+
+
+            {/* =========================
+                PAGINATION
+            ========================= */}
+
+            <div className="users-pagination">
+
+                <p className="pagination-text">
+
+                    Showing{" "}
+
+                    {pagination.totalOrders === 0
+                        ? 0
+                        : (
+                            (
+                                pagination.currentPage -
+                                1
+                            ) *
+                            pagination.limit
+                        ) + 1
+                    }
+
+                    {" "}to{" "}
+
+                    {Math.min(
+                        pagination.currentPage *
+                            pagination.limit,
+                        pagination.totalOrders
+                    )}
+
+                    {" "}of{" "}
+
+                    {pagination.totalOrders}
+
+                    {" "}orders
+
+                </p>
+
+
+                <div className="tx-pages">
+
+                    {/* Previous */}
+
+                    <button
+                        className="prev-btn"
+                        disabled={
+                            pagination.currentPage <= 1
+                        }
+                        onClick={() =>
+                            setCurrentPage(
+                                (prev) =>
+                                    Math.max(
+                                        prev - 1,
+                                        1
+                                    )
+                            )
+                        }
+                    >
+                        <FiChevronLeft />
+                    </button>
+
+
+                    {/* Current Page */}
+
+                    <button className="active">
+                        {pagination.currentPage}
+                    </button>
+
+
+                    {/* Next */}
+
+                    <button
+                        className="next-btn"
+                        disabled={
+                            pagination.currentPage >=
+                            pagination.totalPages
+                        }
+                        onClick={() =>
+                            setCurrentPage(
+                                (prev) =>
+                                    Math.min(
+                                        prev + 1,
+                                        pagination.totalPages
+                                    )
+                            )
+                        }
+                    >
+                        <FiChevronRight />
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    );
+
 };
+
+
+export default OrdersTable;
