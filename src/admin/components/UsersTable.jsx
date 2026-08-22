@@ -15,7 +15,7 @@ import {
     FiChevronRight,
 } from "react-icons/fi";
 
-const ITEMS_PER_PAGE = 4;
+const ITEMS_PER_PAGE = 10;
 
 const API_URL =
     process.env.REACT_APP_API_URL;
