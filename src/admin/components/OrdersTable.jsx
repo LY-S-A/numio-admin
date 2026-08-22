@@ -441,93 +441,79 @@ const OrdersTable = () => {
 
 {Array.from({ length: 5 }).map((_, index) => (
     <div
-        className="tx-row orders-row skeleton-row"
+        className="tx-row orders-row orders-skeleton"
         key={index}
     >
 
-        {/* =========================
-            ORDER
-        ========================= */}
+        {/* ORDER */}
 
         <div className="order-info">
 
-            <div className="skeleton skeleton-title" />
+            <div className="orders-skeleton-item orders-skeleton-title" />
 
-            <div className="skeleton skeleton-text" />
+            <div className="orders-skeleton-item orders-skeleton-text" />
 
         </div>
 
 
-        {/* =========================
-            USER
-        ========================= */}
+        {/* USER */}
 
         <div className="tx-info">
 
             <div className="user-details">
 
-                <div className="skeleton skeleton-title" />
+                <div className="orders-skeleton-item orders-skeleton-title" />
 
-                <div className="skeleton skeleton-text" />
+                <div className="orders-skeleton-item orders-skeleton-text" />
 
             </div>
 
         </div>
 
 
-        {/* =========================
-            SERVICE
-        ========================= */}
+        {/* SERVICE */}
 
         <div className="order-service">
 
-            <div className="skeleton skeleton-title" />
+            <div className="orders-skeleton-item orders-skeleton-title" />
 
-            <div className="skeleton skeleton-text" />
+            <div className="orders-skeleton-item orders-skeleton-text" />
 
         </div>
 
 
-        {/* =========================
-            PRICE
-        ========================= */}
+        {/* PRICE */}
 
         <div className="user-balance">
 
-            <div className="skeleton skeleton-price" />
+            <div className="orders-skeleton-item orders-skeleton-price" />
 
         </div>
 
 
-        {/* =========================
-            OTP
-        ========================= */}
+        {/* OTP */}
 
         <div className="order-otp">
 
-            <div className="skeleton skeleton-otp" />
+            <div className="orders-skeleton-item orders-skeleton-otp" />
 
         </div>
 
 
-        {/* =========================
-            STATUS
-        ========================= */}
+        {/* STATUS */}
 
         <div className="tx-status-wrapper">
 
-            <div className="skeleton skeleton-status" />
+            <div className="orders-skeleton-item orders-skeleton-status" />
 
         </div>
 
 
-        {/* =========================
-            DATE
-        ========================= */}
+        {/* DATE */}
 
         <div className="tx-date">
 
-            <div className="skeleton skeleton-date" />
+            <div className="orders-skeleton-item orders-skeleton-date" />
 
         </div>
 
