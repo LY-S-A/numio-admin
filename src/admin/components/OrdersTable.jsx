@@ -278,8 +278,6 @@ import {
     FiChevronRight,
 } from "react-icons/fi";
 
-import "../styles/orders-table.css";
-
 
 /*
 ========================================
