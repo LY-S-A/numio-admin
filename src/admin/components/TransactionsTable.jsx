@@ -304,7 +304,14 @@
 
 // export default TransactionsTable;
 
-import React, { useState } from "react";
+import React, {
+    useCallback,
+    useEffect,
+    useState,
+} from "react";
+
+import axios from "axios";
+
 import {
     FiTrash2,
     FiCheck,
@@ -314,119 +321,343 @@ import {
 
 const ITEMS_PER_PAGE = 4;
 
-const transactions = [
-    {
-        id: "665f123456789",
-        reference: "TXN-1001",
-        username: "johndoe",
-        email: "john@example.com",
-        type: "DEPOSIT",
-        provider: "PAYSTACK",
-        amount: 50000,
-        currency: "NGN",
-        status: "SUCCESS",
-        createdAt: "2026-08-02T10:30:00.000Z",
-    },
-    {
-        id: "665f123456790",
-        reference: "TXN-1002",
-        username: "janesmith",
-        email: "jane@example.com",
-        type: "PURCHASE",
-        provider: "SYSTEM",
-        amount: 2450,
-        currency: "NGN",
-        status: "SUCCESS",
-        createdAt: "2026-07-31T14:20:00.000Z",
-    },
-    {
-        id: "665f123456791",
-        reference: "TXN-1003",
-        username: "michael",
-        email: "michael@example.com",
-        type: "DEPOSIT",
-        provider: "FLUTTERWAVE",
-        amount: 20000,
-        currency: "NGN",
-        status: "PENDING",
-        createdAt: "2026-07-28T09:15:00.000Z",
-    },
-    {
-        id: "665f123456792",
-        reference: "TXN-1004",
-        username: "sarah",
-        email: "sarah@example.com",
-        type: "REFUND",
-        provider: "SYSTEM",
-        amount: 1950,
-        currency: "NGN",
-        status: "FAILED",
-        createdAt: "2026-07-25T16:45:00.000Z",
-    },
-    {
-        id: "665f123456793",
-        reference: "TXN-1005",
-        username: "david",
-        email: "david@example.com",
-        type: "DEPOSIT",
-        provider: "PAYSTACK",
-        amount: 75000,
-        currency: "NGN",
-        status: "SUCCESS",
-        createdAt: "2026-07-20T11:10:00.000Z",
-    },
-];
+const API_URL =
+    process.env.REACT_APP_API_URL;
 
 const TransactionsTable = () => {
-    const [currentPage, setCurrentPage] = useState(1);
+    const [transactions, setTransactions] =
+        useState([]);
 
-    const totalPages = Math.ceil(
-        transactions.length / ITEMS_PER_PAGE
-    );
+    const [currentPage, setCurrentPage] =
+        useState(1);
 
-    const paginatedTransactions = transactions.slice(
-        (currentPage - 1) * ITEMS_PER_PAGE,
-        currentPage * ITEMS_PER_PAGE
-    );
+    const [totalPages, setTotalPages] =
+        useState(1);
 
-    /*
-    ========================================
-    FORMAT CURRENCY
-    ========================================
-    */
+    const [totalTransactions, setTotalTransactions] =
+        useState(0);
 
-    const formatAmount = (amount, currency = "NGN") => {
-        return new Intl.NumberFormat("en-NG", {
-            style: "currency",
-            currency,
-            minimumFractionDigits: 0,
-            maximumFractionDigits: 2,
-        }).format(Number(amount || 0));
-    };
+    const [loading, setLoading] =
+        useState(true);
+
+    const [actionLoading, setActionLoading] =
+        useState(null);
+
+    const [error, setError] =
+        useState("");
+
 
     /*
     ========================================
-    FORMAT DATE
+    GET ADMIN TOKEN
     ========================================
     */
 
-    const formatDate = (date) => {
-        if (!date) {
-            return "—";
-        }
-
-        const parsedDate = new Date(date);
-
-        if (Number.isNaN(parsedDate.getTime())) {
-            return "—";
-        }
-
-        return parsedDate.toLocaleDateString("en-NG", {
-            day: "numeric",
-            month: "short",
-            year: "numeric",
-        });
+    const getToken = () => {
+        return localStorage.getItem("token");
     };
+
+
+    /*
+    ========================================
+    FETCH TRANSACTIONS
+    ========================================
+    */
+
+    const fetchTransactions =
+        useCallback(async () => {
+
+            try {
+
+                setLoading(true);
+                setError("");
+
+                const token =
+                    getToken();
+
+                const response =
+                    await axios.get(
+                        `${API_URL}/api/admin/transactions`,
+                        {
+                            params: {
+                                page: currentPage,
+                                limit: ITEMS_PER_PAGE,
+                            },
+
+                            headers: {
+                                Authorization:
+                                    `Bearer ${token}`,
+                            },
+                        }
+                    );
+
+
+                if (
+                    response.data?.success
+                ) {
+
+                    setTransactions(
+                        response.data.transactions ||
+                        []
+                    );
+
+                    setTotalPages(
+                        response.data.pagination
+                            ?.totalPages || 1
+                    );
+
+                    setTotalTransactions(
+                        response.data.pagination
+                            ?.totalTransactions || 0
+                    );
+
+                } else {
+
+                    setError(
+                        response.data?.message ||
+                        "Failed to fetch transactions"
+                    );
+
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Fetch transactions error:",
+                    error
+                );
+
+                setError(
+                    error.response?.data?.message ||
+                    "Failed to fetch transactions"
+                );
+
+            } finally {
+
+                setLoading(false);
+
+            }
+
+        }, [currentPage]);
+
+
+    /*
+    ========================================
+    FETCH ON PAGE CHANGE
+    ========================================
+    */
+
+    useEffect(() => {
+
+        fetchTransactions();
+
+    }, [fetchTransactions]);
+
+
+    /*
+    ========================================
+    DELETE TRANSACTION
+    ========================================
+    */
+
+    const handleDelete = async (
+        transaction
+    ) => {
+
+        const confirmed =
+            window.confirm(
+                `Delete transaction ${transaction.reference}?`
+            );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+
+            setActionLoading(
+                transaction.id
+            );
+
+            const token =
+                getToken();
+
+            const response =
+                await axios.delete(
+                    `${API_URL}/api/admin/transactions/${transaction.id}`,
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ${token}`,
+                        },
+                    }
+                );
+
+
+            if (
+                response.data?.success
+            ) {
+
+                /*
+                ========================================
+                IF LAST ITEM ON PAGE IS DELETED
+                GO BACK ONE PAGE
+                ========================================
+                */
+
+                if (
+                    transactions.length === 1 &&
+                    currentPage > 1
+                ) {
+
+                    setCurrentPage(
+                        (prev) => prev - 1
+                    );
+
+                } else {
+
+                    fetchTransactions();
+
+                }
+
+            } else {
+
+                alert(
+                    response.data?.message ||
+                    "Failed to delete transaction"
+                );
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Delete transaction error:",
+                error
+            );
+
+            alert(
+                error.response?.data?.message ||
+                "Failed to delete transaction"
+            );
+
+        } finally {
+
+            setActionLoading(null);
+
+        }
+
+    };
+
+
+    /*
+    ========================================
+    CONFIRM TRANSACTION
+    ========================================
+    */
+
+    const handleConfirm = async (
+        transaction
+    ) => {
+
+        const confirmed =
+            window.confirm(
+                `Confirm transaction ${transaction.reference}?`
+            );
+
+        if (!confirmed) {
+            return;
+        }
+
+        try {
+
+            setActionLoading(
+                transaction.id
+            );
+
+            const token =
+                getToken();
+
+            const response =
+                await axios.patch(
+                    `${API_URL}/api/admin/transactions/${transaction.id}/confirm`,
+                    {},
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ${token}`,
+                        },
+                    }
+                );
+
+
+            if (
+                response.data?.success
+            ) {
+
+                /*
+                ========================================
+                REFRESH TRANSACTIONS
+                ========================================
+                */
+
+                await fetchTransactions();
+
+            } else {
+
+                alert(
+                    response.data?.message ||
+                    "Failed to confirm transaction"
+                );
+
+            }
+
+        } catch (error) {
+
+            console.error(
+                "Confirm transaction error:",
+                error
+            );
+
+            alert(
+                error.response?.data?.message ||
+                "Failed to confirm transaction"
+            );
+
+        } finally {
+
+            setActionLoading(null);
+
+        }
+
+    };
+
+
+    /*
+    ========================================
+    FORMAT AMOUNT
+    ========================================
+    */
+
+    const formatAmount = (
+        amount,
+        currency = "NGN"
+    ) => {
+
+        return new Intl.NumberFormat(
+            "en-NG",
+            {
+                style: "currency",
+                currency,
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 2,
+            }
+        ).format(
+            Number(amount || 0)
+        );
+
+    };
+
 
     /*
     ========================================
@@ -435,6 +666,7 @@ const TransactionsTable = () => {
     */
 
     const formatType = (type) => {
+
         if (!type) {
             return "—";
         }
@@ -442,10 +674,14 @@ const TransactionsTable = () => {
         return type
             .toLowerCase()
             .replace(/_/g, " ")
-            .replace(/\b\w/g, (letter) =>
-                letter.toUpperCase()
+            .replace(
+                /\b\w/g,
+                (letter) =>
+                    letter.toUpperCase()
             );
+
     };
+
 
     /*
     ========================================
@@ -453,7 +689,10 @@ const TransactionsTable = () => {
     ========================================
     */
 
-    const formatProvider = (provider) => {
+    const formatProvider = (
+        provider
+    ) => {
+
         if (!provider) {
             return "—";
         }
@@ -461,10 +700,14 @@ const TransactionsTable = () => {
         return provider
             .toLowerCase()
             .replace(/_/g, " ")
-            .replace(/\b\w/g, (letter) =>
-                letter.toUpperCase()
+            .replace(
+                /\b\w/g,
+                (letter) =>
+                    letter.toUpperCase()
             );
+
     };
+
 
     /*
     ========================================
@@ -473,6 +716,7 @@ const TransactionsTable = () => {
     */
 
     const formatStatus = (status) => {
+
         if (!status) {
             return "—";
         }
@@ -480,64 +724,137 @@ const TransactionsTable = () => {
         return status
             .toLowerCase()
             .replace(/_/g, " ")
-            .replace(/\b\w/g, (letter) =>
-                letter.toUpperCase()
+            .replace(
+                /\b\w/g,
+                (letter) =>
+                    letter.toUpperCase()
             );
+
     };
+
 
     /*
     ========================================
-    DELETE TRANSACTION
+    FORMAT DATE
     ========================================
     */
 
-    const handleDelete = (transaction) => {
-        console.log(
-            "Delete transaction:",
-            transaction.id
+    const formatDate = (date) => {
+
+        if (!date) {
+            return "—";
+        }
+
+        const parsedDate =
+            new Date(date);
+
+        if (
+            Number.isNaN(
+                parsedDate.getTime()
+            )
+        ) {
+            return "—";
+        }
+
+        return parsedDate.toLocaleDateString(
+            "en-NG",
+            {
+                day: "numeric",
+                month: "short",
+                year: "numeric",
+            }
         );
 
-        // Add delete API call here
     };
+
 
     /*
     ========================================
-    CONFIRM TRANSACTION
+    PREVIOUS PAGE
     ========================================
     */
 
-    const handleConfirm = (transaction) => {
-        console.log(
-            "Confirm transaction:",
-            transaction.id
+    const handlePreviousPage = () => {
+
+        setCurrentPage(
+            (prev) =>
+                Math.max(
+                    prev - 1,
+                    1
+                )
         );
 
-        // Add confirm API call here
     };
+
 
     /*
     ========================================
-    PAGE CHANGE
+    NEXT PAGE
     ========================================
     */
 
-    const goToPreviousPage = () => {
-        setCurrentPage((prev) =>
-            Math.max(prev - 1, 1)
+    const handleNextPage = () => {
+
+        setCurrentPage(
+            (prev) =>
+                Math.min(
+                    prev + 1,
+                    totalPages
+                )
         );
+
     };
 
-    const goToNextPage = () => {
-        setCurrentPage((prev) =>
-            Math.min(prev + 1, totalPages)
-        );
-    };
 
     /*
     ========================================
-    RENDER
+    LOADING
     ========================================
     */
+
+    if (loading) {
+
+        return (
+            <div className="transactions-table">
+
+                <div className="transactions-loading">
+
+                    <p>
+                        Loading transactions...
+                    </p>
+
+                </div>
+
+            </div>
+        );
+
+    }
+
+
+    /*
+    ========================================
+    ERROR
+    ========================================
+    */
+
+    if (error) {
+
+        return (
+            <div className="transactions-table">
+
+                <div className="transactions-empty">
+
+                    <p>
+                        {error}
+                    </p>
+
+                </div>
+
+            </div>
+        );
+
+    }
+
 
     return (
         <div className="transactions-table">
@@ -548,19 +865,33 @@ const TransactionsTable = () => {
 
             <div className="transactions-table-head">
 
-                <span>Reference</span>
+                <span>
+                    Reference
+                </span>
 
-                <span>User</span>
+                <span>
+                    User
+                </span>
 
-                <span>Type</span>
+                <span>
+                    Type
+                </span>
 
-                <span>Amount</span>
+                <span>
+                    Amount
+                </span>
 
-                <span>Status</span>
+                <span>
+                    Status
+                </span>
 
-                <span>Date</span>
+                <span>
+                    Date
+                </span>
 
-                <span>Actions</span>
+                <span>
+                    Actions
+                </span>
 
             </div>
 
@@ -569,9 +900,9 @@ const TransactionsTable = () => {
                 TRANSACTIONS
             ========================= */}
 
-            {paginatedTransactions.length > 0 ? (
+            {transactions.length > 0 ? (
 
-                paginatedTransactions.map(
+                transactions.map(
                     (transaction) => (
 
                         <div
@@ -661,15 +992,17 @@ const TransactionsTable = () => {
                             <div className="transaction-status">
 
                                 <span
-                                    className={`tx-status ${(
-                                        transaction.status ||
-                                        ""
-                                    )
-                                        .toLowerCase()
-                                        .replace(
-                                            /\s+/g,
-                                            "-"
-                                        )}`}
+                                    className={`tx-status ${
+                                        (
+                                            transaction.status ||
+                                            ""
+                                        )
+                                            .toLowerCase()
+                                            .replace(
+                                                /\s+/g,
+                                                "-"
+                                            )
+                                    }`}
                                 >
                                     {formatStatus(
                                         transaction.status
@@ -700,7 +1033,9 @@ const TransactionsTable = () => {
 
                             <div className="transaction-actions">
 
-                                {/* SUCCESS → DELETE */}
+                                {/* =========================
+                                    SUCCESS → DELETE
+                                ========================= */}
 
                                 {transaction.status ===
                                     "SUCCESS" && (
@@ -708,16 +1043,24 @@ const TransactionsTable = () => {
                                     <button
                                         type="button"
                                         className="transaction-delete-btn"
+                                        disabled={
+                                            actionLoading ===
+                                            transaction.id
+                                        }
                                         onClick={() =>
                                             handleDelete(
                                                 transaction
                                             )
                                         }
                                     >
+
                                         <FiTrash2 />
 
                                         <span>
-                                            Delete
+                                            {actionLoading ===
+                                            transaction.id
+                                                ? "Deleting..."
+                                                : "Delete"}
                                         </span>
 
                                     </button>
@@ -725,7 +1068,9 @@ const TransactionsTable = () => {
                                 )}
 
 
-                                {/* PENDING → CONFIRM */}
+                                {/* =========================
+                                    PENDING → CONFIRM
+                                ========================= */}
 
                                 {transaction.status ===
                                     "PENDING" && (
@@ -733,16 +1078,24 @@ const TransactionsTable = () => {
                                     <button
                                         type="button"
                                         className="transaction-confirm-btn"
+                                        disabled={
+                                            actionLoading ===
+                                            transaction.id
+                                        }
                                         onClick={() =>
                                             handleConfirm(
                                                 transaction
                                             )
                                         }
                                     >
+
                                         <FiCheck />
 
                                         <span>
-                                            Confirm
+                                            {actionLoading ===
+                                            transaction.id
+                                                ? "Confirming..."
+                                                : "Confirm"}
                                         </span>
 
                                     </button>
@@ -754,6 +1107,7 @@ const TransactionsTable = () => {
                         </div>
 
                     )
+
                 )
 
             ) : (
@@ -773,7 +1127,7 @@ const TransactionsTable = () => {
                 PAGINATION
             ========================= */}
 
-            {transactions.length > 0 && (
+            {totalTransactions > 0 && (
 
                 <div className="transactions-pagination">
 
@@ -790,12 +1144,12 @@ const TransactionsTable = () => {
                         {Math.min(
                             currentPage *
                                 ITEMS_PER_PAGE,
-                            transactions.length
+                            totalTransactions
                         )}
 
                         {" "}of{" "}
 
-                        {transactions.length}
+                        {totalTransactions}
 
                         {" "}transactions
 
@@ -813,10 +1167,12 @@ const TransactionsTable = () => {
                                 currentPage === 1
                             }
                             onClick={
-                                goToPreviousPage
+                                handlePreviousPage
                             }
                         >
+
                             <FiChevronLeft />
+
                         </button>
 
 
@@ -840,10 +1196,12 @@ const TransactionsTable = () => {
                                 totalPages
                             }
                             onClick={
-                                goToNextPage
+                                handleNextPage
                             }
                         >
+
                             <FiChevronRight />
+
                         </button>
 
                     </div>
