@@ -439,26 +439,148 @@ const UsersTable = ({
     ========================================
     */
 
-    if (loading) {
+   /*
+========================================
+LOADING STATE
+========================================
+*/
 
-        return (
-            <div className="tx-table">
+if (loading) {
 
-                <div className="users-loading">
+    return (
 
-                    <div className="users-spinner"></div>
+        <div className="tx-table">
 
-                    <p>
-                        Loading users...
-                    </p>
+            {/* =========================
+                TABLE HEADER
+            ========================= */}
 
-                </div>
+            <div className="tx-table-head users-head">
+
+                <span>
+                    User
+                </span>
+
+                <span>
+                    Balance
+                </span>
+
+                <span>
+                    Total Deposit
+                </span>
+
+                <span>
+                    Status
+                </span>
+
+                <span>
+                    Joined
+                </span>
+
+                <span>
+                    Actions
+                </span>
 
             </div>
-        );
 
-    }
 
+            {/* =========================
+                SKELETON LOADING
+            ========================= */}
+
+            {Array.from({ length: 5 }).map(
+                (_, index) => (
+
+                    <div
+                        className="tx-row users-row users-skeleton"
+                        key={index}
+                    >
+
+                        {/* =====================
+                            USER
+                        ===================== */}
+
+                        <div className="tx-info">
+
+                            <div className="user-details">
+
+                                <div className="users-skeleton-item users-skeleton-title" />
+
+                                <div className="users-skeleton-item users-skeleton-text" />
+
+                            </div>
+
+                        </div>
+
+
+                        {/* =====================
+                            BALANCE
+                        ===================== */}
+
+                        <div className="user-balance">
+
+                            <div className="users-skeleton-item users-skeleton-balance" />
+
+                        </div>
+
+
+                        {/* =====================
+                            TOTAL DEPOSIT
+                        ===================== */}
+
+                        <div className="user-deposit">
+
+                            <div className="users-skeleton-item users-skeleton-deposit" />
+
+                        </div>
+
+
+                        {/* =====================
+                            STATUS
+                        ===================== */}
+
+                        <div className="tx-status-wrapper">
+
+                            <div className="users-skeleton-item users-skeleton-status" />
+
+                        </div>
+
+
+                        {/* =====================
+                            JOINED
+                        ===================== */}
+
+                        <div className="tx-date">
+
+                            <div className="users-skeleton-item users-skeleton-date" />
+
+                        </div>
+
+
+                        {/* =====================
+                            ACTIONS
+                        ===================== */}
+
+                        <div className="user-actions">
+
+                            <div className="users-skeleton-item users-skeleton-action" />
+
+                            <div className="users-skeleton-item users-skeleton-action" />
+
+                            <div className="users-skeleton-item users-skeleton-action" />
+
+                        </div>
+
+                    </div>
+
+                )
+            )}
+
+        </div>
+
+    );
+
+}
 
     /*
     ========================================
