@@ -8,23 +8,34 @@
     gap: 28px;
 }
 
-/* ====================================
+/* ========================================
    ORDERS TABLE SKELETON
-==================================== */
+======================================== */
 
-.skeleton-row {
+.orders-skeleton {
+    position: relative;
+    overflow: hidden;
     pointer-events: none;
 }
 
-.skeleton {
+
+/* ========================================
+   SKELETON BASE
+======================================== */
+
+.orders-skeleton-item {
     position: relative;
     overflow: hidden;
 
-    background: var(--card-secondary);
-    border-radius: 8px;
+    background: var(--border);
 }
 
-.skeleton::after {
+
+/* ========================================
+   SHIMMER
+======================================== */
+
+.orders-skeleton-item::after {
     content: "";
 
     position: absolute;
@@ -35,75 +46,83 @@
     background: linear-gradient(
         90deg,
         transparent,
-        rgba(255, 255, 255, 0.12),
+        rgba(255, 255, 255, 0.18),
         transparent
     );
 
-    animation: skeleton-loading 1.2s infinite;
+    animation: orders-skeleton-loading 1.4s infinite;
 }
 
-body.light-theme .skeleton {
-    background: #e5e7eb;
-}
 
-body.light-theme .skeleton::after {
+/* ========================================
+   LIGHT THEME SHIMMER
+======================================== */
+
+body.light-theme .orders-skeleton-item::after {
     background: linear-gradient(
         90deg,
         transparent,
-        rgba(255, 255, 255, 0.7),
+        rgba(255, 255, 255, 0.9),
         transparent
     );
 }
 
-@keyframes skeleton-loading {
-    100% {
-        transform: translateX(100%);
-    }
-}
 
+/* ========================================
+   ORDER / USER / SERVICE TITLE
+======================================== */
 
-/* ====================================
-   ORDER / USER / SERVICE
-==================================== */
-
-.skeleton-title {
+.orders-skeleton-title {
     width: 110px;
-    height: 15px;
+    height: 14px;
 
     margin-bottom: 7px;
+
+    border-radius: 6px;
 }
 
-.skeleton-text {
+
+/* ========================================
+   SUBTEXT
+======================================== */
+
+.orders-skeleton-text {
     width: 90px;
     height: 11px;
+
+    border-radius: 6px;
 }
 
 
-/* ====================================
+/* ========================================
    PRICE
-==================================== */
+======================================== */
 
-.skeleton-price {
-    width: 80px;
+.orders-skeleton-price {
+    width: 75px;
     height: 16px;
+
+    border-radius: 6px;
 }
 
 
-/* ====================================
+/* ========================================
    OTP
-==================================== */
+======================================== */
 
-.skeleton-otp {
+.orders-skeleton-otp {
     width: 55px;
     height: 16px;
+
+    border-radius: 6px;
 }
 
 
-/* ====================================
+/* ========================================
    STATUS
-==================================== */
+======================================== */
 
-.skeleton-status {
+.orders-skeleton-status {
     width: 75px;
     height: 26px;
 
@@ -111,13 +130,70 @@ body.light-theme .skeleton::after {
 }
 
 
-/* ====================================
+/* ========================================
    DATE
-==================================== */
+======================================== */
 
-.skeleton-date {
+.orders-skeleton-date {
     width: 85px;
-    height: 14px;
+    height: 13px;
+
+    border-radius: 6px;
+}
+
+
+/* ========================================
+   ANIMATION
+======================================== */
+
+@keyframes orders-skeleton-loading {
+    to {
+        transform: translateX(100%);
+    }
+}
+
+
+/* ========================================
+   MOBILE
+======================================== */
+
+@media (max-width: 768px) {
+
+    .orders-skeleton-title {
+        width: 90px;
+        height: 12px;
+    }
+
+
+    .orders-skeleton-text {
+        width: 70px;
+        height: 10px;
+    }
+
+
+    .orders-skeleton-price {
+        width: 65px;
+        height: 14px;
+    }
+
+
+    .orders-skeleton-otp {
+        width: 48px;
+        height: 14px;
+    }
+
+
+    .orders-skeleton-status {
+        width: 65px;
+        height: 24px;
+    }
+
+
+    .orders-skeleton-date {
+        width: 70px;
+        height: 12px;
+    }
+
 }
 
 /* ===========================
